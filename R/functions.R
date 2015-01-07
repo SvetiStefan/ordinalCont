@@ -45,31 +45,32 @@ dg_glf <- function(v, B, T){
 #' @examples
 #' loglik_glf()
 
-negloglik_glf <- function(pars, v, x){
-  beta <- pars[1:3]
-  M <- pars[4]
-  B <- pars[5]
-  T <- pars[6]
+negloglik_glf <- function(par, v, x){
+  beta <- par[1:3]
+  M <- par[4]
+  B <- par[5]
+  T <- par[6]
   
   g <- g_glf(v, M, B, T)
   dg <- dg_glf(v, B, T)
   if (any(dg<=0)) return(Inf)
   xb <- x %*% beta
-  return(sum(log(dg) + g + xb -2*log(1+exp(g+xb))))
+  return(-sum(log(dg) + g + xb -2*log(1+exp(g+xb))))
 }
 
-contOrdEst <- function(pars, v, x){
-  fit <- optim(pars,negloglik_glf, v=v, x=x)
-  
+contOrdEst <- function(par, v, x){
+  fit <- optim(par,negloglik_glf, v=v, x=x)
   ## compute QR-decomposition of x
   qx <- qr(x)
   
   ## compute (x’x)^(-1) x’y
   coef <- fit$par
+  names(coef) <- names(par)
   
   ## degrees of freedom and standard deviation of residuals
   df <- nrow(x)-ncol(x)
-  fitted.values <- g_glf(v, coef[4], coef[5], coef[6]) + x%*%coef[1:3]
+  require(boot) ##### put this somewhere else
+  fitted.values <- inv.logit(g_glf(v, coef[4], coef[5], coef[6]) + x%*%coef[1:3])
   sigma2 <- sum((v - fitted.values)^2)/df
   
   ## compute sigma^2 * (x’x)^-1
@@ -89,9 +90,9 @@ contOrd.default <- function(x, v, par, ...)
 {
     x <- as.matrix(x)
     v <- as.numeric(v)
-    est <- contOrdEst(pars, v, x)
+    est <- contOrdEst(par, v, x)
     coef <- est$coefficients
-    est$fitted.values <- as.vector(g_glf(v, coef[4], coef[5], coef[6]) + x%*%coef[1:3])
+    est$fitted.values <- as.vector(inv.logit(g_glf(v, coef[4], coef[5], coef[6]) + x%*%coef[1:3]))
     est$residuals <- v - est$fitted.values
     est$call <- match.call()
     class(est) <- "contOrd"
@@ -104,4 +105,61 @@ print.contOrd <- function(x, ...)
   print(x$call)
   cat("\nCoefficients:\n")
   print(x$coefficients)
+}
+
+summary.contOrd <- function(object, ...)
+{
+  se <- sqrt(diag(object$vcov))
+  tval <- coef(object) / se
+  TAB <- cbind(Estimate = coef(object),
+               StdErr = se,
+               t.value = tval,
+               p.value = 2*pt(-abs(tval), df=object$df))
+  res <- list(call=object$call,
+              coefficients=TAB)
+  class(res) <- "summary.contOrd"
+  res
+}
+
+print.summary.contOrd <- function(x, ...)
+{
+  cat("Call:\n")
+  print(x$call)
+  cat("\n")
+  printCoefmat(x$coefficients, P.value=TRUE, has.Pvalue=TRUE)
+}
+
+
+contOrd.formula <- function(formula, data=list(), ...)
+{
+  mf <- model.frame(formula=formula, data=data)
+  x <- model.matrix(attr(mf, "terms"), data=mf)
+  v <- model.response(mf)
+  est <- contOrd.default(x, v, ...)
+  est$call <- match.call()
+  est$formula <- formula
+  est
+}
+
+predict.contOrd <- function(object, newdata=NULL, ...)
+{
+  if(is.null(newdata))
+    y <- fitted(object)
+  else{
+    if(!is.null(object$formula)){
+      ## model has been fitted using formula interface
+      x <- model.matrix(object$formula, newdata)
+    }
+    else{
+      x <- newdata
+    }
+    y <- as.vector(x %*% coef(object))
+  }
+  y 
+}
+
+plot.contOrd <- function(object, ...)
+{
+  plot(resid(object), main='Residuals',ylab='')
+  lines(c(-10,length(resid(object))+20),c(0,0))
 }
