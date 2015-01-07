@@ -16,7 +16,7 @@ beta=c(-1.90, 1.74, 1.01)
 M = 0.63
 B = 0.43
 T = 0.85
-pars=c(beta,M, B, T)
+pars=c(beta, M, B, T)
 
 v=z$vas/10
 v[v==0]=0.001
@@ -28,4 +28,4 @@ x1=sapply(xx==1,ifelse,1,0)
 x2=sapply(xx==2,ifelse,1,0)
 x3=sapply(xx==3,ifelse,1,0)
 x=cbind(x1,x2,x3)
-optim(pars,contOrdEst, v=v, x=x)
+
