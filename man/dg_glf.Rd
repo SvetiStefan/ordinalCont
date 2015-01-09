@@ -4,14 +4,12 @@
 \alias{dg_glf}
 \title{Derivative of generalized logistic g function}
 \usage{
-dg_glf(v, B, T)
+dg_glf(v, par)
 }
 \arguments{
-\item{v}{Vector of standarized scores from the continuous ordinal scale}
+\item{v}{Vector of standarized scores from the continuous ordinal scale.}
 
-\item{B}{The slope of the curve}
-
-\item{T}{The symmetry of the curve}
+\item{par}{Vector of B, the slope of the curve, and T, the symmetry of the curve.}
 }
 \description{
 This function compute a parametric version of the g function following Richards (1959): dg(v)/dv = T/B * 1/[v*(1-v^T)]
@@ -21,7 +19,7 @@ dg_glf()
 }
 \keyword{Richards,}
 \keyword{derivative,}
-\keyword{function}
+\keyword{function.}
 \keyword{generalized}
 \keyword{logistic}
 
