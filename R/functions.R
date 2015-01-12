@@ -44,7 +44,8 @@ dg_glf <- function(v, par){
 #' @examples
 #' negloglik_glf()
 
-negloglik_glf <- function(par, v, x, len_beta){
+negloglik_glf <- function(par, v, d.matrix, len_beta){
+  x <- d.matrix
   beta <- par[1:len_beta]
   par_g <- par[(len_beta+1):(len_beta+3)]
   par_dg <- par[(len_beta+2):(len_beta+3)]
@@ -62,11 +63,15 @@ negloglik_glf <- function(par, v, x, len_beta){
 }
 
 contOrdEst <- function(start, v, x){
+  require(numDeriv)
+  require(boot)
   len_beta <- ncol(x)
-  fit <- optim(par=start,negloglik_glf, v=v, x=x, len_beta=len_beta, method="BFGS", hessian = TRUE)
+  fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, len_beta=len_beta, method="BFGS", hessian = TRUE)
   ## compute QR-decomposition of x
   #qx <- qr(x)
-  H=fit$hessian
+  #Hessian
+  #H=fit$hessian
+  H=hessian(negloglik_glf,fit$par,v=v, d.matrix=x,len_beta=len_beta)
   qrH <- qr(H)
   if(qrH$rank < nrow(H))
     stop("Cannot compute vcov: \nHessian is numerically singular")
@@ -81,7 +86,6 @@ contOrdEst <- function(start, v, x){
   
   ## degrees of freedom and standard deviation of residuals
   df <- nrow(x)-ncol(x)
-  require(boot) ##### put this somewhere else
   fitted.values <- inv.logit(g_glf(v, par_g) + x%*%beta)
   sigma2 <- sum((v - fitted.values)^2)/df
   
