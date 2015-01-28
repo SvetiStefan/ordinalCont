@@ -99,7 +99,7 @@ contOrdEst <- function(start, v, x){
 #' @keywords likelihood, log-likelihood.
 #' @export
 #' @examples
-#' negloglik_glf()
+#' contOrd()
 
 
 contOrd <- function(x, ...) UseMethod("contOrd")
@@ -111,6 +111,7 @@ contOrd <- function(x, ...) UseMethod("contOrd")
 #' @keywords likelihood, log-likelihood.
 #' @export
 #' @examples
+#' contOrd.default()
 
 contOrd.default <- function(x, v, start=NULL, ...)
 {
@@ -195,6 +196,7 @@ print.summary.contOrd <- function(x, ...)
 #' @keywords likelihood, log-likelihood.
 #' @export
 #' @examples
+#' contOrd.formula()
 
 
 contOrd.formula <- function(formula, data=list(), ...)
