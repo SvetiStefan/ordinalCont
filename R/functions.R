@@ -104,6 +104,14 @@ contOrdEst <- function(start, v, x){
 
 contOrd <- function(x, ...) UseMethod("contOrd")
 
+#' Continuous ordinal regression
+#'
+#' This function performs the comtinuous ordinal regression with logt link using the generalized logistic function as g function and without random effects.
+#' @param formula A formula object (fixed effects).
+#' @keywords likelihood, log-likelihood.
+#' @export
+#' @examples
+
 contOrd.default <- function(x, v, start=NULL, ...)
 {
     x <- as.matrix(x)
@@ -179,6 +187,14 @@ print.summary.contOrd <- function(x, ...)
   cat("\n")
   printCoefmat(x$coefficients, P.value=TRUE, has.Pvalue=TRUE, ...)
 }
+
+#' Continuous ordinal regression
+#'
+#' This function performs the comtinuous ordinal regression with logt link using the generalized logistic function as g function and without random effects.
+#' @param formula A formula object (fixed effects).
+#' @keywords likelihood, log-likelihood.
+#' @export
+#' @examples
 
 
 contOrd.formula <- function(formula, data=list(), ...)
