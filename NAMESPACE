@@ -2,6 +2,7 @@
 
 S3method(predict,contOrd)
 S3method(summary,contOrd)
+export(contOrd)
 export(dg_glf)
 export(g_glf)
 export(negloglik_glf)

@@ -4,7 +4,7 @@
 \alias{negloglik_glf}
 \title{Log-likelihood function for single subject using the generalized logistic function as g function and without random effects}
 \usage{
-negloglik_glf(par, v, x, len_beta)
+negloglik_glf(par, v, d.matrix, len_beta)
 }
 \arguments{
 \item{v}{Vector of standarized scores from the continuous ordinal scale.}
