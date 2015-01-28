@@ -140,6 +140,15 @@ set.glf_start <- function(x,v){
   c(0,1,1)
 }
 
+#' Continuous ordinal regression
+#'
+#' This function performs the comtinuous ordinal regression with logt link using the generalized logistic function as g function and without random effects.
+#' @param formula A formula object (fixed effects).
+#' @keywords likelihood, log-likelihood.
+#' @export
+#' @examples
+#' print()
+
 print.contOrd <- function(x, ...)
 {
   cat("Call:\n")
@@ -180,6 +189,25 @@ summary.contOrd <- function(object, ...)
   class(res) <- "summary.contOrd"
   res
 }
+
+#' @title Summarizing Continuous Ordinal Fits
+#' @description summary method for class "contOrd"
+#'
+#' @usage ## S3 method for class 'contOrd'
+#' summary(object, correlation = FALSE, symbolic.cor = FALSE, ...)
+#' ## S3 method for class 'summary.contOrd'
+#' print(x, digits = max(3, getOption("digits") - 3),
+#'      symbolic.cor = x$symbolic.cor,
+#'      signif.stars = getOption("show.signif.stars"), ...)
+
+#' @param object An object of class "contOrd", usually, a result of a call to contOrd.
+#' @param x An object of class "summary.contOrd", usually, a result of a call to summary.contOrd.
+#' @param digits The number of significant digits to use when printing.
+#' @param ... Further arguments passed to or from other methods.
+#' @keywords summary
+#' @export
+#' @examples
+#' print.summary.contOrd()
 
 print.summary.contOrd <- function(x, ...)
 {
