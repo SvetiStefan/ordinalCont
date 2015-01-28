@@ -49,14 +49,8 @@ negloglik_glf <- function(par, v, d.matrix, len_beta){
   beta <- par[1:len_beta]
   par_g <- par[(len_beta+1):(len_beta+3)]
   par_dg <- par[(len_beta+2):(len_beta+3)]
-  #print(par)
-  #print(beta)
-  #print(par_g)
-  #print(par_dg)
   g <- g_glf(v, par_g)
   dg <- dg_glf(v, par_dg)
-  #print(g)
-  #print(dg)
   if (any(dg<=0)) return(Inf)
   xb <- x %*% beta
   return(-sum(log(dg) + g + xb -2*log(1+exp(g+xb))))
@@ -98,6 +92,14 @@ contOrdEst <- function(start, v, x){
        df = df)
 }
 
+#' Continuous ordinal regression
+#'
+#' This function performs the comtinuous ordinal regression with logt link using the generalized logistic function as g function and without random effects.
+#' @param formula A formula object (fixed effects).
+#' @keywords likelihood, log-likelihood.
+#' @export
+#' @examples
+#' negloglik_glf()
 
 
 contOrd <- function(x, ...) UseMethod("contOrd")
