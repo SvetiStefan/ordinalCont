@@ -3,6 +3,8 @@
 S3method(contOrd,default)
 S3method(contOrd,formula)
 S3method(predict,contOrd)
+S3method(print,contOrd)
+S3method(print,summary.contOrd)
 S3method(summary,contOrd)
 export(contOrd)
 export(dg_glf)
