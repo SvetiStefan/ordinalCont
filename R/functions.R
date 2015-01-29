@@ -10,6 +10,7 @@
 
 g_glf <- function(v, par){
   #par = c(M, B, T)
+  #just  comment
   return(par[1]+log(par[3]*v^par[3]/(1-v^par[3]))/par[2])
 }
 
