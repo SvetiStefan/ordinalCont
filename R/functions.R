@@ -9,9 +9,10 @@
 #' g_glf()
 
 g_glf <- function(v, par){
-  #par = c(M, B, T)
+  #par = c(B, T) #par = c(M, B, T)
   #just  comment
-  return(par[1]+log(par[3]*v^par[3]/(1-v^par[3]))/par[2])
+  #return(par[1]+log(par[3]*v^par[3]/(1-v^par[3]))/par[2])
+  return(log(par[2]*v^par[2]/(1-v^par[2]))/par[1])
 }
 
 
@@ -48,8 +49,9 @@ dg_glf <- function(v, par){
 negloglik_glf <- function(par, v, d.matrix, len_beta){
   x <- d.matrix
   beta <- par[1:len_beta]
-  par_g <- par[(len_beta+1):(len_beta+3)]
-  par_dg <- par[(len_beta+2):(len_beta+3)]
+  #par_g <- par[(len_beta+1):(len_beta+3)]
+  par_g <- par[(len_beta+1):(len_beta+2)]
+  par_dg <- par[(len_beta+1):(len_beta+2)]
   g <- g_glf(v, par_g)
   dg <- dg_glf(v, par_dg)
   if (any(dg<=0)) return(Inf)
@@ -61,7 +63,7 @@ contOrdEst <- function(start, v, x){
   require(numDeriv)
   require(boot)
   len_beta <- ncol(x)
-  fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, len_beta=len_beta, method="BFGS", hessian = TRUE)
+  fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, len_beta=len_beta, method="BFGS", hessian = F)
   ## compute QR-decomposition of x
   #qx <- qr(x)
   #Hessian
@@ -77,7 +79,7 @@ contOrdEst <- function(start, v, x){
   names(coef) <- names(start)
   len_beta = ncol(x)
   beta <- coef[1:len_beta]
-  par_g <- coef[(len_beta+1):(len_beta+3)]
+  par_g <- coef[(len_beta+1):(len_beta+2)]
   
   ## degrees of freedom and standard deviation of residuals
   df <- nrow(x)-ncol(x)
@@ -86,7 +88,7 @@ contOrdEst <- function(start, v, x){
   
   ## compute sigma^2 * (x’x)^-1
   #vcov <- sigma2 * chol2inv(qx$qr)
-  colnames(vcov) <- rownames(vcov) <- c(colnames(x),"M","B","T")
+  colnames(vcov) <- rownames(vcov) <- c(colnames(x),"B","T")
   list(coefficients = coef,
        vcov = vcov,
        sigma = sqrt(sigma2),
@@ -125,7 +127,7 @@ contOrd.default <- function(x, v, start=NULL, ...)
     est <- contOrdEst(start, v, x)
     coef <- est$coefficients
     beta <- coef[1:len_beta]
-    par_g <- coef[(len_beta+1):(len_beta+3)]
+    par_g <- coef[(len_beta+1):(len_beta+2)]
     est$fitted.values <- as.vector(inv.logit(g_glf(v, par_g) + x%*%beta))
     est$residuals <- v - est$fitted.values
     est$call <- match.call()
@@ -138,7 +140,7 @@ set.beta_start <- function(x,v){
 }
 
 set.glf_start <- function(x,v){
-  c(0,1,1)
+  c(1,1)
 }
 
 #' Continuous ordinal regression
@@ -230,6 +232,7 @@ print.summary.contOrd <- function(x, ...)
 
 contOrd.formula <- function(formula, data=list(), ...)
 {
+  if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) stop("Random effects not yet supported.")
   mf <- model.frame(formula=formula, data=data)
   x <- model.matrix(attr(mf, "terms"), data=mf)
   v <- model.response(mf)
