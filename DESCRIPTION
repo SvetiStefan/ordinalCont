@@ -1,10 +1,8 @@
 Package: ordinalCont
 Title: Ordinal regression analysis for continuous scales
 Version: 0.2
-Authors@R: "Maurizio Manuguerra <maurizio.manuguerra@mq.edu.au
-> [aut, cre]"
-Authors@R: "Gillian Heller <gillian.heller@mq.edu.au
-> [aut, cre]"
+Authors: "Maurizio Manuguerra <maurizio.manuguerra@mq.edu.au > [aut, cre]"
+Authors: "Gillian Heller <gillian.heller@mq.edu.au > [aut, cre]"
 Description: What the package does (one paragraph)
 Depends: R (>= 3.1.1)
 License: What license is it under?
