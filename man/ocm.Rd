@@ -4,17 +4,29 @@
 \alias{ocm}
 \title{Continuous ordinal regression}
 \usage{
-ocm(x, ...)
+ocm(formula, data, start = NULL, control = list(), link = c("logit"), ...)
 }
 \arguments{
-\item{formula}{A formula object (fixed effects).}
+\item{formula}{a formula expression as for regression models, of the form response ~ predictors. Only fixed effects are supported. The model must have an intercept: attempts to remove one will lead to a warning and will be ignored (TODO).}
+
+\item{data}{an optional data frame in which to interpret the variables occurring in the formulas.}
+
+\item{start}{initial values for the parameters in the format c(alpha, beta, zeta), where alpha are the threshold parameters (adjusted for potential nominal effects), beta are the regression parameters and zeta are the scale parameters. (CHANGETHIS)}
+
+\item{control}{a list of control parameters passed on to clm.control.}
+
+\item{link}{link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model.}
+
+\item{...}{additional arguments are passed on to clm.control.}
 }
 \description{
 This function performs the continuous ordinal regression with logit link using the generalized logistic function as g function and without random effects.
 }
 \examples{
-ocm()
+ocm() #write something here using a data set included with the package
 }
 \keyword{likelihood,}
-\keyword{log-likelihood.}
+\keyword{log-likelihood,}
+\keyword{ordinal}
+\keyword{regression.}
 

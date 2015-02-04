@@ -1,26 +1,25 @@
 #' Continuous ordinal regression
 #'
 #' This function performs the continuous ordinal regression with logit link using the generalized logistic function as g function and without random effects.
-#' @param formula A formula object (fixed effects).
-#' @keywords likelihood, log-likelihood.
+#' @param formula a formula expression as for regression models, of the form response ~ predictors. Only fixed effects are supported. The model must have an intercept: attempts to remove one will lead to a warning and will be ignored (TODO).
+#' @param data  an optional data frame in which to interpret the variables occurring in the formulas.
+#' @param start initial values for the parameters in the format c(alpha, beta, zeta), where alpha are the threshold parameters (adjusted for potential nominal effects), beta are the regression parameters and zeta are the scale parameters. (CHANGETHIS)
+#' @param control a list of control parameters passed on to clm.control.
+#' @param link link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model.
+#' @param ... additional arguments are passed on to clm.control.
+#' @keywords likelihood, log-likelihood, ordinal regression.
 #' @export
 #' @examples
-#' ocm()
+#' ocm() #write something here using a data set included with the package
 
 
-ocm <- function(x, ...) UseMethod("ocm")
-
-#' Continuous ordinal regression
-#'
-#' This function performs the continuous ordinal regression with logit link using the generalized logistic function as g function and without random effects.
-#' @param formula A formula object (fixed effects).
-#' @keywords likelihood, log-likelihood.
-#' @export
-#' @examples
-#' ocm.default()
-
-ocm.default <- function(x, v, start=NULL, ...)
+ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), ...)
 {
+    if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) stop("Random effects not yet supported.")
+    mf <- model.frame(formula=formula, data=data)
+    x <- model.matrix(attr(mf, "terms"), data=mf)
+    v <- model.response(mf)
+    
     x <- as.matrix(x)
     v <- as.numeric(v)
     if (is.null(start)) beta_start <- set.beta_start(x,v)
@@ -35,9 +34,11 @@ ocm.default <- function(x, v, start=NULL, ...)
     est$residuals <- v - est$fitted.values
     est$call <- match.call()
     class(est) <- "ocm"
-    est 
-}
-
+    est$formula <- formula
+    est
+}  
+  
+  
 
 #' Continuous ordinal regression
 #'
@@ -116,27 +117,8 @@ print.summary.ocm <- function(x, ...)
   printCoefmat(x$coefficients, P.value=TRUE, has.Pvalue=TRUE, ...)
 }
 
-#' Continuous ordinal regression
-#'
-#' This function performs the comtinuous ordinal regression with logt link using the generalized logistic function as g function and without random effects.
-#' @param formula A formula object (fixed effects).
-#' @keywords likelihood, log-likelihood.
-#' @export
-#' @examples
-#' ocm.formula()
 
 
-ocm.formula <- function(formula, data=list(), ...)
-{
-  if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) stop("Random effects not yet supported.")
-  mf <- model.frame(formula=formula, data=data)
-  x <- model.matrix(attr(mf, "terms"), data=mf)
-  v <- model.response(mf)
-  est <- ocm.default(x, v, ...)
-  est$call <- match.call()
-  est$formula <- formula
-  est
-}
 
 #' @title Predict method for Continuous Ordinal Fits
 #' 
