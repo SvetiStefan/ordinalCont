@@ -2,28 +2,21 @@
 % Please edit documentation in R/utils.R
 \name{negloglik_glf}
 \alias{negloglik_glf}
-\title{Log-likelihood function for single subject using the generalized logistic function as g function and without random effects}
+\title{Log-likelihood function for the fixed-effects model, using the generalized logistic function as g function and the logit link function.}
 \usage{
 negloglik_glf(par, v, d.matrix, len_beta)
 }
 \arguments{
+\item{par}{Vector of B, the slope of the curve, and T, the symmetry of the curve.}
+
 \item{v}{Vector of standarized scores from the continuous ordinal scale.}
 
-\item{x}{Design matrix (fixed effects).}
+\item{d.matrix}{Design matrix (fixed effects).}
 
-\item{beta}{Regression coefficients.}
-
-\item{M}{The offset of the curve.}
-
-\item{B}{The slope of the curve.}
-
-\item{T}{The symmetry of the curve.}
+\item{len_beta}{Length of the regression coefficients vector.}
 }
 \description{
-This function compute the Log-likelihood function for single subject using the generalized logistic function as g function and without random effects.
-}
-\examples{
-negloglik_glf()
+This function compute the log-likelihood function for a fixed-effects model using the generalized logistic function as g function and the logit link function.
 }
 \keyword{likelihood,}
 \keyword{log-likelihood.}

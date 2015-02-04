@@ -23,8 +23,5 @@ print(x, digits = max(3, getOption("digits") - 3),
 \description{
 summary method for class "ocm"
 }
-\examples{
-summary.ocm()
-}
 \keyword{summary}
 

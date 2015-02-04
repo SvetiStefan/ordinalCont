@@ -4,7 +4,8 @@
 \alias{ocm}
 \title{Continuous ordinal regression}
 \usage{
-ocm(formula, data, start = NULL, control = list(), link = c("logit"), ...)
+ocm(formula, data, start = NULL, control = list(), link = c("logit"),
+  gfun = c("glf"), ...)
 }
 \arguments{
 \item{formula}{a formula expression as for regression models, of the form response ~ predictors. Only fixed effects are supported. The model must have an intercept: attempts to remove one will lead to a warning and will be ignored (TODO).}
@@ -23,7 +24,8 @@ ocm(formula, data, start = NULL, control = list(), link = c("logit"), ...)
 This function performs the continuous ordinal regression with logit link using the generalized logistic function as g function and without random effects.
 }
 \examples{
-ocm() #write something here using a data set included with the package
+# Change this with something that uses the data set included with the package (to identify)
+fit = ocm(v ~ t1+t2+t3, data=pain)
 }
 \keyword{likelihood,}
 \keyword{log-likelihood,}

@@ -10,12 +10,19 @@
 #' @keywords likelihood, log-likelihood, ordinal regression.
 #' @export
 #' @examples
-#' ocm() #write something here using a data set included with the package
+#' # Change this with something that uses the data set included with the package (to identify)
+#' fit = ocm(v ~ t1+t2+t3, data=pain) 
 
 
-ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), ...)
+ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), ...)
 {
-    if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) stop("Random effects not yet supported.")
+    if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) 
+      stop("Random effects not yet supported.")
+    if (missing(formula)) 
+      stop("Model needs a formula")
+    link <- match.arg(link)
+    gfun <- match.arg(gfun)
+    
     mf <- model.frame(formula=formula, data=data)
     x <- model.matrix(attr(mf, "terms"), data=mf)
     v <- model.response(mf)
@@ -26,7 +33,7 @@ ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), ..
     len_beta = length(beta_start)
     glf_start <- set.glf_start(x,v)
     start <- c(beta_start, glf_start)
-    est <- ocmEst(start, v, x)
+    est <- ocmEst(start, v, x, link, gfun)
     coef <- est$coefficients
     beta <- coef[1:len_beta]
     par_g <- coef[(len_beta+1):(len_beta+2)]
@@ -46,8 +53,6 @@ ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), ..
 #' @param formula A formula object (fixed effects).
 #' @keywords likelihood, log-likelihood.
 #' @export
-#' @examples
-#' print()
 
 print.ocm <- function(x, ...)
 {
@@ -73,8 +78,6 @@ print.ocm <- function(x, ...)
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords summary
 #' @export
-#' @examples
-#' summary.ocm()
 
 summary.ocm <- function(object, ...)
 {
@@ -106,8 +109,6 @@ summary.ocm <- function(object, ...)
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords summary
 #' @export
-#' @examples
-#' print.summary.ocm()
 
 print.summary.ocm <- function(x, ...)
 {
@@ -123,11 +124,10 @@ print.summary.ocm <- function(x, ...)
 #' @title Predict method for Continuous Ordinal Fits
 #' 
 #' @description Predicted values based on ocm object.
-#' @param love Do you love cats? Defaults to TRUE.
-#' @keywords cats
+#' @param object An ocm object.
+#' @param newdata optionally, a data frame in which to look for variables with which to predict. Note that all predictor variables should be present having the same names as the variables used to fit the model.
+#' @keywords predict
 #' @export
-#' @examples
-#' cat_function()
 
 predict.ocm <- function(object, newdata=NULL, ...)
 {
@@ -145,6 +145,13 @@ predict.ocm <- function(object, newdata=NULL, ...)
   }
   y 
 }
+
+#' @title Plot method for Continuous Ordinal Fits
+#' 
+#' @description Plot based on ocm object.
+#' @param object An ocm object.
+#' @keywords plot
+#' @export
 
 plot.ocm <- function(object, ...)
 {

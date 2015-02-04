@@ -12,9 +12,6 @@
 \description{
 This function performs the comtinuous ordinal regression with logt link using the generalized logistic function as g function and without random effects.
 }
-\examples{
-print()
-}
 \keyword{likelihood,}
 \keyword{log-likelihood.}
 

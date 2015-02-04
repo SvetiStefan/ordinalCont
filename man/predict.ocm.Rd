@@ -7,13 +7,12 @@
 \method{predict}{ocm}(object, newdata = NULL, ...)
 }
 \arguments{
-\item{love}{Do you love cats? Defaults to TRUE.}
+\item{object}{An ocm object.}
+
+\item{newdata}{optionally, a data frame in which to look for variables with which to predict. Note that all predictor variables should be present having the same names as the variables used to fit the model.}
 }
 \description{
 Predicted values based on ocm object.
 }
-\examples{
-cat_function()
-}
-\keyword{cats}
+\keyword{predict}
 

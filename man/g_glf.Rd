@@ -12,10 +12,7 @@ g_glf(v, par)
 \item{par}{Vector of M, the offset of the curve; B, the slope of the curve, and T, the symmetry of the curve.}
 }
 \description{
-This function compute a parametric version of the g function following Richards (1959): g(v) = M + 1/B * log(Tv^T/(1-v^T))
-}
-\examples{
-g_glf()
+This function computes a parametric version of the g function following Richards (1959): g(v) = M + 1/B * log(Tv^T/(1-v^T)). M is omitted as an intercept is always fitted.
 }
 \keyword{Richards,}
 \keyword{function.}

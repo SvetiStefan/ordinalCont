@@ -1,17 +1,11 @@
 #' Generalized logistic g function
 #'
-#' This function compute a parametric version of the g function following Richards (1959): g(v) = M + 1/B * log(Tv^T/(1-v^T))
+#' This function computes a parametric version of the g function following Richards (1959): g(v) = M + 1/B * log(Tv^T/(1-v^T)). M is omitted as an intercept is always fitted.
 #' @param v Vector of standarized scores from the continuous ordinal scale.
 #' @param par Vector of M, the offset of the curve; B, the slope of the curve, and T, the symmetry of the curve.
 #' @keywords Richards, generalized logistic function.
-#' @export
-#' @examples
-#' g_glf()
 
 g_glf <- function(v, par){
-  #par = c(B, T) #par = c(M, B, T)
-  #just  comment
-  #return(par[1]+log(par[3]*v^par[3]/(1-v^par[3]))/par[2])
   return(log(par[2]*v^par[2]/(1-v^par[2]))/par[1])
 }
 
@@ -22,9 +16,6 @@ g_glf <- function(v, par){
 #' @param v Vector of standarized scores from the continuous ordinal scale.
 #' @param par Vector of B, the slope of the curve, and T, the symmetry of the curve.
 #' @keywords Richards, derivative, generalized logistic function.
-#' @export
-#' @examples
-#' dg_glf()
 
 dg_glf <- function(v, par){
   #par = c(B, T)
@@ -32,19 +23,14 @@ dg_glf <- function(v, par){
 }
 
 
-#' Log-likelihood function for single subject using the generalized logistic function as g function and without random effects
+#' Log-likelihood function for the fixed-effects model, using the generalized logistic function as g function and the logit link function.
 #'
-#' This function compute the Log-likelihood function for single subject using the generalized logistic function as g function and without random effects.
-#' @param x Design matrix (fixed effects).
-#' @param beta Regression coefficients.
+#' This function compute the log-likelihood function for a fixed-effects model using the generalized logistic function as g function and the logit link function.
+#' @param par Vector of B, the slope of the curve, and T, the symmetry of the curve.
 #' @param v Vector of standarized scores from the continuous ordinal scale.
-#' @param M The offset of the curve.
-#' @param B The slope of the curve.
-#' @param T The symmetry of the curve.
+#' @param d.matrix Design matrix (fixed effects).
+#' @param len_beta Length of the regression coefficients vector.
 #' @keywords likelihood, log-likelihood.
-#' @export
-#' @examples
-#' negloglik_glf()
 
 negloglik_glf <- function(par, v, d.matrix, len_beta){
   x <- d.matrix
@@ -59,11 +45,18 @@ negloglik_glf <- function(par, v, d.matrix, len_beta){
   return(-sum(log(dg) + g + xb -2*log(1+exp(g+xb))))
 }
 
-ocmEst <- function(start, v, x){
+ocmEst <- function(start, v, x, link, gfun){
   require(numDeriv)
-  require(boot)
   len_beta <- ncol(x)
-  fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, len_beta=len_beta, method="BFGS", hessian = F)
+  if (gfun == "glf") {
+    if (link == "logit"){
+      fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, len_beta=len_beta, method="BFGS", hessian = F)
+    } else {
+      stop("link function not implemented.")
+    }
+  } else {
+    stop("g function not implemented.")
+  }
   ## compute QR-decomposition of x
   #qx <- qr(x)
   #Hessian
@@ -102,4 +95,11 @@ set.beta_start <- function(x,v){
 
 set.glf_start <- function(x,v){
   c(1,1)
+}
+
+
+inv.logit <- function(x){
+  if (x == Inf) return(1)
+  if (x == -Inf) return(0)
+  exp(x)/(1+exp(x))
 }

@@ -14,9 +14,6 @@ dg_glf(v, par)
 \description{
 This function compute a parametric version of the g function following Richards (1959): dg(v)/dv = T/B * 1/[v*(1-v^T)]
 }
-\examples{
-dg_glf()
-}
 \keyword{Richards,}
 \keyword{derivative,}
 \keyword{function.}
