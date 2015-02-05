@@ -7,7 +7,9 @@
 \method{print}{ocm}(x, ...)
 }
 \arguments{
-\item{formula}{A formula object (fixed effects).}
+\item{x}{An object of class "ocm", usually, a result of a call to ocm.}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \description{
 This function performs the comtinuous ordinal regression with logt link using the generalized logistic function as g function and without random effects.

@@ -4,10 +4,12 @@
 \alias{plot.ocm}
 \title{Plot method for Continuous Ordinal Fits}
 \usage{
-\method{plot}{ocm}(object, ...)
+\method{plot}{ocm}(x, ...)
 }
 \arguments{
-\item{object}{An ocm object.}
+\item{x}{An ocm object.}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \description{
 Plot based on ocm object.

@@ -18,6 +18,8 @@ ocm(formula, data, start = NULL, control = list(), link = c("logit"),
 
 \item{link}{link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model.}
 
+\item{gfun}{A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function, which is currently the only possibility.}
+
 \item{...}{additional arguments are passed on to clm.control.}
 }
 \description{
@@ -25,7 +27,7 @@ This function performs the continuous ordinal regression with logit link using t
 }
 \examples{
 # Change this with something that uses the data set included with the package (to identify)
-fit = ocm(v ~ t1+t2+t3, data=pain)
+fit = ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
 }
 \keyword{likelihood,}
 \keyword{log-likelihood,}

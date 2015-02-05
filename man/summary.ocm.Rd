@@ -4,21 +4,14 @@
 \alias{summary.ocm}
 \title{Summarizing Continuous Ordinal Fits}
 \usage{
-## S3 method for class 'ocm'
-summary(object, correlation = FALSE, symbolic.cor = FALSE, ...)
-## S3 method for class 'summary.ocm'
-print(x, digits = max(3, getOption("digits") - 3),
-     symbolic.cor = x$symbolic.cor,
-     signif.stars = getOption("show.signif.stars"), ...)
+\method{summary}{ocm}(object, digits = getOption("digits"), ...)
 }
 \arguments{
 \item{object}{An object of class "ocm", usually, a result of a call to ocm.}
 
-\item{...}{Further arguments passed to or from other methods.}
-
-\item{x}{An object of class "summary.ocm", usually, a result of a call to summary.ocm.}
-
 \item{digits}{The number of significant digits to use when printing.}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \description{
 summary method for class "ocm"

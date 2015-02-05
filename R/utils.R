@@ -46,11 +46,10 @@ negloglik_glf <- function(par, v, d.matrix, len_beta){
 }
 
 ocmEst <- function(start, v, x, link, gfun){
-  require(numDeriv)
   len_beta <- ncol(x)
   if (gfun == "glf") {
     if (link == "logit"){
-      fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, len_beta=len_beta, method="BFGS", hessian = F)
+      fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, len_beta=len_beta, method="BFGS", hessian = T)
     } else {
       stop("link function not implemented.")
     }
@@ -60,8 +59,9 @@ ocmEst <- function(start, v, x, link, gfun){
   ## compute QR-decomposition of x
   #qx <- qr(x)
   #Hessian
-  #H=fit$hessian
-  H=hessian(negloglik_glf,fit$par,v=v, d.matrix=x,len_beta=len_beta)
+  H=fit$hessian
+  #require(numDeriv)
+  #H=hessian(negloglik_glf,fit$par,v=v, d.matrix=x,len_beta=len_beta)
   qrH <- qr(H)
   if(qrH$rank < nrow(H))
     stop("Cannot compute vcov: \nHessian is numerically singular")
@@ -90,7 +90,9 @@ ocmEst <- function(start, v, x, link, gfun){
 
 
 set.beta_start <- function(x,v){
-  as.numeric(-coef(glm(v~0+x,family=gaussian(link="logit"))))
+  vv=ifelse(v<median(v),0,1)
+  #as.numeric(-coef(glm(vv~0+x,family=gaussian(link="logit"))))
+  as.numeric(-coef(glm(vv~0+x,family=binomial(link="logit"))))
 }
 
 set.glf_start <- function(x,v){
@@ -99,7 +101,5 @@ set.glf_start <- function(x,v){
 
 
 inv.logit <- function(x){
-  if (x == Inf) return(1)
-  if (x == -Inf) return(0)
-  exp(x)/(1+exp(x))
+  ifelse(is.finite(x),exp(x)/(1+exp(x)),sign(x)*Inf)
 }

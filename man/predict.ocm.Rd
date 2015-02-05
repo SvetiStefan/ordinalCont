@@ -10,6 +10,8 @@
 \item{object}{An ocm object.}
 
 \item{newdata}{optionally, a data frame in which to look for variables with which to predict. Note that all predictor variables should be present having the same names as the variables used to fit the model.}
+
+\item{...}{Further arguments passed to or from other methods.}
 }
 \description{
 Predicted values based on ocm object.
