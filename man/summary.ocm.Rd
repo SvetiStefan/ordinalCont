@@ -4,12 +4,10 @@
 \alias{summary.ocm}
 \title{Summarizing Continuous Ordinal Fits}
 \usage{
-\method{summary}{ocm}(object, digits = getOption("digits"), ...)
+\method{summary}{ocm}(object, ...)
 }
 \arguments{
 \item{object}{An object of class "ocm", usually, a result of a call to ocm.}
-
-\item{digits}{The number of significant digits to use when printing.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

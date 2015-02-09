@@ -54,6 +54,7 @@ ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gf
 #' @param x An object of class "ocm", usually, a result of a call to ocm.
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords likelihood, log-likelihood.
+#' @method print ocm
 #' @export
 
 print.ocm <- function(x, ...)
@@ -67,12 +68,12 @@ print.ocm <- function(x, ...)
 #' @title Summarizing Continuous Ordinal Fits
 #' @description summary method for class "ocm"
 #' @param object An object of class "ocm", usually, a result of a call to ocm.
-#' @param digits The number of significant digits to use when printing.
 #' @param ... Further arguments passed to or from other methods.
+#' @method summary ocm
 #' @keywords summary
 #' @export
 
-summary.ocm <- function(object, digits = getOption("digits"), ...)
+summary.ocm <- function(object, ...)
 {
   se <- sqrt(diag(object$vcov))
   tval <- coef(object)[1:length(se)] / se
@@ -83,18 +84,17 @@ summary.ocm <- function(object, digits = getOption("digits"), ...)
   res <- list(call=object$call,
               coefficients=TAB)
   class(res) <- "summary.ocm"
-  res
+  print(res, ...)
 }
 
 #' @title Summarizing Continuous Ordinal Fits
-#' @description summary method for class "ocm"
+#' @description summary method for class "summary.ocm"
 #' @param x An object of class "summary.ocm", usually, a result of a call to summary.ocm.
-#' @param digits The number of significant digits to use when printing.
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords summary
 #' @export
 
-print.summary.ocm <- function(x, digits = getOption("digits"), ...)
+print.summary.ocm <- function(x, ...)
 {
   cat("Call:\n")
   print(x$call)

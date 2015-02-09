@@ -4,17 +4,15 @@
 \alias{print.summary.ocm}
 \title{Summarizing Continuous Ordinal Fits}
 \usage{
-\method{print}{summary.ocm}(x, digits = getOption("digits"), ...)
+\method{print}{summary.ocm}(x, ...)
 }
 \arguments{
 \item{x}{An object of class "summary.ocm", usually, a result of a call to summary.ocm.}
 
-\item{digits}{The number of significant digits to use when printing.}
-
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
-summary method for class "ocm"
+summary method for class "summary.ocm"
 }
 \keyword{summary}
 
