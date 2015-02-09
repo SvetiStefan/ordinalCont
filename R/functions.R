@@ -11,7 +11,7 @@
 #' @keywords likelihood, log-likelihood, ordinal regression.
 #' @export
 #' @examples
-#' # Change this with something that uses the data set included with the package (to identify)
+#' # Change this with something that uses the data set included with the package (Gillian?)
 #' fit = ocm(vas ~ lasert1+lasert2+lasert3, data=pain) 
 
 
