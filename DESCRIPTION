@@ -4,7 +4,7 @@ Version: 0.2
 Authors@R: c(person("Maurizio", "Manuguerra", role = c("aut", "cre"),
   	     email = "maurizio.manuguerra@mq.edu.au"),
 	      person("Gillian", "Heller", role = "aut", email = "gillian.heller@mq.edu.au"))
-Description: What the package does (one paragraph)
+Description: What the package does (one paragraph): Ordinal regression analysis for continuous scales
 Depends: R (>= 3.1.1)
 License: GPL (>= 2)
 LazyData: true
