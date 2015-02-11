@@ -12,11 +12,7 @@ dg_glf(v, par)
 \item{par}{Vector of B, the slope of the curve, and T, the symmetry of the curve.}
 }
 \description{
-<<<<<<< HEAD
-This function compute a parametric version of the g function following Richards (1959): Test: \deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
-=======
-This function compute a parametric version of the g function following Richards (1959):  \deqn{\frac{dg(v)}{dv} = \alpha\frac{T}{B}  \frac{1}{v(1-v^{T})}}
->>>>>>> deb6af32909bdcfd5dad0a33153429575e96dede
+This function compute a parametric version of the g function following Richards (1959): \deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
 }
 \keyword{Richards,}
 \keyword{derivative,}

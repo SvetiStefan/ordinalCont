@@ -12,11 +12,7 @@ g_glf <- function(v, par){
 
 #' Derivative of generalized logistic g function
 #'
-<<<<<<< HEAD
-#' This function compute a parametric version of the g function following Richards (1959): Test: \deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
-=======
-#' This function compute a parametric version of the g function following Richards (1959):  \deqn{\frac{dg(v)}{dv} = \alpha\frac{T}{B}  \frac{1}{v(1-v^{T})}}
->>>>>>> deb6af32909bdcfd5dad0a33153429575e96dede
+#' This function compute a parametric version of the g function following Richards (1959): \deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
 #' @param v Vector of standarized scores from the continuous ordinal scale.
 #' @param par Vector of B, the slope of the curve, and T, the symmetry of the curve.
 #' @keywords Richards, derivative, generalized logistic function.
