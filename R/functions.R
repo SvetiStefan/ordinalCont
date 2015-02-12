@@ -40,6 +40,8 @@ ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gf
     par_g <- coef[(len_beta+1):(len_beta+2)]
     est$fitted.values <- as.vector(inv.logit(g_glf(v, par_g) + x%*%beta))
     est$residuals <- v - est$fitted.values
+    est$v <- v
+    est$x <- x
     est$call <- match.call()
     class(est) <- "ocm"
     est$formula <- formula
@@ -116,19 +118,33 @@ print.summary.ocm <- function(x, ...)
 
 predict.ocm <- function(object, newdata=NULL, ...)
 {
+  formula <- object$formula
+  params <- coef(object)
+  len_beta <- 1 + length(formula) #"1" is for the intercept
   if(is.null(newdata))
-    y <- fitted(object)
+    x <- object$x 
   else{
-    if(!is.null(object$formula)){
+    if(!is.null(object$formula)){ #how can this be NULL?
       ## model has been fitted using formula interface
       x <- model.matrix(object$formula, newdata)
     }
     else{
       x <- newdata
     }
-    y <- as.vector(x %*% coef(object))
   }
-  y 
+  ndens <- 100
+  v <- seq(0.01, 0.99, length.out = ndens)
+  modes <- NULL
+  #densities <- NULL
+  for (subject in 1:nrow(x)){
+    d.matrix <- matrix(rep(x[subject,], ndens), nrow = ndens, dimnames = list(as.character(1:ndens), colnames(x)), byrow = TRUE)
+    #densities <- rbind(modes, t(logdensity_glf(par = params, v = v, d.matrix = d.matrix, len_beta = len_beta)))
+    modes <- c(modes, v[which.max(logdensity_glf(par = params, v = v, d.matrix = d.matrix, len_beta = len_beta))])
+    
+  }
+  #y = logdensity_glf(par = params, v = v, d.matrix = x, len_beta = len_beta)
+  #plot(v,y)
+  modes 
 }
 
 #' @title Plot method for Continuous Ordinal Fits

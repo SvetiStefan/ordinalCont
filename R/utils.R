@@ -33,6 +33,10 @@ dg_glf <- function(v, par){
 #' @keywords likelihood, log-likelihood.
 
 negloglik_glf <- function(par, v, d.matrix, len_beta){
+  return(-sum(logdensity_glf(par, v, d.matrix, len_beta)))
+}
+
+logdensity_glf <- function(par, v, d.matrix, len_beta){
   x <- d.matrix
   beta <- par[1:len_beta]
   #par_g <- par[(len_beta+1):(len_beta+3)]
@@ -42,8 +46,9 @@ negloglik_glf <- function(par, v, d.matrix, len_beta){
   dg <- dg_glf(v, par_dg)
   if (any(dg<=0)) return(Inf)
   xb <- x %*% beta
-  return(-sum(log(dg) + g + xb -2*log(1+exp(g+xb))))
+  return(log(dg) + g + xb -2*log(1+exp(g+xb)))
 }
+
 
 ocmEst <- function(start, v, x, link, gfun){
   len_beta <- ncol(x)
