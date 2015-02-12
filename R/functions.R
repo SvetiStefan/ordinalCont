@@ -133,14 +133,28 @@ predict.ocm <- function(object, newdata=NULL, ...)
 
 #' @title Plot method for Continuous Ordinal Fits
 #' 
-#' @description Plot based on ocm object.
+#' @description This function plots the g function as fitted in an ocm call.
 #' @param x An ocm object.
+#' @param CIs A logical factor indicating if confidence inteval for the g function should be computed. This is done with bootstapping method and the operation could be lengthy.
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords plot
 #' @export
 
-plot.ocm <- function(x, ...)
+plot.ocm <- function(x, CIs = FALSE, ...)
 {
-  plot(resid(x), main='Residuals',ylab='')
-  lines(c(-10,length(resid(x))+20),c(0,0))
+  M <- x$coefficients[1]
+  params <- tail(coef(mod1), 2)
+  v <- seq(0.01, 0.99, by=0.01)
+  gfun <- M + g_glf(v,params)
+  if (CIs) {
+    print('Computing bootstrap confidence interval..')
+    print('Feature not yet implemented.')
+    print('Done!')
+  }
+  plot(v, gfun, main='g function', xlim=c(0,1), xlab='Continuous ordinal scale', ylab='', t='l')
+  lines(c(.5,.5),c(min(gfun)-1,max(gfun)+1),lty=2)
+  if (CIs){
+    #Compute CIs with bootstrap
+    #Plot CIs
+  }
 }

@@ -4,15 +4,17 @@
 \alias{plot.ocm}
 \title{Plot method for Continuous Ordinal Fits}
 \usage{
-\method{plot}{ocm}(x, ...)
+\method{plot}{ocm}(x, CIs = FALSE, ...)
 }
 \arguments{
 \item{x}{An ocm object.}
 
+\item{CIs}{A logical factor indicating if confidence inteval for the g function should be computed. This is done with bootstapping method and the operation could be lengthy.}
+
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
-Plot based on ocm object.
+This function plots the g function as fitted in an ocm call.
 }
 \keyword{plot}
 
