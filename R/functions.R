@@ -158,12 +158,17 @@ predict.ocm <- function(object, newdata=NULL, ...)
 
 plot.ocm <- function(x, CIs = FALSE, ...)
 {
+  #FIXME: this works for glf only: make general?
   M <- x$coefficients[1]
-  params <- tail(coef(mod1), 2)
+  params <- tail(coef(x), 2)
   v <- seq(0.01, 0.99, by=0.01)
   gfun <- M + g_glf(v,params)
   if (CIs) {
+    #require(boot)
     print('Computing bootstrap confidence interval..')
+    R <- 1000
+    sM <- rnorm(R, M, sdM)
+    sparams <- rnorm(2*R, params, sdparams) # FIXME: sparams must be a matrix with two cols
     print('Feature not yet implemented.')
     print('Done!')
   }
