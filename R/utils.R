@@ -1,6 +1,6 @@
 #' Generalized logistic g function
 #'
-#' This function computes a parametric version of the g function following Richards (1959): g(v) = M + 1/B * log(Tv^T/(1-v^T)). M is omitted as an intercept is always fitted.
+#' This function computes a parametric version of the g function following Richards (1959): \deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)}. M is omitted as an intercept is always fitted.
 #' @param v Vector of standarized scores from the continuous ordinal scale.
 #' @param par Vector of M, the offset of the curve; B, the slope of the curve, and T, the symmetry of the curve.
 #' @keywords Richards, generalized logistic function.
@@ -12,7 +12,7 @@ g_glf <- function(v, par){
 
 #' Derivative of generalized logistic g function
 #'
-#' This function compute a parametric version of the g function following Richards (1959): \deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
+#' This function compute the derivative of the generalized logistic function as in Richards (1959): \deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
 #' @param v Vector of standarized scores from the continuous ordinal scale.
 #' @param par Vector of B, the slope of the curve, and T, the symmetry of the curve.
 #' @keywords Richards, derivative, generalized logistic function.
