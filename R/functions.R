@@ -165,10 +165,13 @@ plot.ocm <- function(x, CIs = FALSE, ...)
   gfun <- M + g_glf(v,params)
   if (CIs) {
     #require(boot)
-    print('Computing bootstrap confidence interval..')
+    print('Computing 95% confidence interval.')
     R <- 1000
+    sds <- sqrt(diag(x$vcov))
+    sdM <- sds[1]
     sM <- rnorm(R, M, sdM)
-    sparams <- rnorm(2*R, params, sdparams) # FIXME: sparams must be a matrix with two cols
+    sdparams <- tail(sds, 2)
+    sparams <- matrix(rnorm(2*R, params, sdparams), ncol = 2, byrow = T)
     print('Feature not yet implemented.')
     print('Done!')
   }
