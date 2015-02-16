@@ -174,15 +174,15 @@ plot.ocm <- function(x, CIs = FALSE, ...)
     sparams <- matrix(rnorm(2*R, params, sdparams), ncol = 2, byrow = T)
     all_gfuns <- NULL
     for (i in 1:R){
-        all_gfuns <- rbind(all_gfuns, sM[i] + g_glf(v, params[i,])
-        ci_low  <- apply(all_gfuns, function(x)percentile(x, 0.025))
-        ci_high <- apply(all_gfuns, function(x)percentile(x, 0.975))   
-    } 
+        all_gfuns <- rbind(all_gfuns, sM[i] + g_glf(v, sparams[i,]))
+    }
+    ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
+    ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
   }
   plot(v, gfun, main='g function', xlim=c(0,1), xlab='Continuous ordinal scale', ylab='', t='l')
   lines(c(.5,.5),c(min(gfun)-1,max(gfun)+1),lty=2)
-  #lines(v, ci_low)
-  #lines(v, ci_high)
+  lines(v, ci_low)
+  lines(v, ci_high)
   if (CIs){
     #Compute CIs with bootstrap
     #Plot CIs
