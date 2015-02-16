@@ -163,6 +163,8 @@ plot.ocm <- function(x, CIs = FALSE, ...)
   params <- tail(coef(x), 2)
   v <- seq(0.01, 0.99, by=0.01)
   gfun <- M + g_glf(v, params)
+  xlim <- c(0,1)
+  ylim <- c(min(gfun), max(gfun))
   if (CIs) {
     #FIXME this is a very simple version, not the bootstrap one.
     #require(boot)
@@ -178,13 +180,13 @@ plot.ocm <- function(x, CIs = FALSE, ...)
     }
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
+    ylim <- c(min(ci_low), max(ci_high))
   }
-  plot(v, gfun, main='g function', xlim=c(0,1), xlab='Continuous ordinal scale', ylab='', t='l')
-  lines(c(.5,.5),c(min(gfun)-1,max(gfun)+1),lty=2)
-  lines(v, ci_low)
-  lines(v, ci_high)
-  if (CIs){
-    #Compute CIs with bootstrap
-    #Plot CIs
+  plot(v, gfun, main='g function', xlim = xlim, ylim = ylim, xlab = 'Continuous ordinal scale', ylab = '', t='l')
+  lines(c(.5,.5), ylim, col='grey')
+  lines(xlim, c(0, 0), col='grey')
+  if (CIs) {
+    lines(v, ci_low, lty = 2)
+    lines(v, ci_high, lty = 2)
   }
 }
