@@ -162,21 +162,27 @@ plot.ocm <- function(x, CIs = FALSE, ...)
   M <- x$coefficients[1]
   params <- tail(coef(x), 2)
   v <- seq(0.01, 0.99, by=0.01)
-  gfun <- M + g_glf(v,params)
+  gfun <- M + g_glf(v, params)
   if (CIs) {
+    #FIXME this is a very simple version, not the bootstrap one.
     #require(boot)
-    print('Computing 95% confidence interval.')
     R <- 1000
     sds <- sqrt(diag(x$vcov))
     sdM <- sds[1]
     sM <- rnorm(R, M, sdM)
     sdparams <- tail(sds, 2)
     sparams <- matrix(rnorm(2*R, params, sdparams), ncol = 2, byrow = T)
-    print('Feature not yet implemented.')
-    print('Done!')
+    all_gfuns <- NULL
+    for (i in 1:R){
+        all_gfuns <- rbind(all_gfuns, sM[i] + g_glf(v, params[i,])
+        ci_low  <- apply(all_gfuns, function(x)percentile(x, 0.025))
+        ci_high <- apply(all_gfuns, function(x)percentile(x, 0.975))   
+    } 
   }
   plot(v, gfun, main='g function', xlim=c(0,1), xlab='Continuous ordinal scale', ylab='', t='l')
   lines(c(.5,.5),c(min(gfun)-1,max(gfun)+1),lty=2)
+  #lines(v, ci_low)
+  #lines(v, ci_high)
   if (CIs){
     #Compute CIs with bootstrap
     #Plot CIs
