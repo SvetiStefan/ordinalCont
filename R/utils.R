@@ -90,7 +90,8 @@ ocmEst <- function(start, v, x, link, gfun){
   list(coefficients = coef,
        vcov = vcov,
        sigma = sqrt(sigma2),
-       df = df)
+       df = df,
+       logLik = -fit$value)
 }
 
 
