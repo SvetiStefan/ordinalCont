@@ -80,7 +80,7 @@ ocmEst <- function(start, v, x, link, gfun){
   par_g <- coef[(len_beta+1):(len_beta+2)]
   
   ## degrees of freedom and standard deviation of residuals
-  df <- nrow(x)-ncol(x)
+  df <- nrow(x)-ncol(x)-length(par_g)
   fitted.values <- inv.logit(g_glf(v, par_g) + x%*%beta)
   sigma2 <- sum((v - fitted.values)^2)/df
   
