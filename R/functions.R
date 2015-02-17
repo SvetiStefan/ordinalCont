@@ -240,7 +240,7 @@ anova.ocm <- function(object, ...)
   links <- sapply(mlist, function(x) x$link)
   gfun <- sapply(mlist, function(x) x$gfun)
   models <- data.frame(forms)
-  models.names <- c('formula:', "link:", "gfun:")
+  models.names <- c('formula', "link", "gfun")
   models <- cbind(models, data.frame(links, gfun))
   ## extract AIC, logLik, statistics, df, p-values:
   AIC <- sapply(mlist, function(x) -2*x$logLik + 2*x$no.pars)
@@ -253,13 +253,14 @@ anova.ocm <- function(object, ...)
   tab <- data.frame(no.par, AIC, logLiks, statistic, df, pval)
   tab.names <- c("no.par", "AIC", "logLik", "LR.stat", "df",
                  "Pr(>Chisq)")
-  mnames <- sapply(as.list(mc), deparse)[-1]
   colnames(tab) <- tab.names
-  rownames(tab) <- rownames(models) <- mnames[ord]
+  #mnames <- sapply(as.list(mc), deparse)[-1]
+  #rownames(tab) <- rownames(models) <- mnames[ord]
+  rownames(tab) <- rownames(models) <- paste("Model ",1:length(mlist),":",sep='')
   colnames(models) <- models.names
   attr(tab, "models") <- models
   attr(tab, "heading") <-
-    "Likelihood ratio tests of cumulative link models:\n"
+    "Likelihood ratio tests of ordinal regression models for continuous scales:\n"
   class(tab) <- c("anova.ocm", "data.frame")
   tab
 }
@@ -281,6 +282,7 @@ print.anova.ocm <-
     if (!is.null(heading <- attr(x, "heading")))
       cat(heading, "\n")
     models <- attr(x, "models")
+    #row.names(models) <- paste("Model ",1:nrow(models),":",sep='')
     print(models, right=FALSE)
     cat("\n")
     printCoefmat(x, digits=digits, signif.stars=signif.stars,
