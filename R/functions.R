@@ -207,8 +207,8 @@ plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap'), R
   lines(xlim, c(0, 0), col='grey')
   #CIs
   lines(v, ci_low, lty = 2)
-  lines(v, ci_median, lty = 2)
   lines(v, ci_high, lty = 2)
+  if (CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
 }
 
 #' @title Anova method for Continuous Ordinal Fits
