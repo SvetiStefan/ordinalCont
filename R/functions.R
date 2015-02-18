@@ -38,8 +38,16 @@ ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gf
     coef <- est$coefficients
     beta <- coef[1:len_beta]
     par_g <- coef[(len_beta+1):(len_beta+2)]
-    est$fitted.values <- as.vector(inv.logit(g_glf(v, par_g) + x%*%beta))
-    est$residuals <- v - est$fitted.values
+    est$len_beta <- len_beta
+    #fitted.values are the cumulative probabilities gamma(v|x)
+    #est$fitted.values <- as.vector(inv.logit(g_glf(v, par_g) + x%*%beta))
+    #The intercept is the parameter M of the glf. Fitted values v* = g^{-1}(W*) = g^{-1}(-x'B), where W=W*+epsilon
+    #On the ordinal scale [0,1] (v* and v-v*):
+    #est$fitted.values <- as.vector(g_glf_inv(-x%*%beta, par_g))
+    #est$residuals <- v - est$fitted.values
+    #On the latent scale (W* and epsilon=W-W*):
+    est$fitted.values <- as.vector(-x%*%beta+coef[1])
+    est$residuals <- g_glf(v, par_g) - est$fitted.values
     est$v <- v
     est$x <- x
     est$call <- match.call()
@@ -151,15 +159,17 @@ predict.ocm <- function(object, newdata=NULL, ...)
 #' @description This function plots the g function as fitted in an ocm call.
 #' @param x An ocm object.
 #' @param CIs Indicates if confidence bands for the g function should be computed based on the Wald 95\% CIs or by bootstrapping. In  the latter case, bootstrapping can be performed using a random-x or a fixed-x resampling. 95\% CIs computed with either of the bootstrapping options are obtained with simple percentiles. 
+#' @param R The number of bootstrap replicates. 
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords plot
 #' @export
 
-plot.ocm <- function(x, CIs = c('simple','rnd-x-bootstrap','fix-x-bootstrap'), R = 1000, ...)
+plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap'), R = 1000, ...)
 {
   #FIXME: this works for glf only: make general?
   #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some level making optim fail.
   CIs <- match.arg(CIs)
+  R <- as.integer(R)
   M <- x$coefficients[1]
   params <- tail(coef(x), 2)
   v <- seq(0.01, 0.99, by=0.01)
@@ -180,15 +190,10 @@ plot.ocm <- function(x, CIs = c('simple','rnd-x-bootstrap','fix-x-bootstrap'), R
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
-  } else if (CIs=='rnd-x-bootstrap'){
-    boot.ocm <- function(data, indices, fit){
-      data <- data[indices,]
-      mod <- update(fit, .~., data=data)
-      coefficients(mod)
-    }
+  } else if (CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap'){
     require(boot)
-    R <- 1000
-    bs <- boot(x$data, boot.ocm, R, fit = x)
+    R <- 1000    
+    bs <- boot(x$data, eval(parse(text=CIs)), R, fit = x)
     all_gfuns <- NULL
     for (i in 1:R){
       all_gfuns <- rbind(all_gfuns, bs$t[i,1] + g_glf(v, tail(bs$t[i,],2)))
@@ -196,7 +201,6 @@ plot.ocm <- function(x, CIs = c('simple','rnd-x-bootstrap','fix-x-bootstrap'), R
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
-    
   }
   plot(v, gfun, main='g function', xlim = xlim, ylim = ylim, xlab = 'Continuous ordinal scale', ylab = '', t='l')
   lines(c(.5,.5), ylim, col='grey')

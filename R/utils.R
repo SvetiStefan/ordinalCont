@@ -2,7 +2,7 @@
 #'
 #' This function computes a parametric version of the g function following Richards (1959): \deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)}. M is omitted as an intercept is always fitted.
 #' @param v Vector of standarized scores from the continuous ordinal scale.
-#' @param par Vector of M, the offset of the curve; B, the slope of the curve, and T, the symmetry of the curve.
+#' @param par Vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve. M, the offset of the curve, is estimate as the intercept of the model.
 #' @keywords Richards, generalized logistic function.
 
 g_glf <- function(v, par){
@@ -14,12 +14,24 @@ g_glf <- function(v, par){
 #'
 #' This function compute the derivative of the generalized logistic function as in Richards (1959): \deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
 #' @param v Vector of standarized scores from the continuous ordinal scale.
-#' @param par Vector of B, the slope of the curve, and T, the symmetry of the curve.
+#' @param par Vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.
 #' @keywords Richards, derivative, generalized logistic function.
 
 dg_glf <- function(v, par){
   #par = c(B, T)
   return(par[2]/par[1]/v/(1-v^par[2]))
+}
+
+#' Inverse of generalized logistic g function
+#'
+#' This function computes the inverse of a parametric version of the g function following Richards (1959): \deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)}. M is omitted as an intercept is always fitted.
+#' @param W Vector of scores on the latent scale - M, the offset of the g function, estimated as the intercept of the model. W=-x'B [without intercept] = -x'B - M [as the model is estimated with an intercept].
+#' @param par Vector of 3 elements: M, the offset of the curve; B, the slope of the curve, and T, the symmetry of the curve.
+#' @keywords Richards, generalized logistic function.
+
+g_glf_inv <- function(W, par){
+  exp.part <- exp(par[1]*W)
+  return((exp.part/(par[2]+exp.part))^(1/par[2]))
 }
 
 
@@ -109,3 +121,18 @@ set.glf_start <- function(x,v){
 inv.logit <- function(x){
   ifelse(is.finite(x),exp(x)/(1+exp(x)),sign(x)*Inf)
 }
+
+#Functions used in plot.ocm to bootstrapping data (random-x or fixed-x resampling) and find CIs.
+rnd.x.bootstrap <- function(data, indices, fit){
+  data <- data[indices,]
+  mod <- update(fit, .~., data = data)
+  coefficients(mod)
+}
+fix.x.bootstrap <- function(data, indices, fit){
+  WminusM = as.numeric(-fit$x %*% fit$coefficients[1:fit$len_beta])
+  data$new_v <- g_glf_inv(WminusM + residuals(fit)[indices], tail(fit$coefficients,2))
+  assign("pain2", data, envir = .GlobalEnv)
+  mod <- update(fit, new_v ~., data = data)
+  coefficients(mod)
+}
+

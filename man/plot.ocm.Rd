@@ -4,13 +4,15 @@
 \alias{plot.ocm}
 \title{Plot method for Continuous Ordinal Fits}
 \usage{
-\method{plot}{ocm}(x, CIs = c("simple", "rnd-x-bootstrap", "fix-x-bootstrap"),
+\method{plot}{ocm}(x, CIs = c("simple", "rnd.x.bootstrap", "fix.x.bootstrap"),
   R = 1000, ...)
 }
 \arguments{
 \item{x}{An ocm object.}
 
-\item{CIs}{Indicates if confidence bands for the g function should be computed based on the Wald 95\% CIs or by bootstrapping.}
+\item{CIs}{Indicates if confidence bands for the g function should be computed based on the Wald 95\% CIs or by bootstrapping. In  the latter case, bootstrapping can be performed using a random-x or a fixed-x resampling. 95\% CIs computed with either of the bootstrapping options are obtained with simple percentiles.}
+
+\item{R}{The number of bootstrap replicates.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

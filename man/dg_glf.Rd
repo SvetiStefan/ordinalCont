@@ -9,7 +9,7 @@ dg_glf(v, par)
 \arguments{
 \item{v}{Vector of standarized scores from the continuous ordinal scale.}
 
-\item{par}{Vector of B, the slope of the curve, and T, the symmetry of the curve.}
+\item{par}{Vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.}
 }
 \description{
 This function compute the derivative of the generalized logistic function as in Richards (1959): \deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}

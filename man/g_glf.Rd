@@ -9,7 +9,7 @@ g_glf(v, par)
 \arguments{
 \item{v}{Vector of standarized scores from the continuous ordinal scale.}
 
-\item{par}{Vector of M, the offset of the curve; B, the slope of the curve, and T, the symmetry of the curve.}
+\item{par}{Vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve. M, the offset of the curve, is estimate as the intercept of the model.}
 }
 \description{
 This function computes a parametric version of the g function following Richards (1959): \deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)}. M is omitted as an intercept is always fitted.
