@@ -4,12 +4,13 @@
 \alias{plot.ocm}
 \title{Plot method for Continuous Ordinal Fits}
 \usage{
-\method{plot}{ocm}(x, CIs = FALSE, ...)
+\method{plot}{ocm}(x, CIs = c("simple", "rnd-x-bootstrap", "fix-x-bootstrap"),
+  R = 1000, ...)
 }
 \arguments{
 \item{x}{An ocm object.}
 
-\item{CIs}{A logical factor indicating if confidence inteval for the g function should be computed. This is done with bootstapping method and the operation could be lengthy.}
+\item{CIs}{Indicates if confidence bands for the g function should be computed based on the Wald 95\% CIs or by bootstrapping.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

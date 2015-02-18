@@ -26,7 +26,7 @@ ocm(formula, data, start = NULL, control = list(), link = c("logit"),
 This function performs the continuous ordinal regression with logit link using the generalized logistic function as g function and without random effects.
 }
 \examples{
-# Change this with something that uses the data set included with the package (Gillian?)
+# Change data set
 fit = ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
 }
 \keyword{likelihood,}

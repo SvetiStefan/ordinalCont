@@ -11,7 +11,7 @@
 #' @keywords likelihood, log-likelihood, ordinal regression.
 #' @export
 #' @examples
-#' # Change this with something that uses the data set included with the package (Gillian?)
+#' # Change data set
 #' fit = ocm(vas ~ lasert1+lasert2+lasert3, data=pain) 
 
 
@@ -44,10 +44,11 @@ ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gf
     est$x <- x
     est$call <- match.call()
     est$no.pars <- length(coef)
+    est$data <- data
     est$link <- link
     est$gfun <- gfun
-    class(est) <- "ocm"
     est$formula <- formula
+    class(est) <- "ocm"
     est
 }  
   
@@ -123,22 +124,17 @@ predict.ocm <- function(object, newdata=NULL, ...)
 {
   formula <- object$formula
   params <- coef(object)
-  len_beta <- 1 + length(formula) #"1" is for the intercept
-  if(is.null(newdata))
+  if(is.null(newdata)){
     x <- object$x 
-  else{
-    if(!is.null(object$formula)){ #how can this be NULL?
-      ## model has been fitted using formula interface
-      x <- model.matrix(object$formula, newdata)
-    }
-    else{
-      x <- newdata
-    }
+  }else{
+    x <- model.matrix(object$formula, newdata)
   }
+  len_beta <- ncol(x)
   ndens <- 100
   v <- seq(0.01, 0.99, length.out = ndens)
   modes <- NULL
   #densities <- NULL
+  #FIXME: rewrite efficiently
   for (subject in 1:nrow(x)){
     d.matrix <- matrix(rep(x[subject,], ndens), nrow = ndens, dimnames = list(as.character(1:ndens), colnames(x)), byrow = TRUE)
     #densities <- rbind(modes, t(logdensity_glf(par = params, v = v, d.matrix = d.matrix, len_beta = len_beta)))
@@ -154,24 +150,24 @@ predict.ocm <- function(object, newdata=NULL, ...)
 #' 
 #' @description This function plots the g function as fitted in an ocm call.
 #' @param x An ocm object.
-#' @param CIs A logical factor indicating if confidence inteval for the g function should be computed. This is done with bootstapping method and the operation could be lengthy.
+#' @param CIs Indicates if confidence bands for the g function should be computed based on the Wald 95\% CIs or by bootstrapping. In  the latter case, bootstrapping can be performed using a random-x or a fixed-x resampling. 95\% CIs computed with either of the bootstrapping options are obtained with simple percentiles. 
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords plot
 #' @export
 
-plot.ocm <- function(x, CIs = FALSE, ...)
+plot.ocm <- function(x, CIs = c('simple','rnd-x-bootstrap','fix-x-bootstrap'), R = 1000, ...)
 {
   #FIXME: this works for glf only: make general?
+  #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some level making optim fail.
+  CIs <- match.arg(CIs)
   M <- x$coefficients[1]
   params <- tail(coef(x), 2)
   v <- seq(0.01, 0.99, by=0.01)
   gfun <- M + g_glf(v, params)
   xlim <- c(0,1)
   ylim <- c(min(gfun), max(gfun))
-  if (CIs) {
+  if (CIs=='simple') {
     #FIXME this is a very simple version, not the bootstrap one.
-    #require(boot)
-    R <- 1000
     sds <- sqrt(diag(x$vcov))
     sdM <- sds[1]
     sM <- rnorm(R, M, sdM)
@@ -184,14 +180,31 @@ plot.ocm <- function(x, CIs = FALSE, ...)
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
+  } else if (CIs=='rnd-x-bootstrap'){
+    boot.ocm <- function(data, indices, fit){
+      data <- data[indices,]
+      assign("pain.boot", data, envir = .GlobalEnv)
+      mod <- update(fit, .~., data=data)
+      coefficients(mod)
+    }
+    require(boot)
+    R <- 1000
+    bs <- boot(x$data, boot.ocm, R, fit = x)
+    all_gfuns <- NULL
+    for (i in 1:R){
+      all_gfuns <- rbind(all_gfuns, bs$t[i,1] + g_glf(v, tail(bs$t[i,],2)))
+    }
+    ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
+    ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
+    ylim <- c(min(ci_low), max(ci_high))
+    
   }
   plot(v, gfun, main='g function', xlim = xlim, ylim = ylim, xlab = 'Continuous ordinal scale', ylab = '', t='l')
   lines(c(.5,.5), ylim, col='grey')
   lines(xlim, c(0, 0), col='grey')
-  if (CIs) {
-    lines(v, ci_low, lty = 2)
-    lines(v, ci_high, lty = 2)
-  }
+  #CIs
+  lines(v, ci_low, lty = 2)
+  lines(v, ci_high, lty = 2)
 }
 
 #' @title Anova method for Continuous Ordinal Fits
