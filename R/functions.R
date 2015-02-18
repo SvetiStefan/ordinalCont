@@ -183,7 +183,6 @@ plot.ocm <- function(x, CIs = c('simple','rnd-x-bootstrap','fix-x-bootstrap'), R
   } else if (CIs=='rnd-x-bootstrap'){
     boot.ocm <- function(data, indices, fit){
       data <- data[indices,]
-      assign("pain.boot", data, envir = .GlobalEnv)
       mod <- update(fit, .~., data=data)
       coefficients(mod)
     }
