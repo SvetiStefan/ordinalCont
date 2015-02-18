@@ -131,7 +131,6 @@ rnd.x.bootstrap <- function(data, indices, fit){
 fix.x.bootstrap <- function(data, indices, fit){
   WminusM = as.numeric(-fit$x %*% fit$coefficients[1:fit$len_beta])
   data$new_v <- g_glf_inv(WminusM + residuals(fit)[indices], tail(fit$coefficients,2))
-  assign("pain2", data, envir = .GlobalEnv)
   mod <- update(fit, new_v ~., data = data)
   coefficients(mod)
 }

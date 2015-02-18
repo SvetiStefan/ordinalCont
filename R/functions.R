@@ -192,13 +192,13 @@ plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap'), R
     ylim <- c(min(ci_low), max(ci_high))
   } else if (CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap'){
     require(boot)
-    R <- 1000    
     bs <- boot(x$data, eval(parse(text=CIs)), R, fit = x)
     all_gfuns <- NULL
     for (i in 1:R){
       all_gfuns <- rbind(all_gfuns, bs$t[i,1] + g_glf(v, tail(bs$t[i,],2)))
     }
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
+    ci_median <- apply(all_gfuns, 2, function(x)quantile(x, 0.5))
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
   }
@@ -207,6 +207,7 @@ plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap'), R
   lines(xlim, c(0, 0), col='grey')
   #CIs
   lines(v, ci_low, lty = 2)
+  lines(v, ci_median, lty = 2)
   lines(v, ci_high, lty = 2)
 }
 
