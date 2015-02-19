@@ -7,9 +7,9 @@
 \method{anova}{ocm}(object, ...)
 }
 \arguments{
-\item{...}{one or more additional ocm objects.}
+\item{object}{An ocm object.}
 
-\item{x}{An ocm object.}
+\item{...}{one or more additional ocm objects.}
 }
 \description{
 Comparison of continuous ordinal models in likelihood ratio tests.

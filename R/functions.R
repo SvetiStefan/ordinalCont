@@ -214,7 +214,7 @@ plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap'), R
 #' @title Anova method for Continuous Ordinal Fits
 #' 
 #' @description Comparison of continuous ordinal models in likelihood ratio tests.
-#' @param x An ocm object.
+#' @param object An ocm object.
 #' @param ... one or more additional ocm objects.
 #' @keywords anova
 #' @export
