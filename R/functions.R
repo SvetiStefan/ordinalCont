@@ -1,4 +1,4 @@
-#' Continuous ordinal regression
+#' Ordinal regression for continuous scales
 #'
 #' This function performs the continuous ordinal regression with logit link using the generalized logistic function as g function and without random effects.
 #' @param formula a formula expression as for regression models, of the form response ~ predictors. Only fixed effects are supported. The model must have an intercept: attempts to remove one will lead to a warning and will be ignored (TODO).
