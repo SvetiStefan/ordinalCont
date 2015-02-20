@@ -50,6 +50,7 @@ ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gf
     est$residuals <- g_glf(v, par_g) - est$fitted.values
     est$v <- v
     est$x <- x
+    est$sample.size <- nrow(x)
     est$call <- match.call()
     est$no.pars <- length(coef)
     est$data <- data
@@ -164,7 +165,7 @@ predict.ocm <- function(object, newdata=NULL, ...)
 #' @keywords plot
 #' @export
 
-plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap'), R = 1000, ...)
+plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
 {
   #FIXME: this works for glf only: make general?
   #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some level making optim fail.
@@ -190,7 +191,7 @@ plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap'), R
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
-  } else if (CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap'){
+  } else if (CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap'| CIs=='param.bootstrap'){
     require(boot)
     bs <- boot(x$data, eval(parse(text=CIs)), R, fit = x)
     all_gfuns <- NULL
