@@ -4,6 +4,8 @@
 #' @param v Vector of standarized scores from the continuous ordinal scale.
 #' @param par Vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve. M, the offset of the curve, is estimate as the intercept of the model.
 #' @keywords Richards, generalized logistic function.
+#' @references Richards, F. (1959). A flexible growth function for empirical use, Journal of Experimental Botany, 10, 290–301.
+
 
 g_glf <- function(v, par){
   return(log(par[2]*v^par[2]/(1-v^par[2]))/par[1])
