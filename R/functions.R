@@ -61,7 +61,43 @@ ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gf
     est
 }  
   
+#' Ordinal regression for continuous scales - with random effects 
+#' Gillian: Please do not work on this as the code will be merged with ocm when fully working.
+#'
+#' This function performs the continuous ordinal regression with logit link using the generalized logistic function as g function and without random effects.
+#' @param formula a formula expression as for regression models, of the form response ~ predictors. Only fixed effects are supported. The model must have an intercept: attempts to remove one will lead to a warning and will be ignored (TODO).
+#' @param data  an optional data frame in which to interpret the variables occurring in the formulas.
+#' @param start initial values for the parameters in the format c(alpha, beta, zeta), where alpha are the threshold parameters (adjusted for potential nominal effects), beta are the regression parameters and zeta are the scale parameters. (CHANGETHIS)
+#' @param control a list of control parameters passed on to clm.control.
+#' @param link link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model.
+#' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function, which is currently the only possibility.
+#' @param ... additional arguments are passed on to clm.control.
+#' @keywords likelihood, log-likelihood, ordinal regression.
+#' @export
+#' @examples
+#' # Change data set
+#' fit = ocmm(vas ~ lasert1+lasert2+lasert3+ (1|laterali) + (1|ID), data=pain) 
+
+ocmm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), ...)
+{
+  terms <- attributes(terms(formula))$term.labels
+  #print(attributes(terms(formula)))
+  i_rnd <- which(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))
+  print(terms[i_rnd])
+  #FIXME check if there are multiple bars in a single term
+  for (term in terms[i_rnd]){
+    ibar <- regexpr("|",term,fixed=T)
+    left <- substr(term,1,ibar-1)
+    right <- substr(term,ibar+1, nchar(term))
+    cat("\nLeft:",as.numeric(left)," - Right:",right,"\n")
+    if (as.numeric(left)!=1) stop("Only random effects on the intercept are supported in this version of ordinalCont.")
+    if (any(sapply(c(":","*","|"), function(x)grepl(x, right,fixed=T)))) stop("Syntax incorrect or feature not implemented.")
+  }
+  if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) 
+    stop("Random effects not yet supported.")
   
+}
+
 
 #' Continuous ordinal regression
 #'
