@@ -142,17 +142,16 @@ predict.ocm <- function(object, newdata=NULL, ...)
   ndens <- 100
   v <- seq(0.01, 0.99, length.out = ndens)
   modes <- NULL
-  #densities <- NULL
+  densities <- NULL
   #FIXME: rewrite efficiently
   for (subject in 1:nrow(x)){
     d.matrix <- matrix(rep(x[subject,], ndens), nrow = ndens, dimnames = list(as.character(1:ndens), colnames(x)), byrow = TRUE)
-    #densities <- rbind(modes, t(logdensity_glf(par = params, v = v, d.matrix = d.matrix, len_beta = len_beta)))
+    densities <- rbind(densities, t(logdensity_glf(par = params, v = v, d.matrix = d.matrix, len_beta = len_beta)))
     modes <- c(modes, v[which.max(logdensity_glf(par = params, v = v, d.matrix = d.matrix, len_beta = len_beta))])
-    
   }
   #y = logdensity_glf(par = params, v = v, d.matrix = x, len_beta = len_beta)
   #plot(v,y)
-  modes 
+  list(mode = modes, density = densities, x = v)
 }
 
 #' @title Plot method for Continuous Ordinal Fits
