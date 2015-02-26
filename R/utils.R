@@ -1,9 +1,13 @@
 #' Generalized logistic g function
 #'
-#' This function computes a parametric version of the g function following Richards (1959): \deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)}. M is omitted as an intercept is always fitted.
-#' @param v Vector of standarized scores from the continuous ordinal scale.
-#' @param par Vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve. M, the offset of the curve, is estimate as the intercept of the model.
+#' This function computes a parametric version of the g function following Richards (1959): \deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)} M is omitted as an intercept is always fitted.
+#' @param v vector of standardized scores from the continuous ordinal scale, 0<v<1.
+#' @param par vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve. 
 #' @keywords Richards, generalized logistic function.
+#' @details The generalized logistic functions maps from (0,1) to \eqn{(-\infty,\infty)}. 
+#' B is the slope of the curve,  T is the symmetry and M is the offset. 
+#' M is absorbed into the intercept of the model and so is set to zero in this function.
+#' 
 #' @references Richards, F. (1959). A flexible growth function for empirical use, Journal of Experimental Botany, 10, 290–301.
 
 
