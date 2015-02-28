@@ -7,12 +7,25 @@
 g_glf_inv(W, par)
 }
 \arguments{
-\item{W}{Vector of scores on the latent scale - M, the offset of the g function, estimated as the intercept of the model. W=-x'B [without intercept] = -x'B - M [as the model is estimated with an intercept].}
+\item{W}{Vector of scores on the latent scale \eqn{(-\infty,\infty)}. M, the
+offset of the g function, is
+estimated as the intercept of the model.
+\deqn{W=-x'\beta [without intercept] = -x'\beta - M} [as the model is
+estimated with an intercept].}
 
-\item{par}{Vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.}
+\item{par}{vector of 2 elements: B, the slope of the curve, and T, the symmetry
+of the curve.}
 }
 \description{
-This function computes the inverse of a parametric version of the g function following Richards (1959): \deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)}. M is omitted as an intercept is always fitted.
+This function computes the inverse of a parametric version of the g function
+following Richards (1959):
+\deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)} M is omitted
+as it is absorbed into the
+model intercept.
+}
+\references{
+Richards, F. (1959). A flexible growth function for empirical use,
+\emph{Journal of Experimental Botany}, 10, 290–301.
 }
 \keyword{Richards,}
 \keyword{function.}

@@ -7,8 +7,10 @@
 #' @details The generalized logistic functions maps from (0,1) to \eqn{(-\infty,\infty)}. 
 #' B is the slope of the curve,  T is the symmetry and M is the offset. 
 #' M is absorbed into the intercept of the model and so is set to zero in this function.
+#' @return A vector of length equal to the length of v, with values g(v).
 #' 
-#' @references Richards, F. (1959). A flexible growth function for empirical use, Journal of Experimental Botany, 10, 290–301.
+#' @references Richards, F. (1959). A flexible growth function for empirical use, \emph{Journal of Experimental Botany}, 10, 290–301.
+#
 
 
 g_glf <- function(v, par){
@@ -18,10 +20,15 @@ g_glf <- function(v, par){
 
 #' Derivative of generalized logistic g function
 #'
-#' This function compute the derivative of the generalized logistic function as in Richards (1959): \deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
-#' @param v Vector of standarized scores from the continuous ordinal scale.
-#' @param par Vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.
+#' This function compute the derivative of the generalized logistic function as in Richards (1959): 
+#' \deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
+#' @param v vector of standardized scores from the continuous ordinal scale, 0<v<1.
+#' @param par vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.
 #' @keywords Richards, derivative, generalized logistic function.
+#' @return A vector of length equal to the length of v, with values g'(v).
+#' @references Richards, F. (1959). A flexible growth function for empirical use, 
+#' \emph{Journal of Experimental Botany}, 10, 290–301.
+#
 
 dg_glf <- function(v, par){
   #par = c(B, T)
@@ -30,9 +37,20 @@ dg_glf <- function(v, par){
 
 #' Inverse of generalized logistic g function
 #'
-#' This function computes the inverse of a parametric version of the g function following Richards (1959): \deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)}. M is omitted as an intercept is always fitted.
-#' @param W Vector of scores on the latent scale - M, the offset of the g function, estimated as the intercept of the model. W=-x'B [without intercept] = -x'B - M [as the model is estimated with an intercept].
-#' @param par Vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.
+#' This function computes the inverse of a parametric version of the g function 
+#' following Richards (1959): 
+#' \deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)} M is omitted 
+#' as it is absorbed into the 
+#' model intercept.
+#' @param W Vector of scores on the latent scale \eqn{(-\infty,\infty)}. M, the 
+#' offset of the g function, is 
+#' estimated as the intercept of the model. 
+#' \deqn{W=-x'\beta [without intercept] = -x'\beta - M} [as the model is 
+#' estimated with an intercept].
+#' @param par vector of 2 elements: B, the slope of the curve, and T, the symmetry 
+#' of the curve. 
+#' @references Richards, F. (1959). A flexible growth function for empirical use, 
+#' \emph{Journal of Experimental Botany}, 10, 290–301.
 #' @keywords Richards, generalized logistic function.
 
 g_glf_inv <- function(W, par){

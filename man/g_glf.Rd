@@ -11,6 +11,9 @@ g_glf(v, par)
 
 \item{par}{vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.}
 }
+\value{
+A vector of length equal to the length of v, with values g(v).
+}
 \description{
 This function computes a parametric version of the g function following Richards (1959): \deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)} M is omitted as an intercept is always fitted.
 }
@@ -20,7 +23,7 @@ B is the slope of the curve,  T is the symmetry and M is the offset.
 M is absorbed into the intercept of the model and so is set to zero in this function.
 }
 \references{
-Richards, F. (1959). A flexible growth function for empirical use, Journal of Experimental Botany, 10, 290–301.
+Richards, F. (1959). A flexible growth function for empirical use, \emph{Journal of Experimental Botany}, 10, 290–301.
 }
 \keyword{Richards,}
 \keyword{function.}

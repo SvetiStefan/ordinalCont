@@ -7,12 +7,20 @@
 dg_glf(v, par)
 }
 \arguments{
-\item{v}{Vector of standarized scores from the continuous ordinal scale.}
+\item{v}{vector of standardized scores from the continuous ordinal scale, 0<v<1.}
 
-\item{par}{Vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.}
+\item{par}{vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.}
+}
+\value{
+A vector of length equal to the length of v, with values g'(v).
 }
 \description{
-This function compute the derivative of the generalized logistic function as in Richards (1959): \deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
+This function compute the derivative of the generalized logistic function as in Richards (1959):
+\deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
+}
+\references{
+Richards, F. (1959). A flexible growth function for empirical use,
+\emph{Journal of Experimental Botany}, 10, 290–301.
 }
 \keyword{Richards,}
 \keyword{derivative,}
