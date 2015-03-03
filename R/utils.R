@@ -35,6 +35,7 @@ dg_glf <- function(v, par){
   return(par[2]/par[1]/v/(1-v^par[2]))
 }
 
+
 #' Inverse of generalized logistic g function
 #'
 #' This function computes the inverse of a parametric version of the g function 
@@ -58,6 +59,8 @@ g_glf_inv <- function(W, par){
   return((exp.part/(par[2]+exp.part))^(1/par[2]))
 }
 
+####################
+
 
 #' Log-likelihood function for the fixed-effects model, using the generalized logistic function as g function and the logit link function.
 #'
@@ -75,7 +78,6 @@ negloglik_glf <- function(par, v, d.matrix, len_beta){
 logdensity_glf <- function(par, v, d.matrix, len_beta){
   x <- d.matrix
   beta <- par[1:len_beta]
-  #par_g <- par[(len_beta+1):(len_beta+3)]
   par_g <- par[(len_beta+1):(len_beta+2)]
   par_dg <- par[(len_beta+1):(len_beta+2)]
   g <- g_glf(v, par_g)
@@ -84,7 +86,6 @@ logdensity_glf <- function(par, v, d.matrix, len_beta){
   xb <- x %*% beta
   return(log(dg) + g + xb -2*log(1+exp(g+xb)))
 }
-
 
 ocmEst <- function(start, v, x, link, gfun){
   len_beta <- ncol(x)
@@ -130,6 +131,99 @@ ocmEst <- function(start, v, x, link, gfun){
        logLik = -fit$value)
 }
 
+####################
+
+negloglik_glf_rnd <- function(par, v, d.matrix, rnd.matrix, len_beta, rnd, n_nodes, quad, iclusters){ #b is the random effect
+  densities_by_cluster <- sapply(iclusters, negloglik_glf_rnd2, par=par, b=b, v=v, d.matrix=d.matrix, rnd.matrix=rnd.matrix, len_beta=len_beta, n_nodes=n_nodes, quad=quad)
+  loglik = -sum(log(densities_by_cluster))
+  return(loglik)
+  #return(-prod(densities_by_cluster))
+}
+
+negloglik_glf_rnd2 <- function(indices, par, b, v, d.matrix, rnd.matrix, len_beta, n_nodes, quad){
+  require(fastGHQuad)
+  rule <- gaussHermiteData(n_nodes)
+  x <- d.matrix[indices,]
+  y <- v[indices]
+  beta <- par[1:len_beta]
+  par_g <- par[(len_beta+1):(len_beta+2)]
+  par_dg <- par[(len_beta+1):(len_beta+2)]
+  sigma_rnd <- par[len_beta+3]
+  g <- g_glf(y, par_g)
+  dg <- dg_glf(y, par_dg)
+  if (any(dg<=0)) return(Inf)
+  xb <- as.numeric(x %*% beta)
+  if (quad=="Laplace")
+    return(aghQuad(g=density_glf_Laplace, muHat=0, sigmaHat=1, rule=rule, all_pars=cbind(g,dg,xb), sigma_rnd=sigma_rnd))
+  else if (quad=="GH")
+    return(ghQuad(f=density_glf_GH, rule=rule, all_pars=cbind(g,dg,xb), sigma_rnd=sigma_rnd))
+}
+
+density_glf_Laplace <- function(b, all_pars, sigma_rnd){
+  lik_cluster <- apply(all_pars, 1, function(x, b, sigma_rnd){x[2]*exp(x[1]+x[3]+sqrt(2)*sigma_rnd*b)/(1+exp(x[1]+x[3]+sqrt(2)*sigma_rnd*b))^2/sqrt(pi)*exp(-b^2)},b=b,sigma_rnd=sigma_rnd)
+  lik_cluster <- apply(lik_cluster,1,prod)
+  return(lik_cluster)
+}
+
+density_glf_GH <- function(b, all_pars, sigma_rnd){
+  lik_cluster <- apply(all_pars, 1, function(x, b, sigma_rnd){x[2]*exp(x[1]+x[3]+sqrt(2)*sigma_rnd*b)/(1+exp(x[1]+x[3]+sqrt(2)*sigma_rnd*b))^2/sqrt(pi)},b=b,sigma_rnd=sigma_rnd)
+  lik_cluster <- apply(lik_cluster,1,prod)
+  return(lik_cluster)
+}
+
+ocmmEst <- function(start, v, x, z, link, gfun, rnd=NULL, n_nodes, quad, iclusters){
+  len_beta <- ncol(x)
+#  if (!is.null(z)){
+#    cat("Random effects over",paste(rnd,collapse=', '),'\n') #ready for multiple rnd effects
+#    stop("Work in progress...")
+#  }
+  if (gfun == "glf") {
+    if (link == "logit"){
+      fit <- optim(par=start,negloglik_glf_rnd, v=v, d.matrix=x, rnd.matrix=z, len_beta=len_beta, rnd=rnd, n_nodes=n_nodes, quad=quad, iclusters=iclusters, method="BFGS", hessian = T)
+    } else {
+      stop("link function not implemented.")
+    }
+  } else {
+    stop("g function not implemented.")
+  }
+  ## compute QR-decomposition of x
+  #qx <- qr(x)
+  #Hessian
+  H=fit$hessian
+  #require(numDeriv)
+  #H=hessian(negloglik_glf,fit$par,v=v, d.matrix=x,len_beta=len_beta)
+  qrH <- qr(H)
+  if(qrH$rank < nrow(H))
+    stop("Cannot compute vcov: \nHessian is numerically singular")
+  vcov <- solve.qr(qrH)
+  
+  ## compute (x’x)^(-1) x’y
+  coef <- fit$par
+  names(coef) <- names(start)
+  len_beta = ncol(x)
+  beta <- coef[1:len_beta]
+  par_g <- coef[(len_beta+1):(len_beta+2)]
+  sigma_rnd <- coef[len_beta+3]
+  
+  ## degrees of freedom and standard deviation of residuals
+  df <- nrow(x)-ncol(x)-length(par_g)
+  fitted.values <- inv.logit(g_glf(v, par_g) + x%*%beta)
+  sigma2 <- sum((v - fitted.values)^2)/df
+  
+  ## compute sigma^2 * (x’x)^-1
+  #vcov <- sigma2 * chol2inv(qx$qr)
+  colnames(vcov) <- rownames(vcov) <- c(colnames(x),"B","T","sigma_rnd")
+  list(coefficients = coef,
+       vcov = vcov,
+       sigma = sqrt(sigma2),
+       sigma_rnd = sigma_rnd,
+       df = df,
+       logLik = -fit$value)
+}
+
+####################
+
+
 
 set.beta_start <- function(x,v){
   vv=ifelse(v<median(v),0,1)
@@ -164,3 +258,7 @@ param.bootstrap <- function(data, indices, fit){
   mod <- update(fit, new_v ~., data = data)
   coefficients(mod)
 }
+
+
+# returns string w/o leading or trailing whitespace
+trim <- function (x) gsub("^\\s+|\\s+$", "", x)
