@@ -238,8 +238,48 @@ predict.ocm <- function(object, newdata=NULL, ...)
   }
   #y = logdensity_glf(par = params, v = v, d.matrix = x, len_beta = len_beta)
   #plot(v,y)
-  list(mode = modes, density = densities, x = v)
+  pred <- list(mode = modes, density = densities, x = v, formula = formula, newdata = newdata)
+  class(pred) <- "predict.ocm"
+  return(pred)
 }
+
+#' @title Print the output of predict method
+#' @description print method for class "predict.ocm"
+#' @param x An object of class "predict.ocm".
+#' @param ... Further arguments passed to or from other methods.
+#' @keywords predict
+#' @export
+
+print.predict.ocm <- function(x, ...)
+{
+  cat("\nThe data set use by the predict method contains",length(x$mode),"records.\n")
+  cat("Call:\n")
+  print(x$formula)
+  cat("\nSummary of modes:\n")
+  print(summary(x$mode), ...)
+}
+
+#' @title Plot the probability densities as from the output of the predict method
+#' @description plot method for class "predict.ocm"
+#' @param x An object of class "predict.ocm".
+#' @param ... Further arguments passed to or from other methods.
+#' @keywords predict, plot
+#' @export
+
+plot.predict.ocm <- function(x, ...)
+{
+  cat("Call:\n")
+  print(x$formula)
+  cat("The data set used in the predict methos contains ",nrow(x$density)," records.\n")
+  #cat("Please press 'enter' to start/advance plotting and q to quit.\n")
+  for (i in 1:nrow(x$density)){
+    input <- readline(paste("Press 'enter' to plot the probability density of record ",i,", 'q' to quit: ",sep=''))
+    if (input == "q") break()
+    plot(x$x, exp(x$density[i,]), ylab="Probability Density", main=paste("Record", i), xlab=paste("mode =", round(x$mode[i],3)), t='l')
+    lines(rep(x$mode[i],2), c(0, max(exp(x$density[i,]))), lty=21)
+  }
+}
+
 
 #' @title Plot method for Continuous Ordinal Fits
 #' 

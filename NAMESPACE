@@ -2,9 +2,11 @@
 
 S3method(anova,ocm)
 S3method(plot,ocm)
+S3method(plot,predict.ocm)
 S3method(predict,ocm)
 S3method(print,anova.ocm)
 S3method(print,ocm)
+S3method(print,predict.ocm)
 S3method(print,summary.ocm)
 S3method(summary,ocm)
 export(ocm)
