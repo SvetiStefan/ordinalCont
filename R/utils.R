@@ -1,6 +1,8 @@
 #' Generalized logistic g function
 #'
-#' This function computes a parametric version of the g function following Richards (1959): \deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)} M is omitted as an intercept is always fitted.
+#' This function computes a parametric version of the g function following Richards (1959): 
+#' \deqn{g(v) = M + \frac{1}{B} \log\left(\frac{Tv^T}{1-v^T}\right)}
+#'  M is omitted as an intercept is always fitted.
 #' @param v vector of standardized scores from the continuous ordinal scale, 0<v<1.
 #' @param par vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve. 
 #' @keywords Richards, generalized logistic function.
@@ -9,7 +11,8 @@
 #' M is absorbed into the intercept of the model and so is set to zero in this function.
 #' @return A vector of length equal to the length of v, with values g(v).
 #' 
-#' @references Richards, F. (1959). A flexible growth function for empirical use, \emph{Journal of Experimental Botany}, 10, 290–301.
+#' @references Richards, F. (1959). A flexible growth function for empirical use, 
+#' \emph{Journal of Experimental Botany}, 10, 290–301.
 #
 
 
@@ -20,7 +23,7 @@ g_glf <- function(v, par){
 
 #' Derivative of generalized logistic g function
 #'
-#' This function compute the derivative of the generalized logistic function as in Richards (1959): 
+#' This function computes the derivative of the generalized logistic function as in Richards (1959): 
 #' \deqn{\frac{dg(v)}{dv} = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
 #' @param v vector of standardized scores from the continuous ordinal scale, 0<v<1.
 #' @param par vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.
@@ -40,16 +43,17 @@ dg_glf <- function(v, par){
 #'
 #' This function computes the inverse of a parametric version of the g function 
 #' following Richards (1959): 
-#' \deqn{g(v) = M + \frac{1}{B} log\left(\frac{Tv^T}{1-v^T}\right)} M is omitted 
+#' \deqn{g^{-1}(W) = \left( \frac{e^{BW}}{T+e^{BW}}  \right)^{\frac{1}{T}}} M is omitted 
 #' as it is absorbed into the 
 #' model intercept.
-#' @param W Vector of scores on the latent scale \eqn{(-\infty,\infty)}. M, the 
+#' @param W vector of scores on the latent scale \eqn{(-\infty,\infty)}. M, the 
 #' offset of the g function, is 
 #' estimated as the intercept of the model. 
 #' \deqn{W=-x'\beta [without intercept] = -x'\beta - M} [as the model is 
 #' estimated with an intercept].
 #' @param par vector of 2 elements: B, the slope of the curve, and T, the symmetry 
 #' of the curve. 
+#' @return A vector of length equal to the length of W, with values \eqn{g^{-1}(W)}
 #' @references Richards, F. (1959). A flexible growth function for empirical use, 
 #' \emph{Journal of Experimental Botany}, 10, 290–301.
 #' @keywords Richards, generalized logistic function.
@@ -62,9 +66,11 @@ g_glf_inv <- function(W, par){
 ####################
 
 
-#' Log-likelihood function for the fixed-effects model, using the generalized logistic function as g function and the logit link function.
+#' Log-likelihood function for the fixed-effects model, using the generalized logistic function as 
+#' g function and the logit link function.
 #'
-#' This function compute the log-likelihood function for a fixed-effects model using the generalized logistic function as g function and the logit link function.
+#' This function compute the log-likelihood function for a fixed-effects model using the 
+#' generalized logistic function as g function and the logit link function.
 #' @param par Vector of B, the slope of the curve, and T, the symmetry of the curve.
 #' @param v Vector of standarized scores from the continuous ordinal scale.
 #' @param d.matrix Design matrix (fixed effects).
@@ -133,8 +139,10 @@ ocmEst <- function(start, v, x, link, gfun){
 
 ####################
 
-negloglik_glf_rnd <- function(par, v, d.matrix, rnd.matrix, len_beta, rnd, n_nodes, quad, iclusters){ #b is the random effect
-  densities_by_cluster <- sapply(iclusters, negloglik_glf_rnd2, par=par, b=b, v=v, d.matrix=d.matrix, rnd.matrix=rnd.matrix, len_beta=len_beta, n_nodes=n_nodes, quad=quad)
+negloglik_glf_rnd <- function(par, v, d.matrix, rnd.matrix, len_beta, rnd, n_nodes, quad, iclusters)
+  { #b is the random effect
+  densities_by_cluster <- sapply(iclusters, negloglik_glf_rnd2, par=par, b=b, v=v, d.matrix=d.matrix, 
+                                 rnd.matrix=rnd.matrix, len_beta=len_beta, n_nodes=n_nodes, quad=quad)
   loglik = -sum(log(densities_by_cluster))
   return(loglik)
   #return(-prod(densities_by_cluster))
@@ -154,7 +162,8 @@ negloglik_glf_rnd2 <- function(indices, par, b, v, d.matrix, rnd.matrix, len_bet
   if (any(dg<=0)) return(Inf)
   xb <- as.numeric(x %*% beta)
   if (quad=="Laplace")
-    return(aghQuad(g=density_glf_Laplace, muHat=0, sigmaHat=1, rule=rule, all_pars=cbind(g,dg,xb), sigma_rnd=sigma_rnd))
+    return(aghQuad(g=density_glf_Laplace, muHat=0, sigmaHat=1, rule=rule, all_pars=cbind(g,dg,xb), 
+                   sigma_rnd=sigma_rnd))
   else if (quad=="GH")
     return(ghQuad(f=density_glf_GH, rule=rule, all_pars=cbind(g,dg,xb), sigma_rnd=sigma_rnd))
 }
