@@ -299,22 +299,30 @@ plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','pa
   R <- as.integer(R)
   M <- x$coefficients[1]
   params <- tail(coef(x), 2)
+  len_p <- length(params)
   v <- seq(0.01, 0.99, by=0.01)
   gfun <- M + g_glf(v, params)
   xlim <- c(0,1)
   ylim <- c(min(gfun), max(gfun))
   if (CIs=='simple') {
-    #FIXME this is a very simple version, not the bootstrap one.
-    sds <- sqrt(diag(x$vcov))
-    sdM <- sds[1]
-    sM <- rnorm(R, M, sdM)
-    sdparams <- tail(sds, 2)
-    sparams <- matrix(rnorm(2*R, params, sdparams), ncol = 2, byrow = T)
+    require(MASS)
+    indices = c(1, len_p-1, len_p)
+    params_g <- params[indices]
+    vcov_g <- x$vcov[indices, indices]
+    rparams <- mvrnorm(R, params_g, vcov_g, empirical=TRUE)
+    #FIXME write efficiently
+    #sds <- sqrt(diag(x$vcov))
+    #sdM <- sds[1]
+    #sM <- rnorm(R, M, sdM)
+    #sdparams <- tail(sds, 2)
+    #sparams <- matrix(rnorm(2*R, params, sdparams), ncol = 2, byrow = T)
     all_gfuns <- NULL
     for (i in 1:R){
-        all_gfuns <- rbind(all_gfuns, sM[i] + g_glf(v, sparams[i,]))
+        #all_gfuns <- rbind(all_gfuns, sM[i] + g_glf(v, sparams[i,]))
+        all_gfuns <- rbind(all_gfuns, rparams[i,1] + g_glf(v, rparams[i,2:3]))
     }
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
+    ci_median <- apply(all_gfuns, 2, function(x)quantile(x, 0.5))
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
   } else if (CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap'| CIs=='param.bootstrap'){
@@ -329,13 +337,13 @@ plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','pa
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
   }
-  plot(v, gfun, main='g function', xlim = xlim, ylim = ylim, xlab = 'Continuous ordinal scale', ylab = '', t='l')
+  plot(v, gfun, main='g function (95% CIs)', xlim = xlim, ylim = ylim, xlab = 'Continuous ordinal scale', ylab = '', t='l')
   lines(c(.5,.5), ylim, col='grey')
   lines(xlim, c(0, 0), col='grey')
   #CIs
   lines(v, ci_low, lty = 2)
   lines(v, ci_high, lty = 2)
-  if (CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
+  if (CIs=='simple' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
 }
 
 #' @title Anova method for Continuous Ordinal Fits
