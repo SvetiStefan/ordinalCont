@@ -252,7 +252,7 @@ predict.ocm <- function(object, newdata=NULL, ...)
 
 print.predict.ocm <- function(x, ...)
 {
-  cat("\nThe data set use by the predict method contains",length(x$mode),"records.\n")
+  cat("\nThe data set used by the predict method contains",length(x$mode),"records.\n")
   cat("Call:\n")
   print(x$formula)
   cat("\nSummary of modes:\n")
