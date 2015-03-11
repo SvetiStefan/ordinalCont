@@ -1,66 +1,3 @@
-#' Ordinal regression for continuous scales
-#'
-#' This function performs the continuous ordinal regression with logit link using the generalized logistic function as g function and without random effects.
-#' @param formula a formula expression as for regression models, of the form response ~ predictors. Only fixed effects are supported. The model must have an intercept: attempts to remove one will lead to a warning and will be ignored (TODO).
-#' @param data  an optional data frame in which to interpret the variables occurring in the formulas.
-#' @param start initial values for the parameters in the format c(alpha, beta, zeta), where alpha are the threshold parameters (adjusted for potential nominal effects), beta are the regression parameters and zeta are the scale parameters. (CHANGETHIS)
-#' @param control a list of control parameters passed on to clm.control.
-#' @param link link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model.
-#' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function, which is currently the only possibility.
-#' @param ... additional arguments are passed on to clm.control.
-#' @keywords likelihood, log-likelihood, ordinal regression.
-#' @export
-#' @examples
-#' # Change data set
-#' fit = ocm(vas ~ lasert1+lasert2+lasert3, data=pain) 
-
-
-ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), ...)
-{
-    if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) 
-      stop("Random effects not yet supported.")
-    if (missing(formula)) 
-      stop("Model needs a formula")
-    link <- match.arg(link)
-    gfun <- match.arg(gfun)
-    
-    mf <- model.frame(formula=formula, data=data)
-    x <- model.matrix(attr(mf, "terms"), data=mf)
-    v <- model.response(mf)
-    
-    x <- as.matrix(x)
-    v <- as.numeric(v)
-    if (is.null(start)) beta_start <- set.beta_start(x,v)
-    len_beta = length(beta_start)
-    glf_start <- set.glf_start(x,v)
-    start <- c(beta_start, glf_start)
-    est <- ocmEst(start, v, x, link, gfun)
-    coef <- est$coefficients
-    beta <- coef[1:len_beta]
-    par_g <- coef[(len_beta+1):(len_beta+2)]
-    est$len_beta <- len_beta
-    #fitted.values are the cumulative probabilities gamma(v|x)
-    #est$fitted.values <- as.vector(inv.logit(g_glf(v, par_g) + x%*%beta))
-    #The intercept is the parameter M of the glf. Fitted values v* = g^{-1}(W*) = g^{-1}(-x'B), where W=W*+epsilon
-    #On the ordinal scale [0,1] (v* and v-v*):
-    #est$fitted.values <- as.vector(g_glf_inv(-x%*%beta, par_g))
-    #est$residuals <- v - est$fitted.values
-    #On the latent scale (W* and epsilon=W-W*):
-    est$fitted.values <- as.vector(-x%*%beta+coef[1])
-    est$residuals <- g_glf(v, par_g) - est$fitted.values
-    est$v <- v
-    est$x <- x
-    est$sample.size <- nrow(x)
-    est$call <- match.call()
-    est$no.pars <- length(coef)
-    est$data <- data
-    est$link <- link
-    est$gfun <- gfun
-    est$formula <- formula
-    class(est) <- "ocm"
-    est
-}  
-  
 #' Ordinal regression for continuous scales - with random effects 
 #' Gillian: Please do not work on this as the code will be merged with ocm when fully working.
 #'
@@ -107,7 +44,7 @@ ocmm <- function(formula, data, start=NULL, control=list(), link = c("logit"), g
   
   to_stratify <- as.factor(data[,right])
   iclusters <- lapply(levels(to_stratify),function(x)which(to_stratify==x))
-    
+  
   mf <- model.frame(formula=formula, data=data)
   x.complete <- model.matrix(attr(mf, "terms"), data=mf)
   v <- model.response(mf)
@@ -144,7 +81,7 @@ ocmm <- function(formula, data, start=NULL, control=list(), link = c("logit"), g
   est$link <- link
   est$gfun <- gfun
   est$formula <- formula
-  class(est) <- "ocm"
+  class(est) <- "ocmm"
   est
   
 }
@@ -159,7 +96,7 @@ ocmm <- function(formula, data, start=NULL, control=list(), link = c("logit"), g
 #' @method print ocm
 #' @export
 
-print.ocm <- function(x, ...)
+print.ocmm <- function(x, ...)
 {
   cat("Call:\n")
   print(x$call)
@@ -175,7 +112,7 @@ print.ocm <- function(x, ...)
 #' @keywords summary
 #' @export
 
-summary.ocm <- function(object, ...)
+summary.ocmm <- function(object, ...)
 {
   se <- sqrt(diag(object$vcov))
   tval <- coef(object)[1:length(se)] / se
@@ -196,7 +133,7 @@ summary.ocm <- function(object, ...)
 #' @keywords summary
 #' @export
 
-print.summary.ocm <- function(x, ...)
+print.summary.ocmm <- function(x, ...)
 {
   cat("Call:\n")
   print(x$call)
@@ -216,7 +153,7 @@ print.summary.ocm <- function(x, ...)
 #' @keywords predict
 #' @export
 
-predict.ocm <- function(object, newdata=NULL, ...)
+predict.ocmm <- function(object, newdata=NULL, ...)
 {
   formula <- object$formula
   params <- coef(object)
@@ -250,7 +187,7 @@ predict.ocm <- function(object, newdata=NULL, ...)
 #' @keywords predict
 #' @export
 
-print.predict.ocm <- function(x, ...)
+print.predict.ocmm <- function(x, ...)
 {
   cat("\nThe data set used by the predict method contains",length(x$mode),"records.\n")
   cat("Call:\n")
@@ -266,7 +203,7 @@ print.predict.ocm <- function(x, ...)
 #' @keywords predict, plot
 #' @export
 
-plot.predict.ocm <- function(x, ...)
+plot.predict.ocmm <- function(x, ...)
 {
   cat("Call:\n")
   print(x$formula)
@@ -291,7 +228,7 @@ plot.predict.ocm <- function(x, ...)
 #' @keywords plot
 #' @export
 
-plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
+plot.ocmm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
 {
   #FIXME: this works for glf only: make general?
   #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some level making optim fail.
@@ -318,8 +255,8 @@ plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','pa
     #sparams <- matrix(rnorm(2*R, params, sdparams), ncol = 2, byrow = T)
     all_gfuns <- NULL
     for (i in 1:R){
-        #all_gfuns <- rbind(all_gfuns, sM[i] + g_glf(v, sparams[i,]))
-        all_gfuns <- rbind(all_gfuns, rparams[i,1] + g_glf(v, rparams[i,2:3]))
+      #all_gfuns <- rbind(all_gfuns, sM[i] + g_glf(v, sparams[i,]))
+      all_gfuns <- rbind(all_gfuns, rparams[i,1] + g_glf(v, rparams[i,2:3]))
     }
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
     ci_median <- apply(all_gfuns, 2, function(x)quantile(x, 0.5))
@@ -355,7 +292,7 @@ plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','pa
 #' @export
 
 
-anova.ocm <- function(object, ...)
+anova.ocmm <- function(object, ...)
   ### requires that ocm objects have components:
   ###  no.pars: no. parameters used
   ###  call$formula
@@ -427,7 +364,7 @@ anova.ocm <- function(object, ...)
 #' @keywords summary, anova
 #' @export
 
-print.anova.ocm <-
+print.anova.ocmm <-
   function(x, digits=max(getOption("digits") - 2, 3),
            signif.stars=getOption("show.signif.stars"), ...)
   {
