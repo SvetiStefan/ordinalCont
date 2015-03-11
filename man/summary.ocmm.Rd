@@ -4,7 +4,7 @@
 \alias{summary.ocmm}
 \title{Summarizing Continuous Ordinal Fits}
 \usage{
-\method{summary}{ocm}(object, ...)
+\method{summary}{ocmm}(object, ...)
 }
 \arguments{
 \item{object}{An object of class "ocm", usually, a result of a call to ocm.}

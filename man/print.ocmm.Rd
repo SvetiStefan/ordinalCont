@@ -4,7 +4,7 @@
 \alias{print.ocmm}
 \title{Continuous ordinal regression}
 \usage{
-\method{print}{ocm}(x, ...)
+\method{print}{ocmm}(x, ...)
 }
 \arguments{
 \item{x}{An object of class "ocm", usually, a result of a call to ocm.}

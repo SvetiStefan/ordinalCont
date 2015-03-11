@@ -14,5 +14,9 @@
 \description{
 Comparison of continuous ordinal models in likelihood ratio tests.
 }
+\examples{
+fitLaplace = ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="Laplace")
+anova(fitLaplace, update(fitLaplace, . ~ . + localisa))
+}
 \keyword{anova}
 

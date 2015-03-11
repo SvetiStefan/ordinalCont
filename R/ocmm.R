@@ -93,7 +93,7 @@ ocmm <- function(formula, data, start=NULL, control=list(), link = c("logit"), g
 #' @param x An object of class "ocm", usually, a result of a call to ocm.
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords likelihood, log-likelihood.
-#' @method print ocm
+#' @method print ocmm
 #' @export
 
 print.ocmm <- function(x, ...)
@@ -108,7 +108,7 @@ print.ocmm <- function(x, ...)
 #' @description summary method for class "ocm"
 #' @param object An object of class "ocm", usually, a result of a call to ocm.
 #' @param ... Further arguments passed to or from other methods.
-#' @method summary ocm
+#' @method summary ocmm
 #' @keywords summary
 #' @export
 
@@ -290,6 +290,9 @@ plot.ocmm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','p
 #' @param ... one or more additional ocm objects.
 #' @keywords anova
 #' @export
+#' @examples
+#' fitLaplace = ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="Laplace")
+#' anova(fitLaplace, update(fitLaplace, . ~ . + localisa))
 
 
 anova.ocmm <- function(object, ...)
