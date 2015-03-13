@@ -47,7 +47,7 @@ ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gf
   #est$residuals <- v - est$fitted.values
   #On the latent scale (W* and epsilon=W-W*):
   est$fitted.values <- as.vector(-x%*%beta+coef[1])
-  est$residuals <- g_glf(v, par_g) - est$fitted.values
+  est$residuals <- coef[1] + g_glf(v, par_g) - est$fitted.values
   est$v <- v
   est$x <- x
   est$sample.size <- nrow(x)
@@ -175,17 +175,19 @@ print.predict.ocm <- function(x, ...)
 #' @title Plot the probability densities as from the output of the predict method
 #' @description plot method for class "predict.ocm"
 #' @param x An object of class "predict.ocm".
+#' @param records A integer or a vector of integers. The number of the record/s in the data set for which the density has t be plotted. If not specified, the function will iteratively plot all of them.
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords predict, plot
 #' @export
 
-plot.predict.ocm <- function(x, ...)
+plot.predict.ocm <- function(x, records=NULL, ...)
 {
+  if (is.null(records)) records=1:nrow(x$density)
   cat("Call:\n")
   print(x$formula)
   cat("The data set used in the predict methos contains ",nrow(x$density)," records.\n")
   #cat("Please press 'enter' to start/advance plotting and q to quit.\n")
-  for (i in 1:nrow(x$density)){
+  for (i in records){
     input <- readline(paste("Press 'enter' to plot the probability density of record ",i,", 'q' to quit: ",sep=''))
     if (input == "q") break()
     plot(x$x, exp(x$density[i,]), ylab="Probability Density", main=paste("Record", i), xlab=paste("mode =", round(x$mode[i],3)), t='l')
@@ -204,7 +206,7 @@ plot.predict.ocm <- function(x, ...)
 #' @keywords plot
 #' @export
 
-plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
+plot.ocm <- function(x, CIs = c('var','vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
 {
   #FIXME: this works for glf only: make general?
   #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some level making optim fail.
@@ -217,18 +219,29 @@ plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','pa
   gfun <- M + g_glf(v, params)
   xlim <- c(0,1)
   ylim <- c(min(gfun), max(gfun))
-  if (CIs=='simple') {
+  if (CIs=='var') {
+    require(MASS)
+    #FIXME write efficiently
+    sds <- sqrt(diag(x$vcov))
+    sdM <- sds[1]
+    sM <- rnorm(R, M, sdM)
+    sdparams <- tail(sds, 2)
+    sparams <- matrix(rnorm(2*R, params, sdparams), ncol = 2, byrow = T)
+    all_gfuns <- NULL
+    for (i in 1:R){
+      all_gfuns <- rbind(all_gfuns, sM[i] + g_glf(v, sparams[i,]))
+    }
+    ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
+    ci_median <- apply(all_gfuns, 2, function(x)quantile(x, 0.5))
+    ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
+    ylim <- c(min(ci_low), max(ci_high))
+  } else if (CIs=='vcov'){
     require(MASS)
     indices = c(1, len_p-1, len_p)
     params_g <- params[indices]
     vcov_g <- x$vcov[indices, indices]
     rparams <- mvrnorm(R, params_g, vcov_g, empirical=TRUE)
     #FIXME write efficiently
-    #sds <- sqrt(diag(x$vcov))
-    #sdM <- sds[1]
-    #sM <- rnorm(R, M, sdM)
-    #sdparams <- tail(sds, 2)
-    #sparams <- matrix(rnorm(2*R, params, sdparams), ncol = 2, byrow = T)
     all_gfuns <- NULL
     for (i in 1:R){
       #all_gfuns <- rbind(all_gfuns, sM[i] + g_glf(v, sparams[i,]))
@@ -238,6 +251,7 @@ plot.ocm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','pa
     ci_median <- apply(all_gfuns, 2, function(x)quantile(x, 0.5))
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
+    
   } else if (CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap'| CIs=='param.bootstrap'){
     require(boot)
     bs <- boot(x$data, eval(parse(text=CIs)), R, fit = x)

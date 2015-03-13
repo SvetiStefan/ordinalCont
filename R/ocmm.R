@@ -10,7 +10,7 @@
 #' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function, which is currently the only possibility.
 #' @param quad A string indicating the type of quadrature used to integrate over the random effects. Can take values "Laplace" (Adaptive Gauss-Hermite quadrature using Laplace approximation; the default) or "GH" (Gauss-Hermite quadrature).
 #' @param n_nodes Order of Gauss-Hermite rule used (number of nodes). 
-#' @param ... additional arguments are passed on to clm.control.
+#' @param ... additional arguments are passed on to clmm.control.
 #' @keywords likelihood, log-likelihood, ordinal regression.
 #' @export
 #' @examples

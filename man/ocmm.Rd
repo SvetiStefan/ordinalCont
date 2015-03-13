@@ -25,7 +25,7 @@ ocmm(formula, data, start = NULL, control = list(), link = c("logit"),
 
 \item{n_nodes}{Order of Gauss-Hermite rule used (number of nodes).}
 
-\item{...}{additional arguments are passed on to clm.control.}
+\item{...}{additional arguments are passed on to clmm.control.}
 }
 \description{
 This function performs the continuous ordinal regression with logit link using the generalized logistic function as g function and without random effects.
