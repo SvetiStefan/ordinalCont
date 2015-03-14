@@ -18,6 +18,7 @@
 #' fitLaplace = ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="Laplace")
 #' fitGH = ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="GH") 
 
+
 ocmm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), quad=c("Laplace","GH"), n_nodes=10, ...)
 {
   if (missing(formula)) 
