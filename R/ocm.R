@@ -12,7 +12,7 @@
 #' @export
 #' @examples
 #' # Change data set
-#' fit = ocm(vas ~ lasert1+lasert2+lasert3, data=pain) 
+#' fit = ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
 
 
 ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), ...)
