@@ -28,7 +28,6 @@ This function performs the continuous ordinal regression with logit link using t
 \examples{
 # Change data set
 fit = ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
-print("ok")
 }
 \keyword{likelihood,}
 \keyword{log-likelihood,}

@@ -3,7 +3,8 @@
 \name{ocmm}
 \alias{ocmm}
 \title{Ordinal regression for continuous scales - with random effects
-Gillian: Please do not work on this as the code will be merged with ocm when fully working.}
+Gillian: Please do not work on this as the code will be merged with ocm when fully working.
+Test}
 \usage{
 ocmm(formula, data, start = NULL, control = list(), link = c("logit"),
   gfun = c("glf"), quad = c("Laplace", "GH"), n_nodes = 10, ...)
