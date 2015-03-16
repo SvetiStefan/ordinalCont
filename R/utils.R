@@ -37,7 +37,7 @@ param.bootstrap <- function(data, indices, fit){
 trim <- function (x) gsub("^\\s+|\\s+$", "", x)
 
 
-### naive implementation in R
+### rnd generation - multivariate normal
 mvrnormR <- function(n, mu, sigma) {
     ncols <- ncol(sigma)
     mu <- rep(mu, each = n) ## not obliged to use a matrix (recycling)
