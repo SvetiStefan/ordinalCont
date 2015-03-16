@@ -8,7 +8,9 @@ ocm(formula, data, start = NULL, control = list(), link = c("logit"),
   gfun = c("glf"), ...)
 }
 \arguments{
-\item{formula}{a formula expression as for regression models, of the form response ~ predictors. Only fixed effects are supported. The model must have an intercept: attempts to remove one will lead to a warning and will be ignored (TODO).}
+\item{formula}{a formula expression as for regression models, of the form
+response ~ predictors. Only fixed effects are supported.
+The model must have an intercept: attempts to remove one will lead to a warning and will be ignored (TODO).}
 
 \item{data}{an optional data frame in which to interpret the variables occurring in the formulas.}
 
@@ -16,14 +18,18 @@ ocm(formula, data, start = NULL, control = list(), link = c("logit"),
 
 \item{control}{a list of control parameters passed on to clm.control.}
 
-\item{link}{link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model.}
+\item{link}{link function, i.e. the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model.}
 
 \item{gfun}{A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function, which is currently the only possibility.}
 
 \item{...}{additional arguments are passed on to clm.control.}
 }
+\value{
+an object of type 'ocm'
+}
 \description{
-This function performs the continuous ordinal regression with logit link using the generalized logistic function as g function and without random effects.
+This function performs  continuous ordinal regression with logit link using the
+generalized logistic function as g function and without random effects.
 }
 \examples{
 # Change data set
