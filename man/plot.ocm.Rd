@@ -4,8 +4,8 @@
 \alias{plot.ocm}
 \title{Plot method for Continuous Ordinal Fits}
 \usage{
-\method{plot}{ocm}(x, CIs = c("var", "vcov", "rnd.x.bootstrap",
-  "fix.x.bootstrap", "param.bootstrap"), R = 1000, ...)
+\method{plot}{ocm}(x, CIs = c("vcov", "rnd.x.bootstrap", "fix.x.bootstrap",
+  "param.bootstrap"), R = 1000, plot = T, ...)
 }
 \arguments{
 \item{x}{An ocm object.}
@@ -18,6 +18,10 @@
 }
 \description{
 This function plots the g function as fitted in an ocm call.
+}
+\examples{
+fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
+plot(fit, CIs="vcov", plot=F)
 }
 \keyword{plot}
 

@@ -35,3 +35,11 @@ param.bootstrap <- function(data, indices, fit){
 
 # returns string w/o leading or trailing whitespace
 trim <- function (x) gsub("^\\s+|\\s+$", "", x)
+
+
+### naive implementation in R
+mvrnormR <- function(n, mu, sigma) {
+    ncols <- ncol(sigma)
+    mu <- rep(mu, each = n) ## not obliged to use a matrix (recycling)
+    mu + matrix(rnorm(n * ncols), ncol = ncols) %*% chol(sigma)
+}
