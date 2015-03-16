@@ -142,9 +142,9 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' @export
 #' @examples
 #' fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
-#' plot(fit, CIs="vcov", plot=F)
+#' plot(fit, CIs="vcov")
 
-plot.ocm <- function(x, CIs = c('vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, plot = T, ...)
+plot.ocm <- function(x, CIs = c('vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
 {
   #FIXME: this works for glf only: make general?
   #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some level making optim fail.
@@ -182,17 +182,13 @@ plot.ocm <- function(x, CIs = c('vcov','rnd.x.bootstrap','fix.x.bootstrap','para
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
   }
-  if (plot){
-      plot(v, gfun, main='g function (95% CIs)', xlim = xlim, ylim = ylim, xlab = 'Continuous ordinal scale', ylab = '', t='l')
-      lines(c(.5,.5), ylim, col='grey')
-      lines(xlim, c(0, 0), col='grey')
-      #CIs
-      lines(v, ci_low, lty = 2)
-      lines(v, ci_high, lty = 2)
-      if (CIs=='simple' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
-  } else {
-      print(any(ci_low>gfun))
-  }
+  plot(v, gfun, main='g function (95% CIs)', xlim = xlim, ylim = ylim, xlab = 'Continuous ordinal scale', ylab = '', t='l')
+  lines(c(.5,.5), ylim, col='grey')
+  lines(xlim, c(0, 0), col='grey')
+  #CIs
+  lines(v, ci_low, lty = 2)
+  lines(v, ci_high, lty = 2)
+  if (CIs=='simple' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
 }
 
 #' @title Anova method for Continuous Ordinal Fits
