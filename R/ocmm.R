@@ -45,6 +45,7 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
   if(missing(weights)) weights <- rep(1, nrow(data))
   keep <- weights > 0
   data <- data[keep,]
+  weights <- weights[keep]
   
   to_stratify <- as.factor(data[,right])
   iclusters <- lapply(levels(to_stratify),function(x)which(to_stratify==x))
@@ -79,6 +80,7 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
   est$v <- v
   est$x <- x
   est$sample.size <- nrow(x)
+  est$nobs <- sum(weights)
   est$call <- match.call()
   est$no.pars <- length(coef)
   est$data <- data

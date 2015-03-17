@@ -288,27 +288,28 @@ coef.ocm <- function(x, ...){
     x$coefficients
   }
 
-confint.ocm <- function(x, level = 0.95, type = c("Wald", "profile")){
-  type <- match.arg(type)
-  stopifnot(is.numeric(level) && length(level) == 1 && level > 0 && level < 1)
-  if(type == "Wald") {
+confint.ocm <- function(object, parm, level = 0.95){
+    stopifnot(is.numeric(level) && length(level) == 1 && level > 0 && level < 1)
+    cf <- coef(object)    
+    pnames <- names(cf)
+    if (missing(parm)) 
+        parm <- pnames
+    else if (is.numeric(parm)) 
+        parm <- pnames[parm]
     a <- (1 - level)/2
     a <- c(a, 1 - a)
+    fac <- qt(a, object$df.residual)
     pct <- format.perc(a, 3)
-    fac <- qnorm(a)
-    coefs <- coef(object)
-    sds <- diag(x$vcov)
-    ci <- array(NA, dim = c(length(coefs), 2L), dimnames = list(names(coefs), pct))
-    ci[] <- coefs + ses %o% fac
-    return(ci)
-  } else if (type == "bootstrap"){
-    stop("Method not yet implemented.")
-  }
+    ci <- array(NA, dim = c(length(parm), 2L), dimnames = list(parm, 
+        pct))
+    ses <- sqrt(diag(object$vcov))[parm]
+    ci[] <- cf[parm] + ses %o% fac
+    ci
 }
 
 
 logLik.ocm <- function(object, ...)
-  structure(object$logLik, df = object$edf, nobs=object$nobs,
+  structure(object$logLik, df = object$df, nobs=object$nobs,
             class = "logLik")
 
 extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
