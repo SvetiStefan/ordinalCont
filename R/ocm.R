@@ -19,7 +19,7 @@
 #' fit = ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
 
 
-ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), ...)
+ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), ...)
 {
   if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) 
     stop("Random effects specified. Please call ocmm.")
@@ -27,29 +27,27 @@ ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gf
     stop("Model needs a formula")
   link <- match.arg(link)
   gfun <- match.arg(gfun)
+  if(missing(weights)) weights <- rep(1, nrow(data))
+  keep <- weights > 0
+  data <- data[keep,]
   
   mf <- model.frame(formula=formula, data=data)
   x <- model.matrix(attr(mf, "terms"), data=mf)
   v <- model.response(mf)
-  
+  xnames <- dimnames(x)[[2]]
   x <- as.matrix(x)
   v <- as.numeric(v)
   if (is.null(start)) beta_start <- set.beta_start(x,v)
   len_beta = length(beta_start)
+  names(beta_start) <- c("M", xnames[2:len_beta])
   glf_start <- set.glf_start(x,v)
+  names(glf_start) <- c("B", "T")
   start <- c(beta_start, glf_start)
-  est <- ocmEst(start, v, x, link, gfun)
+  est <- ocmEst(start, v, x, weights, link, gfun)
   coef <- est$coefficients
   beta <- coef[1:len_beta]
   par_g <- coef[(len_beta+1):(len_beta+2)]
   est$len_beta <- len_beta
-  #fitted.values are the cumulative probabilities gamma(v|x)
-  #est$fitted.values <- as.vector(inv.logit(g_glf(v, par_g) + x%*%beta))
-  #The intercept is the parameter M of the glf. Fitted values v* = g^{-1}(W*) = g^{-1}(-x'B), where W=W*+epsilon
-  #On the ordinal scale [0,1] (v* and v-v*):
-  #est$fitted.values <- as.vector(g_glf_inv(-x%*%beta, par_g))
-  #est$residuals <- v - est$fitted.values
-  #On the latent scale (W* and epsilon=W-W*):
   est$fitted.values <- as.vector(-x%*%beta+coef[1])
   est$residuals <- coef[1] + g_glf(v, par_g) - est$fitted.values
   est$v <- v
@@ -76,8 +74,8 @@ ocm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gf
 #' @param len_beta Length of the regression coefficients vector.
 #' @keywords likelihood, log-likelihood.
 
-negloglik_glf <- function(par, v, d.matrix, len_beta){
-  return(-sum(logdensity_glf(par, v, d.matrix, len_beta)))
+negloglik_glf <- function(par, v, d.matrix, wts, len_beta){
+  return(-sum(wts * logdensity_glf(par, v, d.matrix, len_beta)))
 }
 
 logdensity_glf <- function(par, v, d.matrix, len_beta){
@@ -92,11 +90,11 @@ logdensity_glf <- function(par, v, d.matrix, len_beta){
   return(log(dg) + g + xb -2*log(1+exp(g+xb)))
 }
 
-ocmEst <- function(start, v, x, link, gfun){
+ocmEst <- function(start, v, x, weights, link, gfun){
   len_beta <- ncol(x)
   if (gfun == "glf") {
     if (link == "logit"){
-      fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, len_beta=len_beta, method="BFGS", hessian = T)
+      fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, wts=weights, len_beta=len_beta, method="BFGS", hessian = T)
     } else {
       stop("link function not implemented.")
     }

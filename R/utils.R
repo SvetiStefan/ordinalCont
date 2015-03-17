@@ -43,3 +43,19 @@ mvrnormR <- function(n, mu, sigma) {
     mu <- rep(mu, each = n) ## not obliged to use a matrix (recycling)
     mu + matrix(rnorm(n * ncols), ncol = ncols) %*% chol(sigma)
 }
+
+### my version of (a)ghQaud. It is the same as in the fastGHQuad package, but deals nicely with arrays (i.e. more than one record per cluster).
+##not used
+my.ghQuad <- function (f, rule, ...) 
+{
+  apply(rule$w * f(rule$x, ...), 2, sum)
+}
+
+my.aghQuad <- function (g, muHat, sigmaHat, rule, ...) 
+{
+  z <- muHat + sqrt(2) * sigmaHat * rule$x
+  wStar <- exp(rule$x * rule$x + log(rule$w))
+  wStar
+  val <- sqrt(2) * sigmaHat * apply(wStar * g(z, ...), 2, sum)
+  return(val)
+}

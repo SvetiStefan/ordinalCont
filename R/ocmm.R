@@ -15,11 +15,11 @@
 #' @export
 #' @examples
 #' # Change data set
-#' fitLaplace = ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="Laplace")
+#' #fitLaplace = ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="Laplace")
 #' fitGH = ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="GH") 
 
 
-ocmm <- function(formula, data, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), quad=c("Laplace","GH"), n_nodes=10, ...)
+ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), quad=c("Laplace","GH"), n_nodes=10, ...)
 {
   if (missing(formula)) 
     stop("Model needs a formula")
@@ -42,6 +42,9 @@ ocmm <- function(formula, data, start=NULL, control=list(), link = c("logit"), g
   link <- match.arg(link)
   gfun <- match.arg(gfun)
   quad = match.arg(quad)
+  if(missing(weights)) weights <- rep(1, nrow(data))
+  keep <- weights > 0
+  data <- data[keep,]
   
   to_stratify <- as.factor(data[,right])
   iclusters <- lapply(levels(to_stratify),function(x)which(to_stratify==x))
@@ -58,7 +61,7 @@ ocmm <- function(formula, data, start=NULL, control=list(), link = c("logit"), g
   glf_start <- set.glf_start(x,v)
   start <- c(beta_start, glf_start, 1) #1 is the variance of the single rnd effect
   ### As ocm + z --- end ###
-  est <- ocmmEst(start, v, x, z, link, gfun, rnd=right, n_nodes=n_nodes, quad=quad, iclusters)
+  est <- ocmmEst(start, v, x, z, weights, link, gfun, rnd=right, n_nodes=n_nodes, quad=quad, iclusters)
   coef <- est$coefficients
   beta <- coef[1:len_beta]
   par_g <- coef[(len_beta+1):(len_beta+2)]
@@ -90,20 +93,27 @@ ocmm <- function(formula, data, start=NULL, control=list(), link = c("logit"), g
 
 
 
-negloglik_glf_rnd <- function(par, v, d.matrix, rnd.matrix, len_beta, rnd, n_nodes, quad, iclusters)
+negloglik_glf_rnd <- function(par, v, d.matrix, rnd.matrix, wts, len_beta, rnd, n_nodes, quad, iclusters)
   { #b is the random effect
-  densities_by_cluster <- sapply(iclusters, negloglik_glf_rnd2, par=par, b=b, v=v, d.matrix=d.matrix, 
-                                 rnd.matrix=rnd.matrix, len_beta=len_beta, n_nodes=n_nodes, quad=quad)
+  #densities_by_cluster <- NULL
+  #for (ind in iclusters) densities_by_cluster <- c(densities_by_cluster, negloglik_glf_rnd2(ind, par=par, b=b, v=v, d.matrix=d.matrix, rnd.matrix=rnd.matrix, len_beta=len_beta, n_nodes=n_nodes, quad=quad))
+  densities_by_cluster <- sapply(iclusters, negloglik_glf_rnd2, par=par, b=b, v=v, d.matrix=d.matrix, rnd.matrix=rnd.matrix, wts=wts, len_beta=len_beta, n_nodes=n_nodes, quad=quad)
+  #if (length(densities_by_cluster) != length(wts)) {
+  #  print(paste(length(densities_by_cluster), length(wts)))
+  #  print( summary(densities_by_cluster))
+  #  print(par)
+  #}
+  #loglik = -sum(wts * log(densities_by_cluster))
   loglik = -sum(log(densities_by_cluster))
   return(loglik)
-  #return(-prod(densities_by_cluster))
 }
 
-negloglik_glf_rnd2 <- function(indices, par, b, v, d.matrix, rnd.matrix, len_beta, n_nodes, quad){
+negloglik_glf_rnd2 <- function(indices, par, b, v, d.matrix, rnd.matrix, wts, len_beta, n_nodes, quad){
   require(fastGHQuad)
   rule <- gaussHermiteData(n_nodes)
   x <- d.matrix[indices,]
   y <- v[indices]
+  w <- wts[indices]
   beta <- par[1:len_beta]
   par_g <- par[(len_beta+1):(len_beta+2)]
   par_dg <- par[(len_beta+1):(len_beta+2)]
@@ -113,25 +123,26 @@ negloglik_glf_rnd2 <- function(indices, par, b, v, d.matrix, rnd.matrix, len_bet
   if (any(dg<=0)) return(Inf)
   xb <- as.numeric(x %*% beta)
   if (quad=="Laplace")
-    return(aghQuad(g=density_glf_Laplace, muHat=0, sigmaHat=1, rule=rule, all_pars=cbind(g,dg,xb), 
-                   sigma_rnd=sigma_rnd))
+    return(aghQuad(g=density_glf_Laplace, muHat=0, sigmaHat=1, rule=rule, all_pars=cbind(g,dg,xb), sigma_rnd=sigma_rnd, w=w))
   else if (quad=="GH")
-    return(ghQuad(f=density_glf_GH, rule=rule, all_pars=cbind(g,dg,xb), sigma_rnd=sigma_rnd))
+    return(ghQuad(f=density_glf_GH, rule=rule, all_pars=cbind(g,dg,xb), sigma_rnd=sigma_rnd, w=w))
 }
 
-density_glf_Laplace <- function(b, all_pars, sigma_rnd){
+density_glf_Laplace <- function(b, all_pars, sigma_rnd, w){
   lik_cluster <- apply(all_pars, 1, function(x, b, sigma_rnd){x[2]*exp(x[1]+x[3]+sqrt(2)*sigma_rnd*b)/(1+exp(x[1]+x[3]+sqrt(2)*sigma_rnd*b))^2/sqrt(pi)*exp(-b^2)},b=b,sigma_rnd=sigma_rnd)
-  lik_cluster <- apply(lik_cluster,1,prod)
+  lik_cluster <- apply(lik_cluster,1,function(x,w)return(prod(x^w)),w=w)
+  #lik_cluster <- apply(lik_cluster,1,prod)
   return(lik_cluster)
 }
 
-density_glf_GH <- function(b, all_pars, sigma_rnd){
+density_glf_GH <- function(b, all_pars, sigma_rnd, w){
   lik_cluster <- apply(all_pars, 1, function(x, b, sigma_rnd){x[2]*exp(x[1]+x[3]+sqrt(2)*sigma_rnd*b)/(1+exp(x[1]+x[3]+sqrt(2)*sigma_rnd*b))^2/sqrt(pi)},b=b,sigma_rnd=sigma_rnd)
-  lik_cluster <- apply(lik_cluster,1,prod)
+  lik_cluster <- apply(lik_cluster,1,function(x,w)return(prod(x^w)),w=w)
+  #lik_cluster <- apply(lik_cluster,1,prod)
   return(lik_cluster)
 }
 
-ocmmEst <- function(start, v, x, z, link, gfun, rnd=NULL, n_nodes, quad, iclusters){
+ocmmEst <- function(start, v, x, z, weights, link, gfun, rnd=NULL, n_nodes, quad, iclusters){
   len_beta <- ncol(x)
 #  if (!is.null(z)){
 #    cat("Random effects over",paste(rnd,collapse=', '),'\n') #ready for multiple rnd effects
@@ -139,7 +150,7 @@ ocmmEst <- function(start, v, x, z, link, gfun, rnd=NULL, n_nodes, quad, icluste
 #  }
   if (gfun == "glf") {
     if (link == "logit"){
-      fit <- optim(par=start,negloglik_glf_rnd, v=v, d.matrix=x, rnd.matrix=z, len_beta=len_beta, rnd=rnd, n_nodes=n_nodes, quad=quad, iclusters=iclusters, method="BFGS", hessian = T)
+      fit <- optim(par=start,negloglik_glf_rnd, v=v, d.matrix=x, rnd.matrix=z, wts=weights, len_beta=len_beta, rnd=rnd, n_nodes=n_nodes, quad=quad, iclusters=iclusters, method="BFGS", hessian = T)
     } else {
       stop("link function not implemented.")
     }
