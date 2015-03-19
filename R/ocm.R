@@ -30,6 +30,7 @@ ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("lo
   if(missing(weights)) weights <- rep(1, nrow(data))
   keep <- weights > 0
   data <- data[keep,]
+  weights <- weights[keep]
   
   mf <- model.frame(formula=formula, data=data)
   x <- model.matrix(attr(mf, "terms"), data=mf)
@@ -53,6 +54,7 @@ ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("lo
   est$v <- v
   est$x <- x
   est$sample.size <- nrow(x)
+  est$nobs <- sum(weights)
   est$call <- match.call()
   est$no.pars <- length(coef)
   est$data <- data

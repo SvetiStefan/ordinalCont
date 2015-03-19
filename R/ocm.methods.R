@@ -1,10 +1,14 @@
 #' Print continuous ordinal regression objects
 #'
-#' This function prints an ocm object 
-#' @param x An object of class "ocm", usually, a result of a call to ocm.
+#' \code{print.ocm} is the ordinalCont specific method for the generic function \code{print}, 
+#' which prints objects of class \code{'ocm'}.
+#' @param x An object of class \code{'ocm'}, usually, a result of a call to \code{ocm}.
 #' @param ... Further arguments passed to or from other methods.
+#' @return Prints an \code{ocm} object
 #' @keywords likelihood, log-likelihood.
 #' @method print ocm
+#' @seealso \code{\link{ocm}}, \code{\link{summary.ocm}}
+#' @examples xxx add example
 #' @export
 
 print.ocm <- function(x, ...)
@@ -16,11 +20,13 @@ print.ocm <- function(x, ...)
 }
 
 #' @title Summarizing Continuous Ordinal Fits
-#' @description summary method for class "ocm"
-#' @param object An object of class "ocm", usually, a result of a call to ocm.
+#' @description Summary method for class \code{'ocm'}
+#' @param object An object of class \code{"ocm"}, usually, a result of a call to \code{ocm}.
 #' @param ... Further arguments passed to or from other methods.
 #' @method summary ocm
 #' @keywords summary
+#' @seealso \code{\link{ocm}}, \code{\link{print.ocm}}
+#' @examples xxx add example
 #' @export
 
 summary.ocm <- function(object, ...)
@@ -38,9 +44,11 @@ summary.ocm <- function(object, ...)
 }
 
 #' @title Summarizing Continuous Ordinal Fits
-#' @description summary method for class "summary.ocm"
-#' @param x An object of class "summary.ocm", usually, a result of a call to summary.ocm.
-#' @param ... Further arguments passed to or from other methods.
+#' @description Summary method for class \code{"summary.ocm"}
+#' @param x An object of class \code{"summary.ocm"}, usually a result of a call to \code{summary.ocm}.
+#' @param ... further arguments passed to or from other methods.
+#' @details The table of parameter estimates is printed.
+#' @examples xxx add example
 #' @keywords summary
 #' @export
 
@@ -57,11 +65,18 @@ print.summary.ocm <- function(x, ...)
 
 #' @title Predict method for Continuous Ordinal Fits
 #' 
-#' @description Predicted values based on ocm object.
-#' @param object An ocm object.
-#' @param newdata optionally, a data frame in which to look for variables with which to predict. Note that all predictor variables should be present having the same names as the variables used to fit the model.
+#' @description Predicted values based on \code{ocm} object.
+#' @param object an object of class \code{"ocm"}, usually, a result of a call to \code{ocm}
+#' @param newdata optionally, a data frame in which to look for variables with 
+#' which to predict. 
+#' Note that all predictor variables should be present, having the same names as the variables 
+#' used to fit the model. If \code{NULL}, predictions are computed for the original dataset.
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords predict
+#' @return MAURIZIO we need to specify this (I'm not sure what you've done)
+#' @details MAURIZIO we need to specify this (I'm not sure what you've done)
+#' @examples xxx add example
+#' @seealso \code{\link{ocm}}
 #' @export
 
 predict.ocm <- function(object, newdata=NULL, ...)
@@ -92,10 +107,13 @@ predict.ocm <- function(object, newdata=NULL, ...)
 }
 
 #' @title Print the output of predict method
-#' @description print method for class "predict.ocm"
-#' @param x An object of class "predict.ocm".
-#' @param ... Further arguments passed to or from other methods.
+#' @description Print method for class \code{"predict.ocm"}
+#' @param x An object of class \code{"predict.ocm"}
+#' @param ... Further arguments passed to or from other methods
 #' @keywords predict
+#' @details The table of predictions from \code{predict.ocm} is printed.
+#' @seealso \code{\link{predict.ocm}},\code{\link{ocm}}
+#' @examples xxx add example
 #' @export
 
 print.predict.ocm <- function(x, ...)
@@ -110,7 +128,9 @@ print.predict.ocm <- function(x, ...)
 #' @title Plot the probability densities as from the output of the predict method
 #' @description plot method for class "predict.ocm"
 #' @param x An object of class "predict.ocm".
-#' @param records A integer or a vector of integers. The number of the record/s in the data set for which the density has t be plotted. If not specified, the function will iteratively plot all of them.
+#' @param records A integer or a vector of integers. The number of the record/s 
+#' in the data set for which the density has t be plotted. If not specified, the 
+#' function will iteratively plot all of them.
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords predict, plot
 #' @export
@@ -135,7 +155,10 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' 
 #' @description This function plots the g function as fitted in an ocm call.
 #' @param x An ocm object.
-#' @param CIs Indicates if confidence bands for the g function should be computed based on the Wald 95\% CIs or by bootstrapping. In  the latter case, bootstrapping can be performed using a random-x or a fixed-x resampling. 95\% CIs computed with either of the bootstrapping options are obtained with simple percentiles. 
+#' @param CIs Indicates if confidence bands for the g function should be computed based on the 
+#' Wald 95\% CIs or by bootstrapping. In  the latter case, bootstrapping can be performed using a 
+#' random-x or a fixed-x resampling. 95\% CIs computed with either of the bootstrapping options are 
+#' obtained with simple percentiles. 
 #' @param R The number of bootstrap replicates. 
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords plot
@@ -288,27 +311,28 @@ coef.ocm <- function(x, ...){
     x$coefficients
   }
 
-confint.ocm <- function(x, level = 0.95, type = c("Wald", "profile")){
-  type <- match.arg(type)
-  stopifnot(is.numeric(level) && length(level) == 1 && level > 0 && level < 1)
-  if(type == "Wald") {
+confint.ocm <- function(object, parm, level = 0.95){
+    stopifnot(is.numeric(level) && length(level) == 1 && level > 0 && level < 1)
+    cf <- coef(object)    
+    pnames <- names(cf)
+    if (missing(parm)) 
+        parm <- pnames
+    else if (is.numeric(parm)) 
+        parm <- pnames[parm]
     a <- (1 - level)/2
     a <- c(a, 1 - a)
+    fac <- qt(a, object$df.residual)
     pct <- format.perc(a, 3)
-    fac <- qnorm(a)
-    coefs <- coef(object)
-    sds <- diag(x$vcov)
-    ci <- array(NA, dim = c(length(coefs), 2L), dimnames = list(names(coefs), pct))
-    ci[] <- coefs + ses %o% fac
-    return(ci)
-  } else if (type == "bootstrap"){
-    stop("Method not yet implemented.")
-  }
+    ci <- array(NA, dim = c(length(parm), 2L), dimnames = list(parm, 
+        pct))
+    ses <- sqrt(diag(object$vcov))[parm]
+    ci[] <- cf[parm] + ses %o% fac
+    ci
 }
 
 
 logLik.ocm <- function(object, ...)
-  structure(object$logLik, df = object$edf, nobs=object$nobs,
+  structure(object$logLik, df = object$df, nobs=object$nobs,
             class = "logLik")
 
 extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
