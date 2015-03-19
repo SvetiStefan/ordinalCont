@@ -345,3 +345,6 @@ extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
   edf <- fit$df
   c(edf, -2*fit$logLik + k * edf)
 }
+
+nobs.ocm <- function(object, ...) object$nobs
+
