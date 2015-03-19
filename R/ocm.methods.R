@@ -1,10 +1,13 @@
 #' Print continuous ordinal regression objects
 #'
-#' This function prints an ocm object 
-#' @param x An object of class "ocm", usually, a result of a call to ocm.
+#' \code{print.ocm} is the ordinalCont specific method for the generic function \code{print}, 
+#' which prints objects of class \code{'ocm'}.
+#' @param x An object of class \code{'ocm'}, usually, a result of a call to \code{ocm}.
 #' @param ... Further arguments passed to or from other methods.
+#' @return Prints an \code{ocm} object
 #' @keywords likelihood, log-likelihood.
 #' @method print ocm
+#' @seealso \code{\link{ocm}}, \code{\link{summary.ocm}}
 #' @export
 
 print.ocm <- function(x, ...)
