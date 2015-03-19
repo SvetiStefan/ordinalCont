@@ -45,7 +45,7 @@ mvrnormR <- function(n, mu, sigma) {
 }
 
 ### my version of (a)ghQaud. It is the same as in the fastGHQuad package, but deals nicely with arrays (i.e. more than one record per cluster).
-##not used
+#FIXME not used
 my.ghQuad <- function (f, rule, ...) 
 {
   apply(rule$w * f(rule$x, ...), 2, sum)
