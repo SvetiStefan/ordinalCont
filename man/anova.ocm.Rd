@@ -2,12 +2,12 @@
 % Please edit documentation in R/ocm.methods.R
 \name{anova.ocm}
 \alias{anova.ocm}
-\title{Anova method for Continuous Ordinal Fits}
+\title{Anova method for Continuous Ordinal Fits [GH up to here 19/3/15]}
 \usage{
 \method{anova}{ocm}(object, ...)
 }
 \arguments{
-\item{object}{An ocm object.}
+\item{object}{an \code{ocm} object}
 
 \item{...}{one or more additional ocm objects.}
 }

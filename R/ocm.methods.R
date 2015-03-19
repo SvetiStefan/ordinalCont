@@ -159,16 +159,20 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' 
 #' @description Plots the g function as fitted in an \code{ocm} call.
 #' @param x an object of class \code{ocm}
-#' @param CIs method used for confidence bands for the g function. \code{vcov} = Wald; 
-#' \code{rnd.x.bootstrap} = random-x bootstrap; \code{fix.x.bootstrap} = bootstrap with fixed-x 
-#' resampling; \code{param.bootstrap} = parametric bootstrap.
-#' 95\% CIs computed with any of the bootstrapping options are 
-#' obtained with simple percentiles. 
-#' MAURIZIO can you add CIs="NULL" for the option of no confidence bands? And make this the default?
+#' @param CIs method used for confidence bands for the g function. \code{"vcov"} = Wald; 
+#' \code{"rnd.x.bootstrap"} = random-x bootstrap; \code{"fix.x.bootstrap"} = bootstrap with fixed-x 
+#' resampling; \code{"param.bootstrap"} = parametric bootstrap. 
+#' MAURIZIO can you add CIs="NULL" for the option of no confidence bands? 
+#' And make this the default? (In this case R=NULL would have to be the default.)
 #' @param R the number of bootstrap replicates 
-#' @param ... further arguments passed to or from other methods.
+#' @param ... further arguments passed to or from other methods
+#' @details The fitted g function of an \code{ocm} object is plotted. 
+#' If \code{CIs} is not \code{NULL}, 95\% confidence bands are also plotted.
+#' Confidence bands computed with any of the bootstrapping options are 
+#' obtained with simple percentiles. 
 #' @keywords plot
 #' @export
+#' @seealso \code{\link{ocm}}
 #' @examples
 #' fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
 #' plot(fit, CIs="vcov")
@@ -220,10 +224,10 @@ plot.ocm <- function(x, CIs = c('vcov','rnd.x.bootstrap','fix.x.bootstrap','para
   if (CIs=='simple' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
 }
 
-#' @title Anova method for Continuous Ordinal Fits
+#' @title Anova method for Continuous Ordinal Fits [GH up to here 19/3/15]
 #' 
 #' @description Comparison of continuous ordinal models in likelihood ratio tests.
-#' @param object An ocm object.
+#' @param object an \code{ocm} object
 #' @param ... one or more additional ocm objects.
 #' @keywords anova
 #' @export

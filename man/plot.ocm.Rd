@@ -10,23 +10,31 @@
 \arguments{
 \item{x}{an object of class \code{ocm}}
 
-\item{CIs}{method used for confidence bands for the g function. \code{vcov} = Wald;
-\code{rnd.x.bootstrap} = random-x bootstrap; \code{fix.x.bootstrap} = bootstrap with fixed-x
-resampling; \code{param.bootstrap} = parametric bootstrap.
-95\% CIs computed with any of the bootstrapping options are
-obtained with simple percentiles.
-MAURIZIO can you add CIs="NULL" for the option of no confidence bands? And make this the default?}
+\item{CIs}{method used for confidence bands for the g function. \code{"vcov"} = Wald;
+\code{"rnd.x.bootstrap"} = random-x bootstrap; \code{"fix.x.bootstrap"} = bootstrap with fixed-x
+resampling; \code{"param.bootstrap"} = parametric bootstrap.
+MAURIZIO can you add CIs="NULL" for the option of no confidence bands?
+And make this the default? (In this case R=NULL would have to be the default.)}
 
 \item{R}{the number of bootstrap replicates}
 
-\item{...}{further arguments passed to or from other methods.}
+\item{...}{further arguments passed to or from other methods}
 }
 \description{
 Plots the g function as fitted in an \code{ocm} call.
 }
+\details{
+The fitted g function of an \code{ocm} object is plotted.
+If \code{CIs} is not \code{NULL}, 95\% confidence bands are also plotted.
+Confidence bands computed with any of the bootstrapping options are
+obtained with simple percentiles.
+}
 \examples{
 fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
 plot(fit, CIs="vcov")
+}
+\seealso{
+\code{\link{ocm}}
 }
 \keyword{plot}
 
