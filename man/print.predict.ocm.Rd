@@ -12,7 +12,7 @@
 \item{...}{Further arguments passed to or from other methods}
 }
 \description{
-print method for class "predict.ocm"
+Print method for class \code{"predict.ocm"}
 }
 \details{
 The table of predictions from \code{predict.ocm} is printed.

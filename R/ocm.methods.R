@@ -125,13 +125,16 @@ print.predict.ocm <- function(x, ...)
   print(summary(x$mode), ...)
 }
 
-#' @title Plot the probability densities as from the output of the predict method
-#' @description plot method for class "predict.ocm"
-#' @param x An object of class "predict.ocm".
-#' @param records A integer or a vector of integers. The number of the record/s 
-#' in the data set for which the density has t be plotted. If not specified, the 
-#' function will iteratively plot all of them.
+#' @title Plot  probability densities  from  output of  predict method
+#' @description Plot method for class \code{"predict.ocm"}
+#' @param x An object of class \code{"predict.ocm"}
+#' @param records An integer or a vector of integers. The number of the record/s 
+#' in the data set for which the density has to be plotted. If not specified, the 
+#' function will  plot all of them.
 #' @param ... Further arguments passed to or from other methods.
+#' @details The probability densities from \code{predict.ocm}  are plotted.
+#' @seealso \code{\link{predict.ocm}},\code{\link{ocm}}
+#' @examples xxx add example
 #' @keywords predict, plot
 #' @export
 
@@ -145,7 +148,8 @@ plot.predict.ocm <- function(x, records=NULL, ...)
   for (i in records){
     input <- readline(paste("Press 'enter' to plot the probability density of record ",i,", 'q' to quit: ",sep=''))
     if (input == "q") break()
-    plot(x$x, exp(x$density[i,]), ylab="Probability Density", main=paste("Record", i), xlab=paste("mode =", round(x$mode[i],3)), t='l')
+    plot(x$x, exp(x$density[i,]), ylab="Probability Density", main=paste("Record", i), 
+         xlab=paste("mode =", round(x$mode[i],3)), t='l')
     lines(rep(x$mode[i],2), c(0, max(exp(x$density[i,]))), lty=21)
   }
 }
@@ -153,14 +157,16 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 
 #' @title Plot method for Continuous Ordinal Fits
 #' 
-#' @description This function plots the g function as fitted in an ocm call.
-#' @param x An ocm object.
-#' @param CIs Indicates if confidence bands for the g function should be computed based on the 
-#' Wald 95\% CIs or by bootstrapping. In  the latter case, bootstrapping can be performed using a 
-#' random-x or a fixed-x resampling. 95\% CIs computed with either of the bootstrapping options are 
+#' @description Plots the g function as fitted in an \code{ocm} call.
+#' @param x an object of class \code{ocm}
+#' @param CIs method used for confidence bands for the g function. \code{vcov} = Wald; 
+#' \code{rnd.x.bootstrap} = random-x bootstrap; \code{fix.x.bootstrap} = bootstrap with fixed-x 
+#' resampling; \code{param.bootstrap} = parametric bootstrap.
+#' 95\% CIs computed with any of the bootstrapping options are 
 #' obtained with simple percentiles. 
-#' @param R The number of bootstrap replicates. 
-#' @param ... Further arguments passed to or from other methods.
+#' MAURIZIO can you add CIs="NULL" for the option of no confidence bands? And make this the default?
+#' @param R the number of bootstrap replicates 
+#' @param ... further arguments passed to or from other methods.
 #' @keywords plot
 #' @export
 #' @examples

@@ -8,19 +8,21 @@
   "param.bootstrap"), R = 1000, ...)
 }
 \arguments{
-\item{x}{An ocm object.}
+\item{x}{an object of class \code{ocm}}
 
-\item{CIs}{Indicates if confidence bands for the g function should be computed based on the
-Wald 95\% CIs or by bootstrapping. In  the latter case, bootstrapping can be performed using a
-random-x or a fixed-x resampling. 95\% CIs computed with either of the bootstrapping options are
-obtained with simple percentiles.}
+\item{CIs}{method used for confidence bands for the g function. \code{vcov} = Wald;
+\code{rnd.x.bootstrap} = random-x bootstrap; \code{fix.x.bootstrap} = bootstrap with fixed-x
+resampling; \code{param.bootstrap} = parametric bootstrap.
+95\% CIs computed with any of the bootstrapping options are
+obtained with simple percentiles.
+MAURIZIO can you add CIs="NULL" for the option of no confidence bands? And make this the default?}
 
-\item{R}{The number of bootstrap replicates.}
+\item{R}{the number of bootstrap replicates}
 
-\item{...}{Further arguments passed to or from other methods.}
+\item{...}{further arguments passed to or from other methods.}
 }
 \description{
-This function plots the g function as fitted in an ocm call.
+Plots the g function as fitted in an \code{ocm} call.
 }
 \examples{
 fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)

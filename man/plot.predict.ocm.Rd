@@ -2,21 +2,30 @@
 % Please edit documentation in R/ocm.methods.R
 \name{plot.predict.ocm}
 \alias{plot.predict.ocm}
-\title{Plot the probability densities as from the output of the predict method}
+\title{Plot  probability densities  from  output of  predict method}
 \usage{
 \method{plot}{predict.ocm}(x, records = NULL, ...)
 }
 \arguments{
-\item{x}{An object of class "predict.ocm".}
+\item{x}{An object of class \code{"predict.ocm"}}
 
-\item{records}{A integer or a vector of integers. The number of the record/s
-in the data set for which the density has t be plotted. If not specified, the
-function will iteratively plot all of them.}
+\item{records}{An integer or a vector of integers. The number of the record/s
+in the data set for which the density has to be plotted. If not specified, the
+function will  plot all of them.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
-plot method for class "predict.ocm"
+Plot method for class \code{"predict.ocm"}
+}
+\details{
+The probability densities from \code{predict.ocm}  are plotted.
+}
+\examples{
+xxx add example
+}
+\seealso{
+\code{\link{predict.ocm}},\code{\link{ocm}}
 }
 \keyword{plot}
 \keyword{predict,}
