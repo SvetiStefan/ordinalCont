@@ -18,6 +18,9 @@ Prints an \code{ocm} object
 \code{print.ocm} is the ordinalCont specific method for the generic function \code{print},
 which prints objects of class \code{'ocm'}.
 }
+\examples{
+xxx add example
+}
 \seealso{
 \code{\link{ocm}}, \code{\link{summary.ocm}}
 }

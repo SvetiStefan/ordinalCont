@@ -7,14 +7,29 @@
 \method{predict}{ocm}(object, newdata = NULL, ...)
 }
 \arguments{
-\item{object}{An ocm object.}
+\item{object}{an object of class \code{"ocm"}, usually, a result of a call to \code{ocm}}
 
-\item{newdata}{optionally, a data frame in which to look for variables with which to predict. Note that all predictor variables should be present having the same names as the variables used to fit the model.}
+\item{newdata}{optionally, a data frame in which to look for variables with
+which to predict.
+Note that all predictor variables should be present, having the same names as the variables
+used to fit the model. If \code{NULL}, predictions are computed for the original dataset.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
+\value{
+MAURIZIO we need to specify this (I'm not sure what you've done)
+}
 \description{
-Predicted values based on ocm object.
+Predicted values based on \code{ocm} object.
+}
+\details{
+MAURIZIO we need to specify this (I'm not sure what you've done)
+}
+\examples{
+xxx add example
+}
+\seealso{
+\code{\link{ocm}}
 }
 \keyword{predict}
 

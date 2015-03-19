@@ -9,7 +9,9 @@
 \arguments{
 \item{x}{An object of class "predict.ocm".}
 
-\item{records}{A integer or a vector of integers. The number of the record/s in the data set for which the density has t be plotted. If not specified, the function will iteratively plot all of them.}
+\item{records}{A integer or a vector of integers. The number of the record/s
+in the data set for which the density has t be plotted. If not specified, the
+function will iteratively plot all of them.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

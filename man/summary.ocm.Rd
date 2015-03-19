@@ -7,12 +7,18 @@
 \method{summary}{ocm}(object, ...)
 }
 \arguments{
-\item{object}{An object of class "ocm", usually, a result of a call to ocm.}
+\item{object}{An object of class \code{"ocm"}, usually, a result of a call to \code{ocm}.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
-summary method for class "ocm"
+Summary method for class \code{'ocm'}
+}
+\examples{
+xxx add example
+}
+\seealso{
+\code{\link{ocm}}, \code{\link{print.ocm}}
 }
 \keyword{summary}
 

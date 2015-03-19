@@ -7,12 +7,18 @@
 \method{print}{summary.ocm}(x, ...)
 }
 \arguments{
-\item{x}{An object of class "summary.ocm", usually, a result of a call to summary.ocm.}
+\item{x}{An object of class \code{"summary.ocm"}, usually a result of a call to \code{summary.ocm}.}
 
-\item{...}{Further arguments passed to or from other methods.}
+\item{...}{further arguments passed to or from other methods.}
 }
 \description{
-summary method for class "summary.ocm"
+Summary method for class \code{"summary.ocm"}
+}
+\details{
+The table of parameter estimates is printed.
+}
+\examples{
+xxx add example
 }
 \keyword{summary}
 

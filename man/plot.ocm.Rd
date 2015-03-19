@@ -10,7 +10,10 @@
 \arguments{
 \item{x}{An ocm object.}
 
-\item{CIs}{Indicates if confidence bands for the g function should be computed based on the Wald 95\% CIs or by bootstrapping. In  the latter case, bootstrapping can be performed using a random-x or a fixed-x resampling. 95\% CIs computed with either of the bootstrapping options are obtained with simple percentiles.}
+\item{CIs}{Indicates if confidence bands for the g function should be computed based on the
+Wald 95\% CIs or by bootstrapping. In  the latter case, bootstrapping can be performed using a
+random-x or a fixed-x resampling. 95\% CIs computed with either of the bootstrapping options are
+obtained with simple percentiles.}
 
 \item{R}{The number of bootstrap replicates.}
 
