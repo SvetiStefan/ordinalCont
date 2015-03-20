@@ -13,6 +13,7 @@
 }
 \description{
 Comparison of continuous ordinal models in likelihood ratio tests.
+THIS IS A TEST TO SEE IF UPDATES FROM MQ ARE WORKING
 }
 \keyword{anova}
 

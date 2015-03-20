@@ -226,7 +226,8 @@ plot.ocm <- function(x, CIs = c('vcov','rnd.x.bootstrap','fix.x.bootstrap','para
 
 #' @title Anova method for Continuous Ordinal Fits [GH up to here 19/3/15]
 #' 
-#' @description Comparison of continuous ordinal models in likelihood ratio tests.
+#' @description Comparison of continuous ordinal models in likelihood ratio tests. 
+#' THIS IS A TEST TO SEE IF UPDATES FROM MQ ARE WORKING
 #' @param object an \code{ocm} object
 #' @param ... one or more additional ocm objects.
 #' @keywords anova
