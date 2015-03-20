@@ -7,13 +7,12 @@
 \method{anova}{ocm}(object, ...)
 }
 \arguments{
-\item{object}{an \code{ocm} object}
+\item{object}{an object of class \code{ocm}}
 
-\item{...}{one or more additional ocm objects.}
+\item{...}{one or more additional \code{ocm} objects.}
 }
 \description{
 Comparison of continuous ordinal models in likelihood ratio tests.
-THIS IS A TEST TO SEE IF UPDATES FROM MQ ARE WORKING
 }
 \keyword{anova}
 
