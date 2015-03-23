@@ -57,7 +57,7 @@ print.summary.ocmm <- function(x, ...)
 
 #' @title Predict method for Continuous Ordinal Fits
 #' 
-#' @description Predicted values based on ocm object.
+#' @description Predicted values based on ocm object. [Gillian: we put the rnd effeccts to zero? Should we include this method at all?]
 #' @param object An ocm object.
 #' @param newdata optionally, a data frame in which to look for variables with which to predict. Note that all predictor variables should be present having the same names as the variables used to fit the model.
 #' @param ... Further arguments passed to or from other methods.
@@ -293,3 +293,12 @@ print.anova.ocmm <-
                  P.values=TRUE, has.Pvalue=TRUE, na.print="", ...)
     return(invisible(x))
   }
+
+
+vcov.ocmm <- function(object, ...) vcov.ocm(object)
+
+nobs.ocmm <- function(object, ...) nobs.ocm(object)
+
+logLik.ocmm <- function(object, ...) logLik.ocm(object)
+
+extractAIC.ocmm <- function(object, ...) extractAIC.ocm(object)

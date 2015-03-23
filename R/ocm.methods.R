@@ -351,3 +351,15 @@ extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
 
 nobs.ocm <- function(object, ...) object$nobs
 
+model.frame.ocm <- function(object, ...) {
+  if(is.null(mod <- object$data[,all.vars(object$formula)]))
+    stop("Cannot extract model.frame.")
+  else
+    mod
+}
+
+model.matrix.ocm <- function(object, ...) object$x
+
+terms.ocm <- function(object, ...) terms(object$formula)
+
+vcov.ocm <- function(object, ...) object$vcov
