@@ -323,9 +323,13 @@ print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3), signif.st
     return(invisible(x))
   }
 
+#' @export
+
 coef.ocm <- function(x, ...){
     x$coefficients
   }
+
+#' @export
 
 confint.ocm <- function(object, parm, level = 0.95){
     stopifnot(is.numeric(level) && length(level) == 1 && level > 0 && level < 1)
@@ -346,17 +350,24 @@ confint.ocm <- function(object, parm, level = 0.95){
     ci
 }
 
+#' @export
 
 logLik.ocm <- function(object, ...)
   structure(object$logLik, df = object$df, nobs=object$nobs,
             class = "logLik")
+
+#' @export
 
 extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
   edf <- fit$df
   c(edf, -2*fit$logLik + k * edf)
 }
 
+#' @export
+
 nobs.ocm <- function(object, ...) object$nobs
+
+#' @export
 
 model.frame.ocm <- function(object, ...) {
   if(is.null(mod <- object$data[,all.vars(object$formula)]))
@@ -365,8 +376,14 @@ model.frame.ocm <- function(object, ...) {
     mod
 }
 
+#' @export
+
 model.matrix.ocm <- function(object, ...) object$x
 
+#' @export
+
 terms.ocm <- function(object, ...) terms(object$formula)
+
+#' @export
 
 vcov.ocm <- function(object, ...) object$vcov

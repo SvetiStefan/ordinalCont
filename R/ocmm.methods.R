@@ -281,7 +281,6 @@ anova.ocmm <- function(object, ...)
   tab
 }
 
-#' @export
 
 #' @title Print anova.ocm objects
 #' 
@@ -307,11 +306,18 @@ print.anova.ocmm <-
     return(invisible(x))
   }
 
+#' @export
 
 vcov.ocmm <- function(object, ...) vcov.ocm(object)
 
+#' @export
+
 nobs.ocmm <- function(object, ...) nobs.ocm(object)
 
+#' @export
+
 logLik.ocmm <- function(object, ...) logLik.ocm(object)
+
+#' @export
 
 extractAIC.ocmm <- function(object, ...) extractAIC.ocm(object)
