@@ -37,7 +37,7 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
   #cat("\nLeft:",as.numeric(left)," - Right:",right,"\n")
   if (as.numeric(left)!=1) stop("Only random effects on the intercept are supported in this version of ordinalCont.")
   if (any(sapply(c(":","*","|"), function(x)grepl(x, right,fixed=T)))) stop("Syntax incorrect or feature not implemented.")
-  cat("\nGoing to stratify by",right,"..\n")
+  #cat("\nGoing to stratify by",right,"..\n")
   
   link <- match.arg(link)
   gfun <- match.arg(gfun)
@@ -54,20 +54,27 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
   x.complete <- model.matrix(attr(mf, "terms"), data=mf)
   v <- model.response(mf)
   
-  x <- as.matrix(x.complete)[,-(i_rnd+1)] #+1 for the intercept
-  z <- as.matrix(x.complete)[,(i_rnd+1)] #+1 for the intercept
+  x <- as.matrix(x.complete)[,-c(1,i_rnd+1)] # 1 for the intercept, +1 is to consider intercept
+  z <- as.matrix(x.complete)[,(i_rnd+1)] # +1 is to consider intercept
   v <- as.numeric(v)
-  if (is.null(start)) beta_start <- set.beta_start(x,v)
-  len_beta = length(beta_start)
-  glf_start <- set.glf_start(x,v)
-  start <- c(beta_start, glf_start, 1) #1 is the variance of the single rnd effect
-  ### As ocm + z --- end ###
+  if (is.null(start)) {
+    beta_start <- set.beta_start(x,v)
+    len_beta = length(beta_start)
+    if (gfun == 'glf') {
+      gfun_start <- set.glf_start(x,v)
+    }
+    start <- c(beta_start, gfun_start, 1) #1 is the variance of the single rnd effect
+    len_gfun <- length(gfun_start)
+  }
   est <- ocmmEst(start, v, x, z, weights, link, gfun, rnd=right, n_nodes=n_nodes, quad=quad, iclusters)
   coef <- est$coefficients
   beta <- coef[1:len_beta]
-  par_g <- coef[(len_beta+1):(len_beta+2)]
-  sigma_rnd <- coef[len_beta+3]
+  par_g <- coef[(len_beta+1):(len_beta+len_gfun)]
+  #sigma_rnd <- coef[len_beta+len_gfun+1]
   est$len_beta <- len_beta
+  est$len_gfun <- len_gfun
+  est$len_rnd <- 1
+  est$rnd <- right
   #fitted.values are the cumulative probabilities gamma(v|x)
   #est$fitted.values <- as.vector(inv.logit(g_glf(v, par_g) + x%*%beta))
   #The intercept is the parameter M of the glf. Fitted values v* = g^{-1}(W*) = g^{-1}(-x'B), where W=W*+epsilon
@@ -75,7 +82,7 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
   #est$fitted.values <- as.vector(g_glf_inv(-x%*%beta, par_g))
   #est$residuals <- v - est$fitted.values
   #On the latent scale (W* and epsilon=W-W*):
-  est$fitted.values <- as.vector(-x%*%beta+coef[1])
+  est$fitted.values <- as.vector(-x%*%beta)
   est$residuals <- g_glf(v, par_g) - est$fitted.values
   est$v <- v
   est$x <- x
@@ -117,9 +124,9 @@ negloglik_glf_rnd2 <- function(indices, par, b, v, d.matrix, rnd.matrix, wts, le
   y <- v[indices]
   w <- wts[indices]
   beta <- par[1:len_beta]
-  par_g <- par[(len_beta+1):(len_beta+2)]
-  par_dg <- par[(len_beta+1):(len_beta+2)]
-  sigma_rnd <- par[len_beta+3]
+  par_g <- par[(len_beta+1):(len_beta+3)]
+  par_dg <- par[(len_beta+2):(len_beta+3)]
+  sigma_rnd <- par[len_beta+4]
   g <- g_glf(y, par_g)
   dg <- dg_glf(y, par_dg)
   if (any(dg<=0)) return(Inf)
@@ -175,8 +182,8 @@ ocmmEst <- function(start, v, x, z, weights, link, gfun, rnd=NULL, n_nodes, quad
   names(coef) <- names(start)
   len_beta = ncol(x)
   beta <- coef[1:len_beta]
-  par_g <- coef[(len_beta+1):(len_beta+2)]
-  sigma_rnd <- coef[len_beta+3]
+  par_g <- coef[(len_beta+1):(len_beta+3)]
+  sigma_rnd <- coef[len_beta+4]
   
   ## degrees of freedom and standard deviation of residuals
   df <- nrow(x)-ncol(x)-length(par_g)
@@ -185,7 +192,7 @@ ocmmEst <- function(start, v, x, z, weights, link, gfun, rnd=NULL, n_nodes, quad
   
   ## compute sigma^2 * (x’x)^-1
   #vcov <- sigma2 * chol2inv(qx$qr)
-  colnames(vcov) <- rownames(vcov) <- c(colnames(x),"B","T","sigma_rnd")
+  colnames(vcov) <- rownames(vcov) <- c(colnames(x),"M", "B", "T", "sigma_rnd")
   list(coefficients = coef,
        vcov = vcov,
        sigma = sqrt(sigma2),

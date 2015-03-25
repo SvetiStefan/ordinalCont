@@ -38,7 +38,9 @@ summary.ocm <- function(object, ...)
                t.value = tval,
                p.value = 2*pt(-abs(tval), df=object$df))
   res <- list(call=object$call,
-              coefficients=TAB)
+              coefficients=TAB,
+              len_beta=object$len_beta,
+              len_gfun=object$len_gfun)
   class(res) <- "summary.ocm"
   print(res, ...)
 }
@@ -57,7 +59,11 @@ print.summary.ocm <- function(x, ...)
   cat("Call:\n")
   print(x$call)
   cat("\n")
-  printCoefmat(x$coefficients, P.values = TRUE, has.Pvalue = TRUE, ...)
+  cat("Coefficients:\n")
+  printCoefmat(x$coefficients[1:x$len_beta,], P.values = TRUE, has.Pvalue = TRUE, signif.legend = FALSE, ...)
+  cat("\n")
+  cat("g function:\n")
+  printCoefmat(x$coefficients[(x$len_beta+1):(x$len_beta+x$len_gfun),], P.values = TRUE, has.Pvalue = TRUE, ...)
 }
 
 
@@ -120,7 +126,7 @@ print.predict.ocm <- function(x, ...)
 {
   cat("\nThe data set used by the predict method contains",length(x$mode),"records.\n")
   cat("Call:\n")
-  print(x$formula)
+  print(update(x$formula, .~.+1))
   cat("\nSummary of modes:\n")
   print(summary(x$mode), ...)
 }
@@ -159,15 +165,15 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' 
 #' @description Plots the g function as fitted in an \code{ocm} call.
 #' @param x an object of class \code{ocm}
-#' @param CIs method used for confidence bands for the g function. \code{"vcov"} = Wald; 
+#' @param CIs method used for confidence bands for the g function. \code{"no"} = no CIS; \code{"vcov"} = Wald; 
 #' \code{"rnd.x.bootstrap"} = random-x bootstrap; \code{"fix.x.bootstrap"} = bootstrap with fixed-x 
 #' resampling; \code{"param.bootstrap"} = parametric bootstrap. 
-#' MAURIZIO can you add CIs="NULL" for the option of no confidence bands? 
+#' MAURIZIO can you add CIs="NULL" for the option of no confidence bands? M: Done, but used "no" instead of NULL.
 #' And make this the default? (In this case R=NULL would have to be the default.)
-#' @param R the number of bootstrap replicates 
+#' @param R the number of bootstrap replicates [ignored if CIs='no']
 #' @param ... further arguments passed to or from other methods
 #' @details The fitted g function of an \code{ocm} object is plotted. 
-#' If \code{CIs} is not \code{NULL}, 95\% confidence bands are also plotted.
+#' If \code{CIs} is not \code{"no"}, 95\% confidence bands are also plotted.
 #' Confidence bands computed with any of the bootstrapping options are 
 #' obtained with simple percentiles. 
 #' @keywords plot
@@ -177,17 +183,17 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
 #' plot(fit, CIs="vcov")
 
-plot.ocm <- function(x, CIs = c('vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
+plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
 {
   #FIXME: this works for glf only: make general?
   #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some level making optim fail.
   CIs <- match.arg(CIs)
   R <- as.integer(R)
-  len_p <- length(coef(x))
-  indices = c(1, len_p-1, len_p)
+  len_beta <- x$len_beta
+  indices = c(len_beta+1, len_beta+2, len_beta+3)
   params_g <- coef(x)[indices]
   v <- seq(0.01, 0.99, by=0.01)
-  gfun <- params_g[1] + g_glf(v, params_g[2:3])
+  gfun <- g_glf(v, params_g)
   xlim <- c(0,1)
   ylim <- c(min(gfun), max(gfun))
   if (CIs=='vcov'){
@@ -197,18 +203,17 @@ plot.ocm <- function(x, CIs = c('vcov','rnd.x.bootstrap','fix.x.bootstrap','para
     rparams <- mvrnormR(R, params_g, vcov_g)
     #FIXME write efficiently
     all_gfuns <- NULL
-    for (i in 1:R) all_gfuns <- rbind(all_gfuns, rparams[i,1] + g_glf(v, rparams[i,2:3]))
+    for (i in 1:R) all_gfuns <- rbind(all_gfuns, g_glf(v, rparams[i,]))
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
     ci_median <- apply(all_gfuns, 2, function(x)quantile(x, 0.5))
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
-    
   } else if (CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap'| CIs=='param.bootstrap'){
     require(boot)
     bs <- boot(x$data, eval(parse(text=CIs)), R, fit = x)
     all_gfuns <- NULL
     for (i in 1:R){
-      all_gfuns <- rbind(all_gfuns, bs$t[i,1] + g_glf(v, tail(bs$t[i,],2)))
+      all_gfuns <- rbind(all_gfuns, g_glf(v, bs$t[i,indices]))
     }
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
     ci_median <- apply(all_gfuns, 2, function(x)quantile(x, 0.5))
@@ -219,9 +224,11 @@ plot.ocm <- function(x, CIs = c('vcov','rnd.x.bootstrap','fix.x.bootstrap','para
   lines(c(.5,.5), ylim, col='grey')
   lines(xlim, c(0, 0), col='grey')
   #CIs
-  lines(v, ci_low, lty = 2)
-  lines(v, ci_high, lty = 2)
-  if (CIs=='simple' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
+  if (CIs != 'no'){
+    lines(v, ci_low, lty = 2)
+    lines(v, ci_high, lty = 2)
+    if (CIs=='vcov' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
+  }
 }
 
 #' @title Anova method for Continuous Ordinal Fits [GH up to here 19/3/15]

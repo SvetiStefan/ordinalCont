@@ -31,15 +31,25 @@ summary.ocmm <- function(object, ...)
                StdErr = se,
                t.value = tval,
                p.value = 2*pt(-abs(tval), df=object$df))
+  TABrnd <- data.frame(Groups = object$rnd,
+                  Name = "Intercept",
+                  #FIXME make general
+                  Variance = round(object$sigma_rnd^2,3),
+                  Std.Dev. = round(object$sigma_rnd,3))
   res <- list(call=object$call,
-              coefficients=TAB)
-  class(res) <- "summary.ocm"
+              coefficients=TAB,
+              coefficients_rnd=TABrnd,
+              len_beta=object$len_beta,
+              len_gfun=object$len_gfun,
+              len_rnd=object$len_rnd,
+              rnd=object$rnd)
+  class(res) <- "summary.ocmm"
   print(res, ...)
 }
 
 #' @title Summarizing Continuous Ordinal Fits
 #' @description summary method for class "summary.ocm"
-#' @param x An object of class "summary.ocm", usually, a result of a call to summary.ocm.
+#' @param x An object of class "summary.ocmm", usually, a result of a call to summary.ocmm.
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords summary
 #' @export
@@ -49,7 +59,17 @@ print.summary.ocmm <- function(x, ...)
   cat("Call:\n")
   print(x$call)
   cat("\n")
-  printCoefmat(x$coefficients, P.values = TRUE, has.Pvalue = TRUE, ...)
+  cat("Random effects:\n")
+  #printCoefmat(x$coefficients_rnd, P.values = FALSE, has.Pvalue = FALSE, signif.legend = FALSE, ...)
+  #FIXME make general and good looking
+  #cat(names(x$coefficients_rnd),"\n")
+  print(x$coefficients_rnd)
+  cat("\n")
+  cat("Coefficients:\n")
+  printCoefmat(x$coefficients[1:x$len_beta,], P.values = TRUE, has.Pvalue = TRUE, signif.legend = FALSE, ...)
+  cat("\n")
+  cat("g function:\n")
+  printCoefmat(x$coefficients[(x$len_beta+1):(x$len_beta+x$len_gfun),], P.values = TRUE, has.Pvalue = TRUE, ...)
 }
 
 
@@ -139,36 +159,27 @@ plot.predict.ocmm <- function(x, ...)
 #' @keywords plot
 #' @export
 
-plot.ocmm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
+plot.ocmm <- function(x, CIs = c('no','vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
 {
   #FIXME: this works for glf only: make general?
   #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some level making optim fail.
   CIs <- match.arg(CIs)
   R <- as.integer(R)
-  M <- x$coefficients[1]
-  params <- tail(coef(x), 2)
-  len_p <- length(params)
+  len_beta <- x$len_beta
+  indices = c(len_beta+1, len_beta+2, len_beta+3)
+  params_g <- coef(x)[indices]
   v <- seq(0.01, 0.99, by=0.01)
-  gfun <- M + g_glf(v, params)
+  gfun <- g_glf(v, params_g)
   xlim <- c(0,1)
   ylim <- c(min(gfun), max(gfun))
-  if (CIs=='simple') {
-    require(MASS)
-    indices = c(1, len_p-1, len_p)
-    params_g <- params[indices]
+ if (CIs=='vcov') {
+    #require(MASS)
     vcov_g <- x$vcov[indices, indices]
-    rparams <- mvrnorm(R, params_g, vcov_g, empirical=TRUE)
+    #rparams <- mvrnorm(R, params_g, vcov_g, empirical=TRUE)
+    rparams <- mvrnormR(R, params_g, vcov_g)
     #FIXME write efficiently
-    #sds <- sqrt(diag(x$vcov))
-    #sdM <- sds[1]
-    #sM <- rnorm(R, M, sdM)
-    #sdparams <- tail(sds, 2)
-    #sparams <- matrix(rnorm(2*R, params, sdparams), ncol = 2, byrow = T)
     all_gfuns <- NULL
-    for (i in 1:R){
-      #all_gfuns <- rbind(all_gfuns, sM[i] + g_glf(v, sparams[i,]))
-      all_gfuns <- rbind(all_gfuns, rparams[i,1] + g_glf(v, rparams[i,2:3]))
-    }
+    for (i in 1:R) all_gfuns <- rbind(all_gfuns, g_glf(v, rparams[i,]))
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
     ci_median <- apply(all_gfuns, 2, function(x)quantile(x, 0.5))
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
@@ -189,9 +200,11 @@ plot.ocmm <- function(x, CIs = c('simple','rnd.x.bootstrap','fix.x.bootstrap','p
   lines(c(.5,.5), ylim, col='grey')
   lines(xlim, c(0, 0), col='grey')
   #CIs
-  lines(v, ci_low, lty = 2)
-  lines(v, ci_high, lty = 2)
-  if (CIs=='simple' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
+  if (CIs != 'no'){
+    lines(v, ci_low, lty = 2)
+    lines(v, ci_high, lty = 2)
+    if (CIs=='vcov' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
+  }
 }
 
 #' @title Anova method for Continuous Ordinal Fits

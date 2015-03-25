@@ -8,7 +8,7 @@ g function and the logit link function.}
 negloglik_glf(par, v, d.matrix, wts, len_beta)
 }
 \arguments{
-\item{par}{Vector of B, the slope of the curve, and T, the symmetry of the curve.}
+\item{par}{Vector of M, the offset of the curve, B, the slope of the curve, and T, the symmetry of the curve.}
 
 \item{v}{Vector of standarized scores from the continuous ordinal scale.}
 

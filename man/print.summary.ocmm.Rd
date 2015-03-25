@@ -7,7 +7,7 @@
 \method{print}{summary.ocmm}(x, ...)
 }
 \arguments{
-\item{x}{An object of class "summary.ocm", usually, a result of a call to summary.ocm.}
+\item{x}{An object of class "summary.ocmm", usually, a result of a call to summary.ocmm.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }

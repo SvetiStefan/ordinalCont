@@ -4,19 +4,19 @@
 \alias{plot.ocm}
 \title{Plot method for Continuous Ordinal Fits}
 \usage{
-\method{plot}{ocm}(x, CIs = c("vcov", "rnd.x.bootstrap", "fix.x.bootstrap",
-  "param.bootstrap"), R = 1000, ...)
+\method{plot}{ocm}(x, CIs = c("no", "vcov", "rnd.x.bootstrap",
+  "fix.x.bootstrap", "param.bootstrap"), R = 1000, ...)
 }
 \arguments{
 \item{x}{an object of class \code{ocm}}
 
-\item{CIs}{method used for confidence bands for the g function. \code{"vcov"} = Wald;
+\item{CIs}{method used for confidence bands for the g function. \code{"no"} = no CIS; \code{"vcov"} = Wald;
 \code{"rnd.x.bootstrap"} = random-x bootstrap; \code{"fix.x.bootstrap"} = bootstrap with fixed-x
 resampling; \code{"param.bootstrap"} = parametric bootstrap.
-MAURIZIO can you add CIs="NULL" for the option of no confidence bands?
+MAURIZIO can you add CIs="NULL" for the option of no confidence bands? M: Done, but used "no" instead of NULL.
 And make this the default? (In this case R=NULL would have to be the default.)}
 
-\item{R}{the number of bootstrap replicates}
+\item{R}{the number of bootstrap replicates [ignored if CIs='no']}
 
 \item{...}{further arguments passed to or from other methods}
 }
@@ -25,7 +25,7 @@ Plots the g function as fitted in an \code{ocm} call.
 }
 \details{
 The fitted g function of an \code{ocm} object is plotted.
-If \code{CIs} is not \code{NULL}, 95\% confidence bands are also plotted.
+If \code{CIs} is not \code{"no"}, 95\% confidence bands are also plotted.
 Confidence bands computed with any of the bootstrapping options are
 obtained with simple percentiles.
 }

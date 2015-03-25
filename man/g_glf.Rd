@@ -9,7 +9,7 @@ g_glf(v, par)
 \arguments{
 \item{v}{vector of standardized scores from the continuous ordinal scale, 0<v<1.}
 
-\item{par}{vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.}
+\item{par}{vector of 3 elements: M, the offset, B, the slope of the curve, and T, the symmetry of the curve.}
 }
 \value{
 A vector of length equal to the length of v, with values g(v).
@@ -22,7 +22,6 @@ This function computes a parametric version of the g function following Richards
 \details{
 The generalized logistic functions maps from (0,1) to \eqn{(-\infty,\infty)}.
 B is the slope of the curve,  T is the symmetry and M is the offset.
-M is absorbed into the intercept of the model and so is set to zero in this function.
 }
 \references{
 Richards, F. (1959). A flexible growth function for empirical use,

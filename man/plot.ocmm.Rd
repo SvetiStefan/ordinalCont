@@ -4,8 +4,8 @@
 \alias{plot.ocmm}
 \title{Plot method for Continuous Ordinal Fits}
 \usage{
-\method{plot}{ocmm}(x, CIs = c("simple", "rnd.x.bootstrap", "fix.x.bootstrap",
-  "param.bootstrap"), R = 1000, ...)
+\method{plot}{ocmm}(x, CIs = c("no", "vcov", "rnd.x.bootstrap",
+  "fix.x.bootstrap", "param.bootstrap"), R = 1000, ...)
 }
 \arguments{
 \item{x}{An ocm object.}

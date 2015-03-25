@@ -21,10 +21,12 @@
 
 ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), ...)
 {
+  #FIXME check for the intercept in formula.
   if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) 
     stop("Random effects specified. Please call ocmm.")
   if (missing(formula)) 
     stop("Model needs a formula")
+  formula = update(formula,.~.-1) ##no_intercept
   link <- match.arg(link)
   gfun <- match.arg(gfun)
   if(missing(weights)) weights <- rep(1, nrow(data))
@@ -38,19 +40,25 @@ ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("lo
   xnames <- dimnames(x)[[2]]
   x <- as.matrix(x)
   v <- as.numeric(v)
-  if (is.null(start)) beta_start <- set.beta_start(x,v)
-  len_beta = length(beta_start)
-  names(beta_start) <- c("M", xnames[2:len_beta])
-  glf_start <- set.glf_start(x,v)
-  names(glf_start) <- c("B", "T")
-  start <- c(beta_start, glf_start)
+  if (is.null(start)) {
+    beta_start <- set.beta_start(x,v)
+    len_beta = length(beta_start)
+    names(beta_start) <- xnames[1:len_beta]
+    if (gfun == 'glf') {
+      gfun_start <- set.glf_start(x,v)
+      names(gfun_start) <- c("M", "B", "T")
+    }
+    start <- c(beta_start, gfun_start)
+    len_gfun <- length(gfun_start)
+  }
   est <- ocmEst(start, v, x, weights, link, gfun)
   coef <- est$coefficients
   beta <- coef[1:len_beta]
-  par_g <- coef[(len_beta+1):(len_beta+2)]
+  par_g <- coef[(len_beta+1):(len_beta+len_gfun)]
   est$len_beta <- len_beta
-  est$fitted.values <- as.vector(-x%*%beta+coef[1])
-  est$residuals <- coef[1] + g_glf(v, par_g) - est$fitted.values
+  est$len_gfun <- len_gfun
+  est$fitted.values <- as.vector(-x%*%beta)
+  est$residuals <- g_glf(v, par_g) - est$fitted.values
   est$v <- v
   est$x <- x
   est$sample.size <- nrow(x)
@@ -70,7 +78,7 @@ ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("lo
 #'
 #' This function compute the log-likelihood function for a fixed-effects model using the 
 #' generalized logistic function as g function and the logit link function.
-#' @param par Vector of B, the slope of the curve, and T, the symmetry of the curve.
+#' @param par Vector of M, the offset of the curve, B, the slope of the curve, and T, the symmetry of the curve.
 #' @param v Vector of standarized scores from the continuous ordinal scale.
 #' @param d.matrix Design matrix (fixed effects).
 #' @param len_beta Length of the regression coefficients vector.
@@ -83,8 +91,8 @@ negloglik_glf <- function(par, v, d.matrix, wts, len_beta){
 logdensity_glf <- function(par, v, d.matrix, len_beta){
   x <- d.matrix
   beta <- par[1:len_beta]
-  par_g <- par[(len_beta+1):(len_beta+2)]
-  par_dg <- par[(len_beta+1):(len_beta+2)]
+  par_g <- par[(len_beta+1):(len_beta+3)]
+  par_dg <- par[(len_beta+2):(len_beta+3)]
   g <- g_glf(v, par_g)
   dg <- dg_glf(v, par_dg)
   if (any(dg<=0)) return(Inf)
@@ -119,7 +127,7 @@ ocmEst <- function(start, v, x, weights, link, gfun){
   names(coef) <- names(start)
   len_beta = ncol(x)
   beta <- coef[1:len_beta]
-  par_g <- coef[(len_beta+1):(len_beta+2)]
+  par_g <- coef[(len_beta+1):(len_beta+3)]
   
   ## degrees of freedom and standard deviation of residuals
   df <- nrow(x)-ncol(x)-length(par_g)
@@ -128,7 +136,7 @@ ocmEst <- function(start, v, x, weights, link, gfun){
   
   ## compute sigma^2 * (x’x)^-1
   #vcov <- sigma2 * chol2inv(qx$qr)
-  colnames(vcov) <- rownames(vcov) <- c(colnames(x),"B","T")
+  colnames(vcov) <- rownames(vcov) <- c(colnames(x),"M", "B", "T")
   list(coefficients = coef,
        vcov = vcov,
        sigma = sqrt(sigma2),

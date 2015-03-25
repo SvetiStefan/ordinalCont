@@ -5,7 +5,7 @@ set.beta_start <- function(x,v){
 }
 
 set.glf_start <- function(x,v){
-  c(1,1)
+  c(0,1,1)
 }
 
 
@@ -20,14 +20,14 @@ rnd.x.bootstrap <- function(data, indices, fit){
   coefficients(mod)
 }
 fix.x.bootstrap <- function(data, indices, fit){
-  WminusM = as.numeric(-fit$x %*% fit$coefficients[1:fit$len_beta])
-  data$new_v <- g_glf_inv(WminusM + residuals(fit)[indices], tail(fit$coefficients,2))
+  W = as.numeric(-fit$x %*% fit$coefficients[1:fit$len_beta])
+  data$new_v <- g_glf_inv(W + residuals(fit)[indices], tail(fit$coefficients,3))
   mod <- update(fit, new_v ~., data = data)
   coefficients(mod)
 }
 param.bootstrap <- function(data, indices, fit){
-  WminusM = as.numeric(-fit$x %*% fit$coefficients[1:fit$len_beta])
-  data$new_v <- g_glf_inv(WminusM + rlogis(fit$sample.size), tail(fit$coefficients,2))
+  W = as.numeric(-fit$x %*% fit$coefficients[1:fit$len_beta])
+  data$new_v <- g_glf_inv(W + rlogis(fit$sample.size), tail(fit$coefficients,3))
   mod <- update(fit, new_v ~., data = data)
   coefficients(mod)
 }
