@@ -64,10 +64,20 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
   
   mf <- model.frame(formula=formula, data=data)
   x.complete <- model.matrix(attr(mf, "terms"), data=mf)
-  v <- model.response(mf)
   
-  x <- as.matrix(x.complete)[,-c(1,i_rnd+1)] # 1 for the intercept, +1 is to consider intercept
-  z <- as.matrix(x.complete)[,(i_rnd+1)] # +1 is to consider intercept
+  nf.fix <- paste(fixterms, collapse="+")
+  nf.rnd <- paste(right, collapse="+")
+  form.fix <- update(formula, as.formula(paste("~",nf.fix)))
+  form.rnd <- update(formula, as.formula(paste("~",nf.rnd)))
+  mf.fix <- model.frame(formula=form.fix, data=data)
+  mf.rnd <- model.frame(formula=form.rnd, data=data)
+  x <- model.matrix(attr(mf.fix, "terms"), data=mf.fix)
+  z <- model.matrix(attr(mf.rnd, "terms"), data=mf.rnd)
+  x <- as.matrix(x)[,-1] # 1 for the intercept
+  z <- as.matrix(z)[,-1] # 1 for the intercept
+  v <- model.response(mf)
+  #x <- as.matrix(x.complete)[,-c(1,i_rnd+1)] # 1 for the intercept, +1 is to consider intercept
+  #z <- as.matrix(x.complete)[,(i_rnd+1)] # +1 is to consider intercept
   v <- as.numeric(v)
   if (is.null(start)) {
     beta_start <- set.beta_start(x,v)
