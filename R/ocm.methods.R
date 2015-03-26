@@ -71,6 +71,8 @@ print.summary.ocm <- function(x, ...)
 
 #' @title Predict method for Continuous Ordinal Fits
 #' 
+#' Obtains predictions from a continuous ordinal regression object.
+#' 
 #' @description Predicted values based on \code{ocm} object.
 #' @param object an object of class \code{"ocm"}, usually, a result of a call to \code{ocm}
 #' @param newdata optionally, a data frame in which to look for variables with 
@@ -79,9 +81,18 @@ print.summary.ocm <- function(x, ...)
 #' used to fit the model. If \code{NULL}, predictions are computed for the original dataset.
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords predict
-#' @return MAURIZIO we need to specify this (I'm not sure what you've done)
+#' @method predict ocm
+#' @return A list containing the following components
+#' mode a vector of length equal to the number of observations where each element is the mode of v, the ordinal continuous random variable, conditional to the covariates that enter the model.
+#' density	a matrix with number of rows equal to the number of observations where each row carries the values of the density function of v conditional to the covariates that enter the model. The density function is calculated over 100 equally-spaced values of v in (0,1).
+#' x a vector with the 100 equally-spaced values of v in (0,1) used to compute the density of v.
+#' formula the formula used to fit the model.
+#' newdata a new data frame used to make predictions. It takes value NULL if no new data frame has been used.
 #' @details MAURIZIO we need to specify this (I'm not sure what you've done)
-#' @examples xxx add example
+#' @examples 
+#' fit <- ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
+#' pred <- predict(ocm)
+#' plot(pred)
 #' @seealso \code{\link{ocm}}
 #' @export
 
@@ -140,7 +151,7 @@ print.predict.ocm <- function(x, ...)
 #' @param ... Further arguments passed to or from other methods.
 #' @details The probability densities from \code{predict.ocm}  are plotted.
 #' @seealso \code{\link{predict.ocm}},\code{\link{ocm}}
-#' @examples xxx add example
+#' @examples xxx add example --- added in predict.ocm
 #' @keywords predict, plot
 #' @export
 
@@ -168,7 +179,7 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' @param CIs method used for confidence bands for the g function. \code{"no"} = no CIS; \code{"vcov"} = Wald; 
 #' \code{"rnd.x.bootstrap"} = random-x bootstrap; \code{"fix.x.bootstrap"} = bootstrap with fixed-x 
 #' resampling; \code{"param.bootstrap"} = parametric bootstrap. 
-#' MAURIZIO can you add CIs="NULL" for the option of no confidence bands? M: Done, but used "no" instead of NULL.
+#' MAURIZIO can you add CIs="NULL" for the option of no confidence bands? --- M: Done, but used "no" instead of NULL.
 #' And make this the default? (In this case R=NULL would have to be the default.)
 #' @param R the number of bootstrap replicates [ignored if CIs='no']
 #' @param ... further arguments passed to or from other methods
@@ -235,6 +246,7 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
 #' @description Comparison of continuous ordinal models in likelihood ratio tests. 
 #' @param object an object of class \code{ocm}
 #' @param ... one or more additional \code{ocm} objects.
+#' @method anova ocm
 #' @keywords anova
 #' @export
 
@@ -323,14 +335,24 @@ print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3), signif.st
     return(invisible(x))
   }
 
+#' @title Extract Model Coefficients
+#' @param object an ocm object.
+#' @param ... other arguments.
+#' @usage coef(object, ...)
+#' @method coef ocm
 #' @export
 
-coef.ocm <- function(x, ...){
-    x$coefficients
+coef.ocm <- function(object, ...){
+    object$coefficients
   }
 
-#' title Confidence intervals
+#' title Confidence Intervals for Model Parameters
+#' @param object a fitted model object
+#' @param parm a specification of which parameters are to be given confidence intervals. If missing, all parameters are considered.
+#' @param level the confidence level required.
+#' @param ... additional argument(s) for methods.
 #' @export
+#' @method coef ocm
 #' @examples
 #' fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
 #' confint(fit)
@@ -355,24 +377,42 @@ confint.ocm <- function(object, parm, level = 0.95){
     ci
 }
 
+#' @title Extract Log-Likelihood
+#' @param object an ocm object.
+#' @usage logLik(object, ...)
+#' @method logLik ocm
 #' @export
 
-logLik.ocm <- function(object, ...)
+logLik.ocm <- function(object)
   structure(object$logLik, df = object$df, nobs=object$nobs,
             class = "logLik")
 
+#' @title Extract AIC from a Fitted Model
+#' @param fit fitted model.
+#' @param scale parameter currently not used. For compatibility with general extractAIC method.
+#' @param k numeric specifying the ‘weight’ of the equivalent degrees of freedom (=: edf) part in the AIC formula. Defaults to 2.
+#' @param ... further arguments (currently unused)
 #' @export
+#' @method extractAIC ocm
 
 extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
   edf <- fit$df
   c(edf, -2*fit$logLik + k * edf)
 }
 
+#' @title Extract the Number of Observations from a Fit.
+#' @param object A fitted model object.
+#' @param ... Further arguments to be passed to methods.
 #' @export
+#' @method nobs ocm
 
 nobs.ocm <- function(object, ...) object$nobs
 
+#' @title Extracting the Model Frame from a Fit
+#' @param object An ocm object.
+#' @param ... Further arguments to be passed to methods.
 #' @export
+#' @method model.frame ocm
 
 model.frame.ocm <- function(object, ...) {
   if(is.null(mod <- object$data[,all.vars(object$formula)]))
@@ -381,14 +421,26 @@ model.frame.ocm <- function(object, ...) {
     mod
 }
 
+#' @title Extracting the Model Matrix from a Fit
+#' @param object An ocm object.
+#' @param ... Further arguments to be passed to methods.
 #' @export
+#' @method model.matrix ocm
 
 model.matrix.ocm <- function(object, ...) object$x
 
+#' @title Model Terms
+#' @param object An ocm object.
+#' @param ... Further arguments to be passed to methods.
 #' @export
+#' @method terms ocm
 
 terms.ocm <- function(object, ...) terms(object$formula)
 
+#' @title Calculate Variance-Covariance Matrix for a Fitted Model Object
+#' @param object An ocm object.
+#' @param ... Further arguments to be passed to methods.
 #' @export
+#' @method vcov ocm
 
 vcov.ocm <- function(object, ...) object$vcov

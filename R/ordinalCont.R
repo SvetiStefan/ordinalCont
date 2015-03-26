@@ -31,30 +31,33 @@ NULL
 #' @format A data frame with 252 rows and 13 variables
 NULL
 
-#' QoL scores marked by 80 patients at five time marks (only baseline included).
+#' @title ANZ0001 trial
+#' The ANZ0001 trial, conducted by the ANZ Breast Cancer Trials Group, is an unblinded, multi-centre, randomised trial with three chemotherapy treatment arms concluded in 2005 (Stockler, Sour- jina, Grimison, Gebski, Byrne, Harvey, Francis, Nowak, Hazel, Forbes, and Group, 2007). 
+#' Health-related quality of life measures (Overall quality of life, Physical Well-Being, Mood, Pain, Nausea and Vomiting, Appetite) are assessed at each chemotherapy treatment cycle, from randomization until disease progression, when treatment is interrupted. 
+#' The treatments Intermittent Capecitabine (IC) and Continuous Capecitabine (CC) are compared with the standard combination treatment CMF, each with its own protocol. 
+#' There is no maximum duration of treatment, but it is interrupted on disease progression, or when patient intolerance or unacceptable toxicity are recorded.
+#' The data set is extracted from the ANZ0001 trial and contains information from 292 patients with complete quality of life measurements.
 #'
-#' A dataset containing the QoL scores of 80 patients at five time marks: baseline, 2, 4, 6, 12 months after a stroke event. The variables are as follows:
+#' The variables are as follows:
 #'
 #' \itemize{
-#'   \item ID. The ID number of the patient.
-#'   \item Age Age of patient at entry in the study.
-#'   \item Gender Sex of patient.
-#'   \item Height
-#'   \item Weight
-#'   \item BMI
-#'   \item Side.Affected
-#'   \item Time...stroke duration of ...
-#'   \item Sensation ...
-#'   \item Neglect ...
-#'   \item Spasticity ...
-#'   \item Contracture ...
-#'   \item M1.EQoL.health QoL score (from 0 to 100)
+#'   \item randno. The ID number of the patient.
+#'   \item cycleno The chemo cycle number.
+#'   \item age Age of patient at entry in the study.
+#'   \item bsa Patient Body Surface Area (m2).
+#'   \item treatment The treatment received by the patient.
+#'   \item overall Overall quality of life as recorded by the patient on a LASA scale, here normalised in the interval (0, 1).
+#'   \item phys Physical Well-Being as recorded by the patient on a LASA scale, here normalised in the interval (0, 1).
+#'   \item mood Mood as recorded by the patient on a LASA scale, here normalised in the interval (0, 1).
+#'   \item pain Pain as recorded by the patient on a LASA scale, here normalised in the interval (0, 1).
+#'   \item nausvom Nausea and Vomiting as recorded by the patient on a LASA scale, here normalised in the interval (0, 1).
+#'   \item appetite Appetite as recorded by the patient on a LASA scale, here normalised in the interval (0, 1).
 #' }
 #'
 #' @docType data
 #' @keywords datasets
-#' @name qol
-#' @usage data(qol)
-#' @format A data frame with 80 rows and 13 variables
+#' @name ANZ0001
+#' @usage data(ANZ0001)
+#' @format A data frame with 3473 rows and 11 variables
 NULL
 

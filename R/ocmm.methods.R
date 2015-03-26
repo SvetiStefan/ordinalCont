@@ -277,7 +277,7 @@ anova.ocmm <- function(object, ...)
   attr(tab, "models") <- models
   attr(tab, "heading") <-
     "Likelihood ratio tests of ordinal regression models for continuous scales:\n"
-  class(tab) <- c("anova.ocm", "data.frame")
+  class(tab) <- c("anova.ocmm", "data.frame")
   tab
 }
 
@@ -313,6 +313,10 @@ vcov.ocmm <- function(object, ...) vcov.ocm(object)
 #' @export
 
 nobs.ocmm <- function(object, ...) nobs.ocm(object)
+
+#' @export
+
+coef.ocmm <- function(object, ...) coef.ocm(object)
 
 #' @export
 

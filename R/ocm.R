@@ -1,6 +1,6 @@
 #' Ordinal regression for continuous scales
 #'
-#' This function performs  continuous ordinal regression with logit link using the 
+#' This function performs continuous ordinal regression with logit link using the 
 #' generalized logistic function as g function and without random effects.
 #' @param formula a formula expression as for regression models, of the form 
 #' response ~ predictors. Only fixed effects are supported. 
@@ -16,7 +16,29 @@
 #' @export
 #' @examples
 #' # Change data set
-#' fit = ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
+#' #fit <- ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
+#' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+#' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+#' fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' fit.phys 	  <- ocm(phys 	  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' fit.pain 	  <- ocm(pain 	  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' fit.mood 	  <- ocm(mood 	  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' fit.nausvom  <- ocm(nausvom  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' fit.appetite <- ocm(appetite ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' summary(fit.overall)
+#' summary(fit.phys)
+#' summary(fit.pain)
+#' summary(fit.mood)
+#' summary(fit.nausvom)
+#' summary(fit.appetite)
+#' par(mfrow=c(2,3))
+#' plot(fit.overall, CIs='vcov', R=100)
+#' plot(fit.phys, CIs='vcov', R=100)
+#' plot(fit.pain, CIs='vcov', R=100)
+#' plot(fit.mood, CIs='vcov', R=100)
+#' plot(fit.nausvom, CIs='vcov', R=100)
+#' plot(fit.appetite, CIs='vcov', R=100)
+#' par(mfrow=c(1,1))
 
 
 ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), ...)
@@ -26,19 +48,20 @@ ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("lo
     stop("Random effects specified. Please call ocmm.")
   if (missing(formula)) 
     stop("Model needs a formula")
-  formula = update(formula,.~.-1) ##no_intercept
+  #formula = update(formula,.~.-1) ##no_intercept --> problems with contrasts, better to drop the intercept later
   link <- match.arg(link)
   gfun <- match.arg(gfun)
   if(missing(weights)) weights <- rep(1, nrow(data))
   keep <- weights > 0
   data <- data[keep,]
   weights <- weights[keep]
-  
+    
   mf <- model.frame(formula=formula, data=data)
   x <- model.matrix(attr(mf, "terms"), data=mf)
+  lenx <- ncol(x)
   v <- model.response(mf)
-  xnames <- dimnames(x)[[2]]
-  x <- as.matrix(x)
+  xnames <- dimnames(x)[[2]][2:lenx]
+  x <- as.matrix(x)[,2:lenx]
   v <- as.numeric(v)
   if (is.null(start)) {
     beta_start <- set.beta_start(x,v)

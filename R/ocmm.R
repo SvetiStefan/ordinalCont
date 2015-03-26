@@ -15,8 +15,20 @@
 #' @export
 #' @examples
 #' # Change data set
-#' #fitLaplace = ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="Laplace")
-#' fitGH = ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="GH") 
+#' #fitLaplace <- ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="Laplace")
+#' #fitGH <- ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="GH") 
+#' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' fit.phys.rnd     <- ocmm(phys 	   ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' fit.pain.rnd 	  <- ocmm(pain 	   ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' fit.mood.rnd 	  <- ocmm(mood 	   ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' fit.nausvom.rnd  <- ocmm(nausvom	 ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' fit.appetite.rnd <- ocmm(appetite ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' summary(fit.overall.rnd)
+#' summary(fit.phys.rnd)
+#' summary(fit.pain.rnd)
+#' summary(fit.mood.rnd)
+#' summary(fit.nausvom.rnd)
+#' summary(fit.appetite.rnd)
 
 
 ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), quad=c("Laplace","GH"), n_nodes=10, ...)
