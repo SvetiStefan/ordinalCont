@@ -59,3 +59,8 @@ my.aghQuad <- function (g, muHat, sigmaHat, rule, ...)
   val <- sqrt(2) * sigmaHat * apply(wStar * g(z, ...), 2, sum)
   return(val)
 }
+
+format.perc <- function(probs, digits)
+    ## Not yet exported, maybe useful in other contexts:
+    ## quantile.default() sometimes uses a version of it
+    paste(format(100 * probs, trim = TRUE, scientific = FALSE, digits = digits), "%")
