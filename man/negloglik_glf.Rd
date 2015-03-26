@@ -17,7 +17,7 @@ negloglik_glf(par, v, d.matrix, wts, len_beta)
 \item{len_beta}{Length of the regression coefficients vector.}
 }
 \description{
-This function compute the log-likelihood function for a fixed-effects model using the
+This function computes the log-likelihood function for a fixed-effects model using the
 generalized logistic function as g function and the logit link function.
 }
 \keyword{likelihood,}

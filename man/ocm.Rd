@@ -30,7 +30,9 @@ measure. It defaults to the generalized logistic function, which is currently th
 \item{...}{additional arguments are passed on to clm.control.}
 }
 \value{
-an object of type \code{ocm}
+an object of type \code{ocm}. Parameter estimates are in \code{coefficients}.
+The last 3 elements of \code{coefficients} are the parameters of the g function:
+\code{M},  \code{B},  and \code{T}.
 }
 \description{
 This function performs continuous ordinal regression with logit link using the
@@ -40,13 +42,20 @@ generalized logistic function as g function. Random effects are not supported.
 Ordinal regression analysis is a convenient tool for analyzing ordinal response variables
 in the presence of covariates. We extend this methodology to the case of continuous self-rating
 scales such as the Visual Analog Scale (VAS) used in pain assessment, or the Linear Analog
-Self-Assessment (LASA) scales in quality of life studies. These scales  measure subjects'
+Self-Assessment (LASA) scales in quality of life studies. Subjects are
+typically given a linear scale of 100 mm and asked to put a mark where they perceive
+themselves. These scales  measure subjects'
 perception of an intangible quantity, and cannot be handled as ratio variables because of their
 inherent nonlinearity.  We express  the likelihood in terms of a function (the "g function")
  connecting the
 scale with an underlying continuous latent  variable. In the current version the g function is taken as
-the generalized logistic function (Richards 1959). A regression framework supporting fixed effects
- is implemented.
+the generalized logistic function (Richards 1959). This has 3 parameters:
+ \code{M}, the offset, \code{B}, the slope, and \code{T}, the symmetry of the curve.
+The link function is the inverse of the CDF of the assumed underlying distribution of the latent variable. Currently
+the logit link, which corresponds to a standard logistic distribution, is implemented.
+(This implies a proportional odds model.)
+A regression framework supporting fixed effects
+ is implemented. The likelihood is maximized using XXXXX MAURIZIO which function?.
 }
 \examples{
 # Change data set
@@ -79,7 +88,7 @@ Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous Scales,
  \emph{The International Journal of Biostatistics}: 6(1), Article 14.
 
 Richards, F. (1959). A flexible growth function for empirical use,
-\emph{Journal of Experimental Botany}, 10, 290–301.
+\emph{Journal of Experimental Botany}, 10, 290-301.
 }
 \seealso{
 \code{\link{ocmm}}
