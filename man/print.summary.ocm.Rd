@@ -20,5 +20,8 @@ The table of parameter estimates is printed.
 \examples{
 xxx add example
 }
+\author{
+Maurizio Manuguerra
+}
 \keyword{summary}
 

@@ -8,13 +8,19 @@ g function and the logit link function.}
 negloglik_glf(par, v, d.matrix, wts, len_beta)
 }
 \arguments{
-\item{par}{Vector of M, the offset of the curve, B, the slope of the curve, and T, the symmetry of the curve.}
+\item{par}{vector of regression coefficients (first \code{len_beta} elements),
+and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function - last 3 elements)}
 
-\item{v}{Vector of standarized scores from the continuous ordinal scale.}
+\item{v}{vector of standarized scores from the continuous ordinal scale.}
 
-\item{d.matrix}{Design matrix (fixed effects).}
+\item{d.matrix}{Design matrix (fixed effects)}
 
-\item{len_beta}{Length of the regression coefficients vector.}
+\item{wts}{????}
+
+\item{len_beta}{length of the regression coefficients vector}
+}
+\value{
+minus the log-likelihood at parameter values \code{par}
 }
 \description{
 This function computes the log-likelihood function for a fixed-effects model using the

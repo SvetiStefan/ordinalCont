@@ -14,5 +14,8 @@
 \description{
 Comparison of continuous ordinal models using likelihood ratio tests.
 }
+\author{
+Maurizio Manuguerra
+}
 \keyword{anova}
 

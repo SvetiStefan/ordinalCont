@@ -43,6 +43,7 @@
 #'  \emph{The International Journal of Biostatistics}: 6(1), Article 14.
 #'@references Richards, F. (1959). A flexible growth function for empirical use, 
 #' \emph{Journal of Experimental Botany}, 10, 290-301.
+#' @author Maurizio Manuguerra, Gillian Heller
 
 
 #' @export
@@ -133,11 +134,14 @@ ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("lo
 #'
 #' This function computes the log-likelihood function for a fixed-effects model using the 
 #' generalized logistic function as g function and the logit link function.
-#' @param par Vector of M, the offset of the curve, B, the slope of the curve, and T, the symmetry of the curve.
-#' @param v Vector of standarized scores from the continuous ordinal scale.
-#' @param d.matrix Design matrix (fixed effects).
-#' @param len_beta Length of the regression coefficients vector.
+#' @param par vector of regression coefficients (first \code{len_beta} elements), 
+#' and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function - last 3 elements)
+#' @param v vector of standarized scores from the continuous ordinal scale
+#' @param d.matrix design matrix (fixed effects)
+#' @param wts ????
+#' @param len_beta length of the regression coefficients vector
 #' @keywords likelihood, log-likelihood.
+#' @return minus the log-likelihood at parameter values \code{par} 
 
 negloglik_glf <- function(par, v, d.matrix, wts, len_beta){
   return(-sum(wts * logdensity_glf(par, v, d.matrix, len_beta)))

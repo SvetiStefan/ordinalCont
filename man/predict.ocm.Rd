@@ -37,6 +37,9 @@ fit <- ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
 pred <- predict(ocm)
 plot(pred)
 }
+\author{
+Maurizio Manuguerra
+}
 \seealso{
 \code{\link{ocm}}
 }

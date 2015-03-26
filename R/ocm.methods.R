@@ -10,6 +10,7 @@
 #' @seealso \code{\link{ocm}}, \code{\link{summary.ocm}}
 #' @examples xxx add example
 #' @export
+#' @author Maurizio Manuguerra
 
 print.ocm <- function(x, ...)
 {
@@ -28,6 +29,7 @@ print.ocm <- function(x, ...)
 #' @seealso \code{\link{ocm}}, \code{\link{print.ocm}}
 #' @examples xxx add example
 #' @export
+#' @author Maurizio Manuguerra
 
 summary.ocm <- function(object, ...)
 {
@@ -53,6 +55,7 @@ summary.ocm <- function(object, ...)
 #' @examples xxx add example
 #' @keywords summary
 #' @export
+#' @author Maurizio Manuguerra
 
 print.summary.ocm <- function(x, ...)
 {
@@ -95,6 +98,7 @@ print.summary.ocm <- function(x, ...)
 #' plot(pred)
 #' @seealso \code{\link{ocm}}
 #' @export
+#' @author Maurizio Manuguerra
 
 predict.ocm <- function(object, newdata=NULL, ...)
 {
@@ -154,6 +158,7 @@ print.predict.ocm <- function(x, ...)
 #' @examples xxx add example --- added in predict.ocm
 #' @keywords predict, plot
 #' @export
+#' @author Maurizio Manuguerra
 
 plot.predict.ocm <- function(x, records=NULL, ...)
 {
@@ -191,6 +196,7 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' @examples
 #' fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
 #' plot(fit, CIs="vcov")
+#' @author Maurizio Manuguerra
 
 plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
 {
@@ -247,6 +253,7 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
 #' @method anova ocm
 #' @keywords anova
 #' @export
+#' @author Maurizio Manuguerra
 
 
 anova.ocm <- function(object, ...)

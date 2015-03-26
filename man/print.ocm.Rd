@@ -21,6 +21,9 @@ which prints objects of class \code{'ocm'}.
 \examples{
 xxx add example
 }
+\author{
+Maurizio Manuguerra
+}
 \seealso{
 \code{\link{ocm}}, \code{\link{summary.ocm}}
 }

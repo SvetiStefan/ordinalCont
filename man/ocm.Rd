@@ -83,6 +83,9 @@ plot(fit.nausvom, CIs='vcov', R=100)
 plot(fit.appetite, CIs='vcov', R=100)
 par(mfrow=c(1,1))
 }
+\author{
+Maurizio Manuguerra, Gillian Heller
+}
 \references{
 Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous Scales,
  \emph{The International Journal of Biostatistics}: 6(1), Article 14.

@@ -17,6 +17,9 @@ Summary method for class \code{'ocm'}
 \examples{
 xxx add example
 }
+\author{
+Maurizio Manuguerra
+}
 \seealso{
 \code{\link{ocm}}, \code{\link{print.ocm}}
 }

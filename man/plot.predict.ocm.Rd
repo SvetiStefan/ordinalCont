@@ -24,6 +24,9 @@ The probability densities from \code{predict.ocm}  are plotted.
 \examples{
 xxx add example --- added in predict.ocm
 }
+\author{
+Maurizio Manuguerra
+}
 \seealso{
 \code{\link{predict.ocm}},\code{\link{ocm}}
 }

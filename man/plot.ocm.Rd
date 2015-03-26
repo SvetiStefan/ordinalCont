@@ -31,6 +31,9 @@ obtained with simple percentiles.
 fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
 plot(fit, CIs="vcov")
 }
+\author{
+Maurizio Manuguerra
+}
 \seealso{
 \code{\link{ocm}}
 }
