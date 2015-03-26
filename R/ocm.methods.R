@@ -179,8 +179,6 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' @param CIs method used for confidence bands for the g function. \code{"no"} = no CIS; \code{"vcov"} = Wald; 
 #' \code{"rnd.x.bootstrap"} = random-x bootstrap; \code{"fix.x.bootstrap"} = bootstrap with fixed-x 
 #' resampling; \code{"param.bootstrap"} = parametric bootstrap. 
-#' MAURIZIO can you add CIs="NULL" for the option of no confidence bands? --- M: Done, but used "no" instead of NULL.
-#' And make this the default? (In this case R=NULL would have to be the default.)
 #' @param R the number of bootstrap replicates [ignored if CIs='no']
 #' @param ... further arguments passed to or from other methods
 #' @details The fitted g function of an \code{ocm} object is plotted. 
@@ -243,7 +241,7 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
 }
 
 #' @title Anova method for Continuous Ordinal Fits [GH up to here 19/3/15]
-#' @description Comparison of continuous ordinal models in likelihood ratio tests. 
+#' @description Comparison of continuous ordinal models using likelihood ratio tests. 
 #' @param object an object of class \code{ocm}
 #' @param ... one or more additional \code{ocm} objects.
 #' @method anova ocm

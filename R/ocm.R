@@ -1,18 +1,41 @@
 #' Ordinal regression for continuous scales
 #'
 #' This function performs continuous ordinal regression with logit link using the 
-#' generalized logistic function as g function and without random effects.
+#' generalized logistic function as g function. Random effects are not supported.
 #' @param formula a formula expression as for regression models, of the form 
 #' response ~ predictors. Only fixed effects are supported. 
-#' The model must have an intercept: attempts to remove one will lead to a warning and will be ignored (TODO).
+#' The model must have an intercept: attempts to remove one will lead to a warning and will be 
+#' ignored (TODO).
 #' @param data  an optional data frame in which to interpret the variables occurring in the formulas.
-#' @param start initial values for the parameters in the format c(alpha, beta, zeta), where alpha are the threshold parameters (adjusted for potential nominal effects), beta are the regression parameters and zeta are the scale parameters. (CHANGETHIS)
+#' @param start initial values for the parameters in the format c(alpha, beta, zeta), where 
+#' alpha are the threshold parameters (adjusted for potential nominal effects), beta are the 
+#' regression parameters and zeta are the scale parameters. (CHANGETHIS)
 #' @param control a list of control parameters passed on to clm.control.
-#' @param link link function, i.e. the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model.
-#' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function, which is currently the only possibility.
+#' @param link link function, i.e. the type of location-scale distribution assumed for the latent 
+#' distribution. The default "logit" link gives the proportional odds model.
+#' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the ordinal 
+#' measure. It defaults to the generalized logistic function, which is currently the only possibility.
 #' @param ... additional arguments are passed on to clm.control.
 #' @keywords likelihood, log-likelihood, ordinal regression.
-#' @return an object of type 'ocm'
+#' @details Ordinal regression analysis is a convenient tool for analyzing ordinal response variables 
+#' in the presence of covariates. We extend this methodology to the case of continuous self-rating 
+#' scales such as the Visual Analog Scale (VAS) used in pain assessment, or the Linear Analog 
+#' Self-Assessment (LASA) scales in quality of life studies. These scales  measure subjects' 
+#' perception of an intangible quantity, and cannot be handled as ratio variables because of their 
+#' inherent nonlinearity.  We express  the likelihood in terms of a function (the "g function")
+#'  connecting the  
+#' scale with an underlying continuous latent  variable. In the current version the g function is taken as 
+#' the generalized logistic function (Richards 1959). A regression framework supporting fixed effects
+#'  is implemented.  
+#' 
+#' @seealso \code{\link{ocmm}}
+#' @return an object of type \code{ocm}
+#'  @references Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous Scales, 
+#'  \emph{The International Journal of Biostatistics}: 6(1), Article 14.
+#'@references Richards, F. (1959). A flexible growth function for empirical use, 
+#' \emph{Journal of Experimental Botany}, 10, 290–301.
+
+
 #' @export
 #' @examples
 #' # Change data set
