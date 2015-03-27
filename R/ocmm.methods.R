@@ -215,8 +215,10 @@ plot.ocmm <- function(x, CIs = c('no','vcov','rnd.x.bootstrap','fix.x.bootstrap'
 #' @keywords anova
 #' @export
 #' @examples
+#' \dontrun{
 #' fitLaplace = ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="Laplace")
 #' anova(fitLaplace, update(fitLaplace, . ~ . + localisa))
+#' }
 
 
 anova.ocmm <- function(object, ...)

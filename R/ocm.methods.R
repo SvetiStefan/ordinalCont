@@ -8,7 +8,8 @@
 #' @keywords likelihood, log-likelihood.
 #' @method print ocm
 #' @seealso \code{\link{ocm}}, \code{\link{summary.ocm}}
-#' @examples xxx add example
+#' @examples 
+#' # Example here
 #' @export
 #' @author Maurizio Manuguerra
 
@@ -27,7 +28,8 @@ print.ocm <- function(x, ...)
 #' @method summary ocm
 #' @keywords summary
 #' @seealso \code{\link{ocm}}, \code{\link{print.ocm}}
-#' @examples xxx add example
+#' @examples
+#' # Add here
 #' @export
 #' @author Maurizio Manuguerra
 
@@ -52,7 +54,8 @@ summary.ocm <- function(object, ...)
 #' @param x An object of class \code{"summary.ocm"}, usually a result of a call to \code{summary.ocm}.
 #' @param ... further arguments passed to or from other methods.
 #' @details The table of parameter estimates is printed.
-#' @examples xxx add example
+#' @examples 
+#' #Example here
 #' @keywords summary
 #' @export
 #' @author Maurizio Manuguerra
@@ -94,7 +97,7 @@ print.summary.ocm <- function(x, ...)
 #' @details MAURIZIO we need to specify this (I'm not sure what you've done)
 #' @examples 
 #' fit <- ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
-#' pred <- predict(ocm)
+#' pred <- predict(fit)
 #' plot(pred)
 #' @seealso \code{\link{ocm}}
 #' @export
@@ -134,7 +137,6 @@ predict.ocm <- function(object, newdata=NULL, ...)
 #' @keywords predict
 #' @details The table of predictions from \code{predict.ocm} is printed.
 #' @seealso \code{\link{predict.ocm}},\code{\link{ocm}}
-#' @examples xxx add example
 #' @export
 
 print.predict.ocm <- function(x, ...)
@@ -155,7 +157,6 @@ print.predict.ocm <- function(x, ...)
 #' @param ... Further arguments passed to or from other methods.
 #' @details The probability densities from \code{predict.ocm}  are plotted.
 #' @seealso \code{\link{predict.ocm}},\code{\link{ocm}}
-#' @examples xxx add example --- added in predict.ocm
 #' @keywords predict, plot
 #' @export
 #' @author Maurizio Manuguerra

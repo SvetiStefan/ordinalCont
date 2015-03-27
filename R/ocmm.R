@@ -17,6 +17,7 @@
 #' # Change data set
 #' #fitLaplace <- ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="Laplace")
 #' #fitGH <- ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="GH") 
+#'\dontrun{
 #' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
 #' fit.phys.rnd     <- ocmm(phys 	   ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
 #' fit.pain.rnd 	  <- ocmm(pain 	   ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
@@ -29,6 +30,8 @@
 #' summary(fit.mood.rnd)
 #' summary(fit.nausvom.rnd)
 #' summary(fit.appetite.rnd)
+#' }
+
 
 
 ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), quad=c("Laplace","GH"), n_nodes=10, ...)
