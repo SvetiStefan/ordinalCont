@@ -167,7 +167,6 @@ plot.predict.ocm <- function(x, records=NULL, ...)
   cat("Call:\n")
   print(x$formula)
   cat("The data set used in the predict methos contains ",nrow(x$density)," records.\n")
-  #cat("Please press 'enter' to start/advance plotting and q to quit.\n")
   for (i in records){
     input <- readline(paste("Press 'enter' to plot the probability density of record ",i,", 'q' to quit: ",sep=''))
     if (input == "q") break()
@@ -199,7 +198,7 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' plot(fit, CIs="vcov")
 #' @author Maurizio Manuguerra
 
-plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
+plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, main="g function (95% CIs)", xlab="Continuous ordinal scale", ylab="", ...)
 {
   #FIXME: this works for glf only: make general?
   #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some level making optim fail.
@@ -232,18 +231,18 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
       all_gfuns <- rbind(all_gfuns, g_glf(v, bs$t[i,indices]))
     }
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
-    ci_median <- apply(all_gfuns, 2, function(x)quantile(x, 0.5))
+    #ci_median <- apply(all_gfuns, 2, function(x)quantile(x, 0.5))
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
   }
-  plot(v, gfun, main='g function (95% CIs)', xlim = xlim, ylim = ylim, xlab = 'Continuous ordinal scale', ylab = '', t='l')
+  plot(v, gfun, main=main, xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab, t='l')
   lines(c(.5,.5), ylim, col='grey')
   lines(xlim, c(0, 0), col='grey')
   #CIs
   if (CIs != 'no'){
     lines(v, ci_low, lty = 2)
     lines(v, ci_high, lty = 2)
-    if (CIs=='vcov' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
+    #if (CIs=='vcov' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
   }
 }
 

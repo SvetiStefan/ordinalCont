@@ -75,94 +75,19 @@ print.summary.ocmm <- function(x, ...)
 
 
 
-#' @title Predict method for Continuous Ordinal Fits
-#' 
-#' @description Predicted values based on ocm object. [Gillian: we put the rnd effeccts to zero? Should we include this method at all?]
-#' @param object An ocm object.
-#' @param newdata optionally, a data frame in which to look for variables with which to predict. Note that all predictor variables should be present having the same names as the variables used to fit the model.
-#' @param ... Further arguments passed to or from other methods.
-#' @keywords predict
-#' @export
-
-predict.ocmm <- function(object, newdata=NULL, ...)
-{
-  formula <- object$formula
-  params <- coef(object)
-  if(is.null(newdata)){
-    x <- object$x 
-  }else{
-    x <- model.matrix(object$formula, newdata)
-  }
-  len_beta <- ncol(x)
-  ndens <- 100
-  v <- seq(0.01, 0.99, length.out = ndens)
-  modes <- NULL
-  densities <- NULL
-  #FIXME: rewrite efficiently
-  for (subject in 1:nrow(x)){
-    d.matrix <- matrix(rep(x[subject,], ndens), nrow = ndens, dimnames = list(as.character(1:ndens), colnames(x)), byrow = TRUE)
-    densities <- rbind(densities, t(logdensity_glf(par = params, v = v, d.matrix = d.matrix, len_beta = len_beta)))
-    modes <- c(modes, v[which.max(logdensity_glf(par = params, v = v, d.matrix = d.matrix, len_beta = len_beta))])
-  }
-  #y = logdensity_glf(par = params, v = v, d.matrix = x, len_beta = len_beta)
-  #plot(v,y)
-  pred <- list(mode = modes, density = densities, x = v, formula = formula, newdata = newdata)
-  class(pred) <- "predict.ocm"
-  return(pred)
-}
-
-#' @title Print the output of predict method
-#' @description print method for class "predict.ocm"
-#' @param x An object of class "predict.ocm".
-#' @param ... Further arguments passed to or from other methods.
-#' @keywords predict
-#' @export
-
-print.predict.ocmm <- function(x, ...)
-{
-  cat("\nThe data set used by the predict method contains",length(x$mode),"records.\n")
-  cat("Call:\n")
-  print(x$formula)
-  cat("\nSummary of modes:\n")
-  print(summary(x$mode), ...)
-}
-
-#' @title Plot the probability densities as from the output of the predict method
-#' @description plot method for class "predict.ocm"
-#' @param x An object of class "predict.ocm".
-#' @param ... Further arguments passed to or from other methods.
-#' @keywords predict, plot
-#' @export
-
-plot.predict.ocmm <- function(x, ...)
-{
-  cat("Call:\n")
-  print(x$formula)
-  cat("The data set used in the predict methos contains ",nrow(x$density)," records.\n")
-  #cat("Please press 'enter' to start/advance plotting and q to quit.\n")
-  for (i in 1:nrow(x$density)){
-    input <- readline(paste("Press 'enter' to plot the probability density of record ",i,", 'q' to quit: ",sep=''))
-    if (input == "q") break()
-    plot(x$x, exp(x$density[i,]), ylab="Probability Density", main=paste("Record", i), xlab=paste("mode =", round(x$mode[i],3)), t='l')
-    lines(rep(x$mode[i],2), c(0, max(exp(x$density[i,]))), lty=21)
-  }
-}
-
-
 #' @title Plot method for Continuous Ordinal Fits
 #' 
 #' @description This function plots the g function as fitted in an ocm call.
 #' @param x An ocm object.
-#' @param CIs Indicates if confidence bands for the g function should be computed based on the Wald 95\% CIs or by bootstrapping. In  the latter case, bootstrapping can be performed using a random-x or a fixed-x resampling. 95\% CIs computed with either of the bootstrapping options are obtained with simple percentiles. 
+#' @param CIs Indicates if confidence bands for the g function should be computed (based on the Wald 95\% CIs).
 #' @param R The number of bootstrap replicates. 
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords plot
 #' @export
 
-plot.ocmm <- function(x, CIs = c('no','vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, ...)
+plot.ocmm <- function(x, CIs = c('no','vcov'), R = 1000, main="g function (95% CIs)", xlab="Continuous ordinal scale", ylab="", ...)
 {
   #FIXME: this works for glf only: make general?
-  #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some level making optim fail.
   CIs <- match.arg(CIs)
   R <- as.integer(R)
   len_beta <- x$len_beta
@@ -172,7 +97,7 @@ plot.ocmm <- function(x, CIs = c('no','vcov','rnd.x.bootstrap','fix.x.bootstrap'
   gfun <- g_glf(v, params_g)
   xlim <- c(0,1)
   ylim <- c(min(gfun), max(gfun))
- if (CIs=='vcov') {
+  if (CIs=='vcov') {
     #require(MASS)
     vcov_g <- x$vcov[indices, indices]
     #rparams <- mvrnorm(R, params_g, vcov_g, empirical=TRUE)
@@ -181,29 +106,16 @@ plot.ocmm <- function(x, CIs = c('no','vcov','rnd.x.bootstrap','fix.x.bootstrap'
     all_gfuns <- NULL
     for (i in 1:R) all_gfuns <- rbind(all_gfuns, g_glf(v, rparams[i,]))
     ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
-    ci_median <- apply(all_gfuns, 2, function(x)quantile(x, 0.5))
-    ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
-    ylim <- c(min(ci_low), max(ci_high))
-  } else if (CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap'| CIs=='param.bootstrap'){
-    require(boot)
-    bs <- boot(x$data, eval(parse(text=CIs)), R, fit = x)
-    all_gfuns <- NULL
-    for (i in 1:R){
-      all_gfuns <- rbind(all_gfuns, bs$t[i,1] + g_glf(v, tail(bs$t[i,],2)))
-    }
-    ci_low  <- apply(all_gfuns, 2, function(x)quantile(x, 0.025))
-    ci_median <- apply(all_gfuns, 2, function(x)quantile(x, 0.5))
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
   }
-  plot(v, gfun, main='g function (95% CIs)', xlim = xlim, ylim = ylim, xlab = 'Continuous ordinal scale', ylab = '', t='l')
+  plot(v, gfun, main=main, xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab, t='l')
   lines(c(.5,.5), ylim, col='grey')
   lines(xlim, c(0, 0), col='grey')
   #CIs
   if (CIs != 'no'){
     lines(v, ci_low, lty = 2)
     lines(v, ci_high, lty = 2)
-    if (CIs=='vcov' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
   }
 }
 
