@@ -6,7 +6,7 @@
 \usage{
 \method{plot}{ocmm}(x, CIs = c("no", "vcov"), R = 1000,
   main = "g function (95\% CIs)", xlab = "Continuous ordinal scale",
-  ylab = "", ...)
+  ylab = "", CIcol = "lightblue", ...)
 }
 \arguments{
 \item{x}{An ocm object.}

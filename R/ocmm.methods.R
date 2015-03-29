@@ -85,7 +85,7 @@ print.summary.ocmm <- function(x, ...)
 #' @keywords plot
 #' @export
 
-plot.ocmm <- function(x, CIs = c('no','vcov'), R = 1000, main="g function (95% CIs)", xlab="Continuous ordinal scale", ylab="", ...)
+plot.ocmm <- function(x, CIs = c('no','vcov'), R = 1000, main="g function (95% CIs)", xlab="Continuous ordinal scale", ylab="", CIcol='lightblue', ...)
 {
   #FIXME: this works for glf only: make general?
   CIs <- match.arg(CIs)
@@ -110,13 +110,16 @@ plot.ocmm <- function(x, CIs = c('no','vcov'), R = 1000, main="g function (95% C
     ylim <- c(min(ci_low), max(ci_high))
   }
   plot(v, gfun, main=main, xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab, t='l')
-  lines(c(.5,.5), ylim, col='grey')
-  lines(xlim, c(0, 0), col='grey')
   #CIs
   if (CIs != 'no'){
     lines(v, ci_low, lty = 2)
     lines(v, ci_high, lty = 2)
+    polygon(c(v, rev(v)),c(ci_low,rev(ci_high)), col = CIcol)
+    lines(v,gfun) #to superimpose gfun estimate on shaded area
+    #if (CIs=='vcov' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
   }
+  lines(c(.5,.5), ylim, col='grey')
+  lines(xlim, c(0, 0), col='grey')
 }
 
 #' @title Anova method for Continuous Ordinal Fits
