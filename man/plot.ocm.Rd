@@ -5,7 +5,9 @@
 \title{Plot method for Continuous Ordinal Fits}
 \usage{
 \method{plot}{ocm}(x, CIs = c("no", "vcov", "rnd.x.bootstrap",
-  "fix.x.bootstrap", "param.bootstrap"), R = 1000, ...)
+  "fix.x.bootstrap", "param.bootstrap"), R = 1000,
+  main = "g function (95\% CIs)", xlab = "Continuous ordinal scale",
+  ylab = "", CIcol = "lightblue", ...)
 }
 \arguments{
 \item{x}{an object of class \code{ocm}}

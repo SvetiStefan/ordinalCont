@@ -4,13 +4,14 @@
 \alias{plot.ocmm}
 \title{Plot method for Continuous Ordinal Fits}
 \usage{
-\method{plot}{ocmm}(x, CIs = c("no", "vcov", "rnd.x.bootstrap",
-  "fix.x.bootstrap", "param.bootstrap"), R = 1000, ...)
+\method{plot}{ocmm}(x, CIs = c("no", "vcov"), R = 1000,
+  main = "g function (95\% CIs)", xlab = "Continuous ordinal scale",
+  ylab = "", ...)
 }
 \arguments{
 \item{x}{An ocm object.}
 
-\item{CIs}{Indicates if confidence bands for the g function should be computed based on the Wald 95\% CIs or by bootstrapping. In  the latter case, bootstrapping can be performed using a random-x or a fixed-x resampling. 95\% CIs computed with either of the bootstrapping options are obtained with simple percentiles.}
+\item{CIs}{Indicates if confidence bands for the g function should be computed (based on the Wald 95\% CIs).}
 
 \item{R}{The number of bootstrap replicates.}
 

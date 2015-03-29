@@ -96,8 +96,10 @@ print.summary.ocm <- function(x, ...)
 #' newdata a new data frame used to make predictions. It takes value NULL if no new data frame has been used.
 #' @details MAURIZIO we need to specify this (I'm not sure what you've done)
 #' @examples 
-#' fit <- ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
-#' pred <- predict(fit)
+#' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+#' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+#' fit.overall <- ocm(overall ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' pred <- predict(fit.overall)
 #' plot(pred)
 #' @seealso \code{\link{ocm}}
 #' @export
@@ -198,7 +200,7 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' plot(fit, CIs="vcov")
 #' @author Maurizio Manuguerra
 
-plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, main="g function (95% CIs)", xlab="Continuous ordinal scale", ylab="", ...)
+plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, main="g function (95% CIs)", xlab="Continuous ordinal scale", ylab="", CIcol = 'lightblue', ...)
 {
   #FIXME: this works for glf only: make general?
   #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some level making optim fail.
@@ -236,14 +238,16 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
     ylim <- c(min(ci_low), max(ci_high))
   }
   plot(v, gfun, main=main, xlim = xlim, ylim = ylim, xlab = xlab, ylab = ylab, t='l')
-  lines(c(.5,.5), ylim, col='grey')
-  lines(xlim, c(0, 0), col='grey')
   #CIs
   if (CIs != 'no'){
     lines(v, ci_low, lty = 2)
     lines(v, ci_high, lty = 2)
+    polygon(c(v, rev(v)),c(ci_low,rev(ci_high)), col = CIcol)
+    lines(v,gfun) #to superimpose gfun estimate on shaded area
     #if (CIs=='vcov' | CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap') lines(v, ci_median, lty = 2)
   }
+  lines(c(.5,.5), ylim, col='grey')
+  lines(xlim, c(0, 0), col='grey')
 }
 
 #' @title Anova method for Continuous Ordinal Fits [GH up to here 19/3/15]
