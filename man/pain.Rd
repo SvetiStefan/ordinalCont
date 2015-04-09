@@ -21,19 +21,22 @@ the end of the course of treatment and one month after completion of the treatme
 The variables are as follows:
 \tabular{rlll}{
  \tab \bold{Name}\tab \bold{Type}\tab \bold{Description}\cr
-   \tab time\tab numeric\tab the time mark at which the VAS score is recorded\cr
+   \tab time\tab numeric\tab  time  at which the VAS score is recorded: 1=baseline; 2=end of treatment; \cr
+   \tab\tab\tab 3=one month after end of  treatment\cr
   \tab ID\tab numeric\tab The ID number of the patient\cr
-  \tab sex\tab ??\tab Sex of patient\cr
-  \tab age\tab numeric\tab Age of patient at entry in the study\cr
-  \tab group\tab  ?? \tab Trial group (2002 or 2003)\cr
+  \tab sex\tab binary\tab 1=male; 2=female\cr
+  \tab age\tab numeric\tab age of patient at entry in the study\cr
+  \tab group\tab  numeric \tab trial group (2002 or 2003)\cr
   \tab duration\tab numeric \tab duration of ...\cr
   \tab laterali \tab binary\tab uni- or bi-lateral pain\cr
   \tab laser \tab binary\tab 1 if the laser was active, 0 otherwise\cr
   \tab localisa\tab ??\tab diffuse or localized pain\cr
   \tab vas\tab numeric\tab VAS score (0--1)\cr
   \tab lasert1\tab binary\tab 1 if the laser was active and the VAS score was recorded at baseline, 0 otherwise\cr
-  \tab lasert2\tab binary\tab 1 if the laser was active and the VAS score was recorded at the end of the course of treatment, 0 otherwise\cr
-  \tab lasert3\tab binary\tab 1 if the laser was active and the VAS score was recorded one month after completion of the treatment, 0 otherwise\cr
+  \tab lasert2\tab binary\tab 1 if the laser was active and the VAS score was recorded at the end of the course\cr
+  \tab\tab\tab of treatment, 0 otherwise\cr
+  \tab lasert3\tab binary\tab 1 if the laser was active and the VAS score was recorded one month after completion\cr
+  \tab\tab\tab of the treatment, 0 otherwise\cr
  }
 }
 \references{
