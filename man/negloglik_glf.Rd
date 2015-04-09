@@ -2,14 +2,15 @@
 % Please edit documentation in R/ocm.R
 \name{negloglik_glf}
 \alias{negloglik_glf}
-\title{Log-likelihood function for the fixed-effects model, using the generalized logistic function as
-g function and the logit link function.}
+\title{Log-likelihood function for the fixed-effects model, using the generalized logistic
+function as g function and the logit link function}
 \usage{
 negloglik_glf(par, v, d.matrix, wts, len_beta)
 }
 \arguments{
 \item{par}{vector of regression coefficients (first \code{len_beta} elements),
-and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function - last 3 elements)}
+and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function -
+last 3 elements)}
 
 \item{v}{vector of standarized scores from the continuous ordinal scale}
 
@@ -23,7 +24,11 @@ and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function
 minus the log-likelihood at parameter values \code{par}
 }
 \description{
-This function computes the log-likelihood function for a fixed-effects model using the
+Log-likelihood function for the fixed-effects model, using the generalized logistic
+function as g function and the logit link function
+}
+\details{
+This function computes minus the log-likelihood function for a fixed-effects model using the
 generalized logistic function as g function and the logit link function.
 }
 \keyword{likelihood,}

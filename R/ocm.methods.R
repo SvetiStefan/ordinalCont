@@ -383,7 +383,8 @@ coef.ocm <- function(object, ...){
 #' @details MAURIZIO are these asymptotic confidence intervals? We need to say what they are based on.
 #' @method coef ocm
 #' @return A matrix with 2 columns and number of rows equal to \code{length(parm)}. If \code{parm} is all parameters, 
-#' and the generalized logistic g-function is used, this is p+3, where p is the number of beta coefficients. 
+#' and the generalized logistic g-function is used, this is \code{len_beta} +3, where 
+#' \code{len_beta}  is the number of beta coefficients. 
 #' Columns contain lower and upper bounds of confidence intervals.
 #' @seealso \code{\link{ocm}}
 #' @examples
@@ -495,11 +496,11 @@ terms.ocm <- function(object, ...) terms(object$formula)
 #' @param object An \code{ocm} object.
 #' @param ... Further arguments to be passed to methods
 #' @details For the generalized logistic g-function, the variance-covariance matrix of model parameters will be 
-#' of dimension (p+3)x(p+3), where p is the number of beta coefficients.
-#' in the model.
+#' of dimension (\code{len_beta} +3)x(\code{len_beta} +3), where \code{len_beta}  is the number of 
+#' beta coefficients in the model.
 #' @export
 #' @method vcov ocm
-#'  @return variance-covariance matrix of model parameters
+#'  @return Variance-covariance matrix of model parameters
 #' @seealso \code{\link{ocm}}
 
 vcov.ocm <- function(object, ...) object$vcov

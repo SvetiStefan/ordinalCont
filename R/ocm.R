@@ -6,15 +6,17 @@
 #' response ~ predictors. Only fixed effects are supported. 
 #' The model must have an intercept: attempts to remove one will lead to a warning and will be 
 #' ignored (TODO).
-#' @param data  an optional data frame in which to interpret the variables occurring in the formulas.
+#' @param data  an optional data frame in which to interpret the variables occurring in the 
+#' formulas.
 #' @param start initial values for the parameters in the format c(alpha, beta, zeta), where 
 #' alpha are the threshold parameters (adjusted for potential nominal effects), beta are the 
 #' regression parameters and zeta are the scale parameters. (CHANGETHIS)
 #' @param control a list of control parameters passed on to clm.control.
 #' @param link link function, i.e. the type of location-scale distribution assumed for the latent 
 #' distribution. The default "logit" link gives the proportional odds model.
-#' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the ordinal 
-#' measure. It defaults to the generalized logistic function, which is currently the only possibility.
+#' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the 
+#' ordinal measure. It defaults to the generalized logistic function, which is currently the only 
+#' possibility.
 #' @param ... additional arguments are passed on to clm.control.
 #' @keywords likelihood, log-likelihood, ordinal regression.
 #' @details Ordinal regression analysis is a convenient tool for analyzing ordinal response variables 
@@ -26,10 +28,12 @@
 #' perception of an intangible quantity, and cannot be handled as ratio variables because of their 
 #' inherent nonlinearity.  We express  the likelihood in terms of a function (the "g function")
 #'  connecting the  
-#' scale with an underlying continuous latent  variable. In the current version the g function is taken as 
+#' scale with an underlying continuous latent  variable. In the current version the g function 
+#' is taken as 
 #' the generalized logistic function (Richards 1959). This has 3 parameters: 
 #'  \code{M}, the offset, \code{B}, the slope, and \code{T}, the symmetry of the curve.
-#' The link function is the inverse of the CDF of the assumed underlying distribution of the latent variable. Currently 
+#' The link function is the inverse of the CDF of the assumed underlying distribution of the 
+#' latent variable. Currently 
 #' the logit link, which corresponds to a standard logistic distribution, is implemented. 
 #' (This implies a proportional odds model.)
 #' A regression framework supporting fixed effects
@@ -39,8 +43,8 @@
 #' @return an object of type \code{ocm}. Parameter estimates are in \code{coefficients}. 
 #' The last 3 elements of \code{coefficients} are the parameters of the g function: 
 #' \code{M},  \code{B},  and \code{T}.
-#'  @references Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous Scales, 
-#'  \emph{The International Journal of Biostatistics}: 6(1), Article 14.
+#'  @references Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous 
+#'  Scales, \emph{The International Journal of Biostatistics}: 6(1), Article 14.
 #'@references Richards, F. (1959). A flexible growth function for empirical use, 
 #' \emph{Journal of Experimental Botany}, 10, 290-301.
 #' @author Maurizio Manuguerra, Gillian Heller
@@ -74,14 +78,16 @@
 #' par(mfrow=c(1,1))
 
 
-ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), ...)
+ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), 
+                gfun = c("glf"), ...)
 {
   #FIXME check for the intercept in formula.
   if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) 
     stop("Random effects specified. Please call ocmm.")
   if (missing(formula)) 
     stop("Model needs a formula")
-  #formula = update(formula,.~.-1) ##no_intercept --> problems with contrasts, better to drop the intercept later
+  #formula = update(formula,.~.-1) ##no_intercept --> problems with contrasts, 
+  #better to drop the intercept later
   link <- match.arg(link)
   gfun <- match.arg(gfun)
   if(missing(weights)) weights <- rep(1, nrow(data))
@@ -129,13 +135,14 @@ ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("lo
   est
 }  
 
-#' Log-likelihood function for the fixed-effects model, using the generalized logistic function as 
-#' g function and the logit link function.
+#' @title Log-likelihood function for the fixed-effects model, using the generalized logistic 
+#' function as g function and the logit link function
 #'
-#' This function computes the log-likelihood function for a fixed-effects model using the 
+#' @details This function computes minus the log-likelihood function for a fixed-effects model using the 
 #' generalized logistic function as g function and the logit link function.
 #' @param par vector of regression coefficients (first \code{len_beta} elements), 
-#' and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function - last 3 elements)
+#' and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function - 
+#' last 3 elements)
 #' @param v vector of standarized scores from the continuous ordinal scale
 #' @param d.matrix design matrix (fixed effects)
 #' @param wts ????
@@ -163,7 +170,8 @@ ocmEst <- function(start, v, x, weights, link, gfun){
   len_beta <- ncol(x)
   if (gfun == "glf") {
     if (link == "logit"){
-      fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, wts=weights, len_beta=len_beta, method="BFGS", hessian = T)
+      fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, wts=weights, len_beta=len_beta, 
+                   method="BFGS", hessian = T)
     } else {
       stop("link function not implemented.")
     }

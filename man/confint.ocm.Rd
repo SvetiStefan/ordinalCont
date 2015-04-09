@@ -18,7 +18,8 @@ If missing, all parameters are considered.}
 }
 \value{
 A matrix with 2 columns and number of rows equal to \code{length(parm)}. If \code{parm} is all parameters,
-and the generalized logistic g-function is used, this is p+3, where p is the number of beta coefficients.
+and the generalized logistic g-function is used, this is \code{len_beta} +3, where
+\code{len_beta}  is the number of beta coefficients.
 Columns contain lower and upper bounds of confidence intervals.
 }
 \description{

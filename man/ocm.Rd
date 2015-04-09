@@ -13,7 +13,8 @@ response ~ predictors. Only fixed effects are supported.
 The model must have an intercept: attempts to remove one will lead to a warning and will be
 ignored (TODO).}
 
-\item{data}{an optional data frame in which to interpret the variables occurring in the formulas.}
+\item{data}{an optional data frame in which to interpret the variables occurring in the
+formulas.}
 
 \item{start}{initial values for the parameters in the format c(alpha, beta, zeta), where
 alpha are the threshold parameters (adjusted for potential nominal effects), beta are the
@@ -24,8 +25,9 @@ regression parameters and zeta are the scale parameters. (CHANGETHIS)}
 \item{link}{link function, i.e. the type of location-scale distribution assumed for the latent
 distribution. The default "logit" link gives the proportional odds model.}
 
-\item{gfun}{A smooth monotonic function capable of capturing the non-linear nature of the ordinal
-measure. It defaults to the generalized logistic function, which is currently the only possibility.}
+\item{gfun}{A smooth monotonic function capable of capturing the non-linear nature of the
+ordinal measure. It defaults to the generalized logistic function, which is currently the only
+possibility.}
 
 \item{...}{additional arguments are passed on to clm.control.}
 }
@@ -48,10 +50,12 @@ themselves. These scales  measure subjects'
 perception of an intangible quantity, and cannot be handled as ratio variables because of their
 inherent nonlinearity.  We express  the likelihood in terms of a function (the "g function")
  connecting the
-scale with an underlying continuous latent  variable. In the current version the g function is taken as
+scale with an underlying continuous latent  variable. In the current version the g function
+is taken as
 the generalized logistic function (Richards 1959). This has 3 parameters:
  \code{M}, the offset, \code{B}, the slope, and \code{T}, the symmetry of the curve.
-The link function is the inverse of the CDF of the assumed underlying distribution of the latent variable. Currently
+The link function is the inverse of the CDF of the assumed underlying distribution of the
+latent variable. Currently
 the logit link, which corresponds to a standard logistic distribution, is implemented.
 (This implies a proportional odds model.)
 A regression framework supporting fixed effects
@@ -87,8 +91,8 @@ par(mfrow=c(1,1))
 Maurizio Manuguerra, Gillian Heller
 }
 \references{
-Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous Scales,
- \emph{The International Journal of Biostatistics}: 6(1), Article 14.
+Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous
+ Scales, \emph{The International Journal of Biostatistics}: 6(1), Article 14.
 
 Richards, F. (1959). A flexible growth function for empirical use,
 \emph{Journal of Experimental Botany}, 10, 290-301.

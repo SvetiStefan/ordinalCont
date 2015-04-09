@@ -12,15 +12,15 @@
 \item{...}{Further arguments to be passed to methods}
 }
 \value{
-variance-covariance matrix of model parameters
+Variance-covariance matrix of model parameters
 }
 \description{
 Calculate Variance-Covariance Matrix for a Fitted Model Object
 }
 \details{
 For the generalized logistic g-function, the variance-covariance matrix of model parameters will be
-of dimension (p+3)x(p+3), where p is the number of beta coefficients.
-in the model.
+of dimension (\code{len_beta} +3)x(\code{len_beta} +3), where \code{len_beta}  is the number of
+beta coefficients in the model.
 }
 \seealso{
 \code{\link{ocm}}
