@@ -2,20 +2,38 @@
 % Please edit documentation in R/ocm.methods.R
 \name{extractAIC.ocm}
 \alias{extractAIC.ocm}
-\title{Extract AIC from a Fitted Model}
+\title{Extract AIC from a fitted Continuous Ordinal Model}
 \usage{
 \method{extractAIC}{ocm}(fit, scale = 0, k = 2, ...)
 }
 \arguments{
-\item{fit}{fitted model.}
+\item{fit}{\code{ocm} object}
 
 \item{scale}{parameter currently not used. For compatibility with general extractAIC method.}
 
-\item{k}{numeric specifying the ‘weight’ of the equivalent degrees of freedom (=: edf) part in the AIC formula. Defaults to 2.}
+\item{k}{numeric specifying the ‘weight’ of the equivalent degrees of freedom (=: edf)
+part in the AIC formula. Defaults to 2.}
 
 \item{...}{further arguments (currently unused)}
 }
+\value{
+Generalised AIC of \code{ocm} object \code{fit}
+}
 \description{
-Extract AIC from a Fitted Model
+Extract AIC from a fitted Continuous Ordinal Model
+}
+\details{
+The generalised AIC is computed:
+\deqn{-2\ell +k\cdot edf}
+where \eqn{\ell} is the log likelihood, k=2 gives the AIC, and
+k=log(n) gives the BIC.
+}
+\references{
+Akaike, H (1983).
+Information measures and model selection,
+\emph{Bulletin of the International Statistical Institute}, 50:277-290.
+}
+\seealso{
+\code{\link{ocm}}
 }
 

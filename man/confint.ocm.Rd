@@ -2,24 +2,36 @@
 % Please edit documentation in R/ocm.methods.R
 \name{confint.ocm}
 \alias{confint.ocm}
-\title{title Confidence Intervals for Model Parameters}
+\title{Confidence Intervals for Model Parameters}
 \usage{
 \method{coef}{ocm}(object, parm, level = 0.95)
 }
 \arguments{
-\item{object}{a fitted model object}
+\item{object}{a fitted \code{ocm} object}
 
-\item{parm}{a specification of which parameters are to be given confidence intervals. If missing, all parameters are considered.}
+\item{parm}{a specification of which parameters are to be given confidence intervals.
+If missing, all parameters are considered.}
 
-\item{level}{the confidence level required.}
+\item{level}{the confidence level required. Default level is 95\%.}
 
 \item{...}{additional argument(s) for methods.}
 }
+\value{
+A matrix with 2 columns and number of rows equal to \code{length(parm)}. If \code{parm} is all parameters,
+and the generalized logistic g-function is used, this is p+3, where p is the number of beta coefficients.
+Columns contain lower and upper bounds of confidence intervals.
+}
 \description{
-title Confidence Intervals for Model Parameters
+Confidence Intervals for Model Parameters
+}
+\details{
+MAURIZIO are these asymptotic confidence intervals? We need to say what they are based on.
 }
 \examples{
 fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
 confint(fit)
+}
+\seealso{
+\code{\link{ocm}}
 }
 

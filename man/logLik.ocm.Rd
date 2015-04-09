@@ -7,9 +7,15 @@
 logLik(object, ...)
 }
 \arguments{
-\item{object}{an ocm object.}
+\item{object}{an \code{ocm} object.}
+}
+\value{
+log likelihood of \code{ocm} object
 }
 \description{
 Extract Log-Likelihood
+}
+\seealso{
+\code{\link{ocm}}
 }
 

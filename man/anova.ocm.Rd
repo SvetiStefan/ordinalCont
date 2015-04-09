@@ -12,7 +12,8 @@
 \item{...}{one or more additional \code{ocm} objects.}
 }
 \value{
-object of class \code{anova.ocm}, consisting of anova table giving AIC, log likelihood, likelihood ratio statistic, df and p-value
+object of class \code{anova.ocm}, consisting of anova table giving AIC,
+ log likelihood, likelihood ratio statistic, df and p-value
  for each model, in hierarchical order
 }
 \description{

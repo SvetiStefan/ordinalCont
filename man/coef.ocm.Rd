@@ -7,11 +7,17 @@
 coef(object, ...)
 }
 \arguments{
-\item{object}{an ocm object.}
+\item{object}{an \code{ocm} object}
 
-\item{...}{other arguments.}
+\item{...}{other arguments}
+}
+\value{
+vector of model coefficients in \code{object}
 }
 \description{
 Extract Model Coefficients
+}
+\seealso{
+\code{\link{ocm}}
 }
 

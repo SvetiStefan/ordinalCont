@@ -2,16 +2,22 @@
 % Please edit documentation in R/ocm.methods.R
 \name{model.matrix.ocm}
 \alias{model.matrix.ocm}
-\title{Extracting the Model Matrix from a Fit}
+\title{Extract the Model Matrix from a Fit}
 \usage{
 \method{model.matrix}{ocm}(object, ...)
 }
 \arguments{
-\item{object}{An ocm object.}
+\item{object}{an \code{ocm} object}
 
 \item{...}{Further arguments to be passed to methods.}
 }
+\value{
+model matrix
+}
 \description{
-Extracting the Model Matrix from a Fit
+Extract the Model Matrix from a Fit
+}
+\seealso{
+\code{\link{ocm}}
 }
 

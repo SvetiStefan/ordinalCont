@@ -7,11 +7,22 @@
 \method{vcov}{ocm}(object, ...)
 }
 \arguments{
-\item{object}{An ocm object.}
+\item{object}{An \code{ocm} object.}
 
-\item{...}{Further arguments to be passed to methods.}
+\item{...}{Further arguments to be passed to methods}
+}
+\value{
+variance-covariance matrix of model parameters
 }
 \description{
 Calculate Variance-Covariance Matrix for a Fitted Model Object
+}
+\details{
+For the generalized logistic g-function, the variance-covariance matrix of model parameters will be
+of dimension (p+3)x(p+3), where p is the number of beta coefficients.
+in the model.
+}
+\seealso{
+\code{\link{ocm}}
 }
 

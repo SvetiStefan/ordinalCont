@@ -11,7 +11,13 @@
 
 \item{...}{Further arguments to be passed to methods.}
 }
+\value{
+model frame
+}
 \description{
 Extracting the Model Frame from a Fit
+}
+\seealso{
+\code{\link{ocm}}
 }
 

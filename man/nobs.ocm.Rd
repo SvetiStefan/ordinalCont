@@ -2,16 +2,22 @@
 % Please edit documentation in R/ocm.methods.R
 \name{nobs.ocm}
 \alias{nobs.ocm}
-\title{Extract the Number of Observations from a Fit.}
+\title{Extract the Number of Observations from a Fit}
 \usage{
 \method{nobs}{ocm}(object, ...)
 }
 \arguments{
-\item{object}{A fitted model object.}
+\item{object}{an \code{ocm} object}
 
 \item{...}{Further arguments to be passed to methods.}
 }
+\value{
+number of observations
+}
 \description{
-Extract the Number of Observations from a Fit.
+Extract the Number of Observations from a Fit
+}
+\seealso{
+\code{\link{ocm}}
 }
 

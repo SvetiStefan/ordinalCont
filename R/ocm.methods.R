@@ -122,9 +122,12 @@ predict.ocm <- function(object, newdata=NULL, ...)
   densities <- NULL
   #FIXME: rewrite efficiently
   for (subject in 1:nrow(x)){
-    d.matrix <- matrix(rep(x[subject,], ndens), nrow = ndens, dimnames = list(as.character(1:ndens), colnames(x)), byrow = TRUE)
-    densities <- rbind(densities, t(logdensity_glf(par = params, v = v, d.matrix = d.matrix, len_beta = len_beta)))
-    modes <- c(modes, v[which.max(logdensity_glf(par = params, v = v, d.matrix = d.matrix, len_beta = len_beta))])
+    d.matrix <- matrix(rep(x[subject,], ndens), nrow = ndens, dimnames = list(as.character(1:ndens), 
+                                                                              colnames(x)), byrow = TRUE)
+    densities <- rbind(densities, t(logdensity_glf(par = params, v = v, d.matrix = d.matrix, 
+                                                   len_beta = len_beta)))
+    modes <- c(modes, v[which.max(logdensity_glf(par = params, v = v, d.matrix = d.matrix, 
+                                                 len_beta = len_beta))])
   }
   #y = logdensity_glf(par = params, v = v, d.matrix = x, len_beta = len_beta)
   #plot(v,y)
@@ -201,10 +204,13 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' plot(fit, CIs="vcov")
 #' @author Maurizio Manuguerra
 
-plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, main="g function (95% CIs)", xlab="Continuous ordinal scale", ylab="", CIcol = 'lightblue', ...)
+plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, 
+                     main="g function (95% CIs)", xlab="Continuous ordinal scale", ylab="", 
+                     CIcol = 'lightblue', ...)
 {
   #FIXME: this works for glf only: make general?
-  #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some level making optim fail.
+  #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some 
+  #level making optim fail.
   CIs <- match.arg(CIs)
   R <- as.integer(R)
   len_beta <- x$len_beta
@@ -261,7 +267,8 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
 #' @export
 #' @author Maurizio Manuguerra
 #'  @seealso \code{\link{ocm}}, \code{\link{print.anova.ocm}}
-#'  @return object of class \code{anova.ocm}, consisting of anova table giving AIC, log likelihood, likelihood ratio statistic, df and p-value 
+#'  @return object of class \code{anova.ocm}, consisting of anova table giving AIC, 
+#'  log likelihood, likelihood ratio statistic, df and p-value 
 #'  for each model, in hierarchical order
 
 
@@ -339,7 +346,8 @@ anova.ocm <- function(object, ...)
 #' @return Prints \code{anova.ocm} object
 #' @export
 
-print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3), signif.stars=getOption("show.signif.stars"), ...){
+print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3), 
+                            signif.stars=getOption("show.signif.stars"), ...){
     if (!is.null(heading <- attr(x, "heading")))
       cat(heading, "\n")
     models <- attr(x, "models")
@@ -353,23 +361,31 @@ print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3), signif.st
   }
 
 #' @title Extract Model Coefficients
-#' @param object an ocm object.
-#' @param ... other arguments.
+#' @param object an \code{ocm} object
+#' @param ... other arguments
 #' @usage coef(object, ...)
 #' @method coef ocm
+#'  @seealso \code{\link{ocm}}
+#' @return vector of model coefficients in \code{object}
 #' @export
 
 coef.ocm <- function(object, ...){
     object$coefficients
   }
 
-#' title Confidence Intervals for Model Parameters
-#' @param object a fitted model object
-#' @param parm a specification of which parameters are to be given confidence intervals. If missing, all parameters are considered.
-#' @param level the confidence level required.
+#' @title Confidence Intervals for Model Parameters
+#' @param object a fitted \code{ocm} object
+#' @param parm a specification of which parameters are to be given confidence intervals. 
+#' If missing, all parameters are considered.
+#' @param level the confidence level required. Default level is 95\%.
 #' @param ... additional argument(s) for methods.
 #' @export
+#' @details MAURIZIO are these asymptotic confidence intervals? We need to say what they are based on.
 #' @method coef ocm
+#' @return A matrix with 2 columns and number of rows equal to \code{length(parm)}. If \code{parm} is all parameters, 
+#' and the generalized logistic g-function is used, this is p+3, where p is the number of beta coefficients. 
+#' Columns contain lower and upper bounds of confidence intervals.
+#' @seealso \code{\link{ocm}}
 #' @examples
 #' fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
 #' confint(fit)
@@ -395,20 +411,32 @@ confint.ocm <- function(object, parm, level = 0.95){
 }
 
 #' @title Extract Log-Likelihood
-#' @param object an ocm object.
+#' @param object an \code{ocm} object.
 #' @usage logLik(object, ...)
 #' @method logLik ocm
+#'  @seealso \code{\link{ocm}}
+#' @return log likelihood of \code{ocm} object
 #' @export
 
 logLik.ocm <- function(object)
   structure(object$logLik, df = object$df, nobs=object$nobs,
             class = "logLik")
 
-#' @title Extract AIC from a Fitted Model
-#' @param fit fitted model.
+#' @title Extract AIC from a fitted Continuous Ordinal Model
+#' @param fit \code{ocm} object
 #' @param scale parameter currently not used. For compatibility with general extractAIC method.
-#' @param k numeric specifying the ‘weight’ of the equivalent degrees of freedom (=: edf) part in the AIC formula. Defaults to 2.
+#' @param k numeric specifying the ‘weight’ of the equivalent degrees of freedom (=: edf) 
+#' part in the AIC formula. Defaults to 2.
 #' @param ... further arguments (currently unused)
+#' @details The generalised AIC is computed:
+#' \deqn{-2\ell +k\cdot edf}
+#' where \eqn{\ell} is the log likelihood, k=2 gives the AIC, and 
+#' k=log(n) gives the BIC.
+#' @seealso \code{\link{ocm}}
+#' @return Generalised AIC of \code{ocm} object \code{fit}
+#' @references  Akaike, H (1983). 
+#' Information measures and model selection, 
+#' \emph{Bulletin of the International Statistical Institute}, 50:277-290.
 #' @export
 #' @method extractAIC ocm
 
@@ -417,11 +445,13 @@ extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
   c(edf, -2*fit$logLik + k * edf)
 }
 
-#' @title Extract the Number of Observations from a Fit.
-#' @param object A fitted model object.
+#' @title Extract the Number of Observations from a Fit
+#' @param object an \code{ocm} object
 #' @param ... Further arguments to be passed to methods.
 #' @export
+#' @return number of observations
 #' @method nobs ocm
+#' @seealso \code{\link{ocm}}
 
 nobs.ocm <- function(object, ...) object$nobs
 
@@ -430,6 +460,8 @@ nobs.ocm <- function(object, ...) object$nobs
 #' @param ... Further arguments to be passed to methods.
 #' @export
 #' @method model.frame ocm
+#' @return model frame
+#' @seealso \code{\link{ocm}}
 
 model.frame.ocm <- function(object, ...) {
   if(is.null(mod <- object$data[,all.vars(object$formula)]))
@@ -438,26 +470,36 @@ model.frame.ocm <- function(object, ...) {
     mod
 }
 
-#' @title Extracting the Model Matrix from a Fit
-#' @param object An ocm object.
+#' @title Extract the Model Matrix from a Fit
+#' @param object an \code{ocm} object
 #' @param ... Further arguments to be passed to methods.
 #' @export
 #' @method model.matrix ocm
+#' @return model matrix
+#' @seealso \code{\link{ocm}}
+#' 
 
 model.matrix.ocm <- function(object, ...) object$x
 
 #' @title Model Terms
-#' @param object An ocm object.
+#' @param object An \code{ocm} object.
 #' @param ... Further arguments to be passed to methods.
 #' @export
 #' @method terms ocm
+#'  @return model terms
+#' @seealso \code{\link{ocm}}
 
 terms.ocm <- function(object, ...) terms(object$formula)
 
 #' @title Calculate Variance-Covariance Matrix for a Fitted Model Object
-#' @param object An ocm object.
-#' @param ... Further arguments to be passed to methods.
+#' @param object An \code{ocm} object.
+#' @param ... Further arguments to be passed to methods
+#' @details For the generalized logistic g-function, the variance-covariance matrix of model parameters will be 
+#' of dimension (p+3)x(p+3), where p is the number of beta coefficients.
+#' in the model.
 #' @export
 #' @method vcov ocm
+#'  @return variance-covariance matrix of model parameters
+#' @seealso \code{\link{ocm}}
 
 vcov.ocm <- function(object, ...) object$vcov

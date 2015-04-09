@@ -7,11 +7,17 @@
 \method{terms}{ocm}(object, ...)
 }
 \arguments{
-\item{object}{An ocm object.}
+\item{object}{An \code{ocm} object.}
 
 \item{...}{Further arguments to be passed to methods.}
 }
+\value{
+model terms
+}
 \description{
 Model Terms
+}
+\seealso{
+\code{\link{ocm}}
 }
 
