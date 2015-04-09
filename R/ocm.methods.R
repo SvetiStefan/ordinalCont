@@ -11,7 +11,7 @@
 #' @examples 
 #' # Example here
 #' @export
-#' @author Maurizio Manuguerra
+#' @author Maurizio Manuguerra, Gillian Heller
 
 print.ocm <- function(x, ...)
 {
@@ -77,10 +77,8 @@ print.summary.ocm <- function(x, ...)
 
 #' @title Predict method for Continuous Ordinal Fits
 #' 
-#' Obtains predictions from a continuous ordinal regression object.
-#' 
 #' @description Predicted values based on \code{ocm} object.
-#' @param object an object of class \code{"ocm"}, usually, a result of a call to \code{ocm}
+#' @param object an object of class \code{"ocm"}, usually a result of a call to \code{ocm}
 #' @param newdata optionally, a data frame in which to look for variables with 
 #' which to predict. 
 #' Note that all predictor variables should be present, having the same names as the variables 
@@ -88,12 +86,15 @@ print.summary.ocm <- function(x, ...)
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords predict
 #' @method predict ocm
-#' @return A list containing the following components
-#' mode a vector of length equal to the number of observations where each element is the mode of v, the ordinal continuous random variable, conditional to the covariates that enter the model.
-#' density	a matrix with number of rows equal to the number of observations where each row carries the values of the density function of v conditional to the covariates that enter the model. The density function is calculated over 100 equally-spaced values of v in (0,1).
-#' x a vector with the 100 equally-spaced values of v in (0,1) used to compute the density of v.
-#' formula the formula used to fit the model.
-#' newdata a new data frame used to make predictions. It takes value NULL if no new data frame has been used.
+#' @return A list containing the following components:\cr
+#' \code{mode} : a vector of length equal to the number of observations. Each element is the mode of v, 
+#' the ordinal continuous random variable, conditional on the covariates in the model;\cr 
+#' \code{density} :	a matrix with number of rows equal to the number of observations. Each row 
+#' contains the values of the density function of v conditional on the covariates in the model. 
+#' The density function is calculated over 100 equally-spaced values of v in (0,1);\cr
+#' \code{x} : a vector with the 100 equally-spaced values of v in (0,1) used to compute the density of v;\cr
+#' \code{formula} : the formula used to fit the model;\cr
+#' \code{newdata} : a new data frame used to make predictions. It takes value NULL if no new data frame has been used.
 #' @details MAURIZIO we need to specify this (I'm not sure what you've done)
 #' @examples 
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
@@ -138,7 +139,7 @@ predict.ocm <- function(object, newdata=NULL, ...)
 #' @param ... Further arguments passed to or from other methods
 #' @keywords predict
 #' @details The table of predictions from \code{predict.ocm} is printed.
-#' @seealso \code{\link{predict.ocm}},\code{\link{ocm}}
+#' @seealso \code{\link{predict.ocm}}, \code{\link{ocm}}
 #' @export
 
 print.predict.ocm <- function(x, ...)
@@ -250,14 +251,19 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
   lines(xlim, c(0, 0), col='grey')
 }
 
-#' @title Anova method for Continuous Ordinal Fits [GH up to here 19/3/15]
+#' @title Anova method for Continuous Ordinal Fits 
 #' @description Comparison of continuous ordinal models using likelihood ratio tests. 
 #' @param object an object of class \code{ocm}
 #' @param ... one or more additional \code{ocm} objects.
+#' @details Likelihood ratio testing of nested models is performed. 
 #' @method anova ocm
 #' @keywords anova
 #' @export
 #' @author Maurizio Manuguerra
+#'  @seealso \code{\link{ocm}}, \code{\link{print.anova.ocm}}
+#'  @return object of class \code{anova.ocm}, consisting of anova table giving AIC, log likelihood, likelihood ratio statistic, df and p-value 
+#'  for each model, in hierarchical order
+
 
 
 anova.ocm <- function(object, ...)
@@ -329,6 +335,8 @@ anova.ocm <- function(object, ...)
 #' @param x An object of class "anova.ocm".
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords summary, anova
+#' @seealso \code{\link{ocm}}, \code{\link{anova.ocm}}
+#' @return Prints \code{anova.ocm} object
 #' @export
 
 print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3), signif.stars=getOption("show.signif.stars"), ...){

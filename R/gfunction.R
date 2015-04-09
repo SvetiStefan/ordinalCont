@@ -12,6 +12,8 @@
 #' 
 #' @references Richards, F. (1959). A flexible growth function for empirical use, 
 #' \emph{Journal of Experimental Botany}, 10, 290–301.
+#' @seealso \code{\link{dg_glf}},\code{\link{g_glf_inv}}
+#' @author Maurizio Manuguerra, Gillian Heller
 #
 
 
@@ -28,7 +30,9 @@ g_glf <- function(v, par){
 #' @param par vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.
 #' @keywords Richards, derivative, generalized logistic function.
 #' @return A vector of length equal to the length of v, with values g'(v).
-#' @references Richards, F. (1959). A flexible growth function for empirical use, 
+#' @seealso \code{\link{g_glf}},\code{\link{g_glf_inv}}
+#' @author Maurizio Manuguerra, Gillian Heller
+#'  @references Richards, F. (1959). A flexible growth function for empirical use, 
 #' \emph{Journal of Experimental Botany}, 10, 290–301.
 #
 
@@ -48,9 +52,11 @@ dg_glf <- function(v, par){
 #' @param par vector of 3 elements: M, the offset of the curve, B, the slope of the curve, and T, the symmetry 
 #' of the curve. 
 #' @return A vector of length equal to the length of W, with values \eqn{g^{-1}(W)}
-#' @references Richards, F. (1959). A flexible growth function for empirical use, 
-#' \emph{Journal of Experimental Botany}, 10, 290–301.
 #' @keywords Richards, generalized logistic function.
+#' @seealso \code{\link{g_glf}},\code{\link{dg_glf}}
+#' @author Maurizio Manuguerra, Gillian Heller
+#'  @references Richards, F. (1959). A flexible growth function for empirical use, 
+#' \emph{Journal of Experimental Botany}, 10, 290–301.
 
 g_glf_inv <- function(W, par){
   exp.part <- exp(par[2]*(W-par[1]))
