@@ -11,8 +11,8 @@
 
 \item{scale}{parameter currently not used. For compatibility with general extractAIC method.}
 
-\item{k}{numeric specifying the ‘weight’ of the equivalent degrees of freedom (=: edf)
-part in the AIC formula. Defaults to 2.}
+\item{k}{‘weight’ of the equivalent degrees of freedom (=: edf)
+in the AIC formula. Defaults to 2.}
 
 \item{...}{further arguments (currently unused)}
 }

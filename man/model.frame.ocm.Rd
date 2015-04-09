@@ -2,7 +2,7 @@
 % Please edit documentation in R/ocm.methods.R
 \name{model.frame.ocm}
 \alias{model.frame.ocm}
-\title{Extracting the Model Frame from a Fit}
+\title{Extract the Model Frame from a Fit}
 \usage{
 \method{model.frame}{ocm}(object, ...)
 }
@@ -15,7 +15,7 @@
 model frame
 }
 \description{
-Extracting the Model Frame from a Fit
+Extract the Model Frame from a Fit
 }
 \seealso{
 \code{\link{ocm}}

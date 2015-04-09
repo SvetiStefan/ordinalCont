@@ -14,7 +14,7 @@ g_glf_inv(W, par)
 of the curve.}
 }
 \value{
-A vector of length equal to the length of W, with values \eqn{g^{-1}(W)}
+A vector of length equal to the length of \code{W}, with values \eqn{g^{-1}(W)}
 }
 \description{
 This function computes the inverse of a parametric version of the g function

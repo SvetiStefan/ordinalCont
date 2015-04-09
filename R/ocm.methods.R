@@ -426,8 +426,8 @@ logLik.ocm <- function(object)
 #' @title Extract AIC from a fitted Continuous Ordinal Model
 #' @param fit \code{ocm} object
 #' @param scale parameter currently not used. For compatibility with general extractAIC method.
-#' @param k numeric specifying the ‘weight’ of the equivalent degrees of freedom (=: edf) 
-#' part in the AIC formula. Defaults to 2.
+#' @param k  ‘weight’ of the equivalent degrees of freedom (=: edf) 
+#'  in the AIC formula. Defaults to 2.
 #' @param ... further arguments (currently unused)
 #' @details The generalised AIC is computed:
 #' \deqn{-2\ell +k\cdot edf}
@@ -456,7 +456,7 @@ extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
 
 nobs.ocm <- function(object, ...) object$nobs
 
-#' @title Extracting the Model Frame from a Fit
+#' @title Extract the Model Frame from a Fit
 #' @param object An ocm object.
 #' @param ... Further arguments to be passed to methods.
 #' @export

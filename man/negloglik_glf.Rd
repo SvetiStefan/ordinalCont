@@ -12,7 +12,7 @@ negloglik_glf(par, v, d.matrix, wts, len_beta)
 and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function -
 last 3 elements)}
 
-\item{v}{vector of standarized scores from the continuous ordinal scale}
+\item{v}{vector of standardized scores from the continuous ordinal scale}
 
 \item{d.matrix}{design matrix (fixed effects)}
 

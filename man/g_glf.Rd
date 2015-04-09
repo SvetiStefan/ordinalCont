@@ -12,7 +12,7 @@ g_glf(v, par)
 \item{par}{vector of 3 elements: M, the offset, B, the slope of the curve, and T, the symmetry of the curve.}
 }
 \value{
-A vector of length equal to the length of v, with values g(v).
+A vector of length equal to the length of \code{v}, with values \eqn{g(v)}.
 }
 \description{
 This function computes a parametric version of the g function following Richards (1959):

@@ -143,7 +143,7 @@ ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("lo
 #' @param par vector of regression coefficients (first \code{len_beta} elements), 
 #' and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function - 
 #' last 3 elements)
-#' @param v vector of standarized scores from the continuous ordinal scale
+#' @param v vector of standardized scores from the continuous ordinal scale
 #' @param d.matrix design matrix (fixed effects)
 #' @param wts ????
 #' @param len_beta length of the regression coefficients vector
