@@ -46,7 +46,8 @@ NULL
 NULL
 
 #' @title ANZ0001 trial
-#' The ANZ0001 trial, conducted by the ANZ Breast Cancer Trials Group, is an unblinded, multi-centre, randomised trial with three chemotherapy treatment arms concluded in 2005 (Stockler, Sour- jina, Grimison, Gebski, Byrne, Harvey, Francis, Nowak, Hazel, Forbes, and Group, 2007). 
+#' 
+#' @details  The ANZ0001 trial, conducted by the ANZ Breast Cancer Trials Group, is an unblinded, multi-centre, randomised trial with three chemotherapy treatment arms concluded in 2005 (Stockler, Sour- jina, Grimison, Gebski, Byrne, Harvey, Francis, Nowak, Hazel, Forbes, and Group, 2007). 
 #' Health-related quality of life measures (Overall quality of life, Physical Well-Being, Mood, Pain, Nausea and Vomiting, Appetite) are assessed at each chemotherapy treatment cycle, from randomization until disease progression, when treatment is interrupted. 
 #' The treatments Intermittent Capecitabine (IC) and Continuous Capecitabine (CC) are compared with the standard combination treatment CMF, each with its own protocol. 
 #' There is no maximum duration of treatment, but it is interrupted on disease progression, or when patient intolerance or unacceptable toxicity are recorded.

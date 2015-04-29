@@ -86,7 +86,7 @@ print.summary.ocm <- function(x, ...)
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords predict
 #' @method predict ocm
-#' @return A list containing the following components:\cr
+#' @return GILLIAN: fix format A list containing the following components:\cr
 #' \code{mode} : a vector of length equal to the number of observations. Each element is the mode of v, 
 #' the ordinal continuous random variable, conditional on the covariates in the model;\cr 
 #' \code{density} :	a matrix with number of rows equal to the number of observations. Each row 
