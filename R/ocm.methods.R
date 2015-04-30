@@ -373,43 +373,7 @@ coef.ocm <- function(object, ...){
     object$coefficients
   }
 
-#' @title Confidence Intervals for Model Parameters
-#' @param object a fitted \code{ocm} object
-#' @param parm a specification of which parameters are to be given confidence intervals. 
-#' If missing, all parameters are considered.
-#' @param level the confidence level required. Default level is 95\%.
-#' @param ... additional argument(s) for methods.
-#' @export
-#' @details MAURIZIO are these asymptotic confidence intervals? We need to say what they are based on.
-#' @method coef ocm
-#' @return A matrix with 2 columns and number of rows equal to \code{length(parm)}. If \code{parm} is all parameters, 
-#' and the generalized logistic g-function is used, this is \code{len_beta} +3, where 
-#' \code{len_beta}  is the number of beta coefficients. 
-#' Columns contain lower and upper bounds of confidence intervals.
-#' @seealso \code{\link{ocm}}
-#' @examples
-#' fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
-#' confint(fit)
 
-confint.ocm <- function(object, parm, level = 0.95){
-    stopifnot(is.numeric(level) && length(level) == 1 && level > 0 && level < 1)
-    cf <- coef(object)    
-    pnames <- names(cf)
-    if (missing(parm)) 
-        parm <- pnames
-    else if (is.numeric(parm)) 
-        parm <- pnames[parm]
-    a <- (1 - level)/2
-    a <- c(a, 1 - a)
-    fac <- qt(a, object$df)
-    pct <- format.perc(a, 3)
-    #pct <- as.character(round(a*100,3))
-    ci <- array(NA, dim = c(length(parm), 2L), dimnames = list(parm, 
-        pct))
-    ses <- sqrt(diag(object$vcov))[parm]
-    ci[] <- cf[parm] + ses %o% fac
-    ci
-}
 
 #' @title Extract Log-Likelihood
 #' @param object an \code{ocm} object.
