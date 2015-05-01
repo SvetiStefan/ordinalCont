@@ -90,11 +90,19 @@ print.summary.ocm <- function(x, ...)
 #' \code{mode} : a vector of length equal to the number of observations. Each element is the mode of v, 
 #' the ordinal continuous random variable, conditional on the covariates in the model;\cr 
 #' \code{density} :	a matrix with number of rows equal to the number of observations. Each row 
+#' @return  A list containing the following components: 
+#' \tabular{ll}{
+#' \code{mode} \tab a vector of length equal to the number of observations. Each element is the mode of v, 
+#' the ordinal continuous random variable, conditional on the covariates in the model\cr\cr
+#' \code{density} \tab a matrix with number of rows equal to the number of observations. Each row 
 #' contains the values of the density function of v conditional on the covariates in the model. 
-#' The density function is calculated over 100 equally-spaced values of v in (0,1);\cr
-#' \code{x} : a vector with the 100 equally-spaced values of v in (0,1) used to compute the density of v;\cr
-#' \code{formula} : the formula used to fit the model;\cr
-#' \code{newdata} : a new data frame used to make predictions. It takes value NULL if no new data frame has been used.
+#' The density function is calculated over 100 equally-spaced values of v in (0,1)\cr\cr
+#' \code{x} \tab a vector with the 100 equally-spaced values of v in (0,1) used to compute the density of v\cr\cr
+#' \code{formula} \tab the formula used to fit the model\cr\cr
+#' \code{newdata}\tab a new data frame used to make predictions. It takes value NULL if no new data frame has been used.
+#' }
+#' 
+#' 
 #' @details MAURIZIO we need to specify this (I'm not sure what you've done)
 #' @examples 
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
