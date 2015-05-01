@@ -360,19 +360,6 @@ print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3),
     return(invisible(x))
   }
 
-#' @title Extract Model Coefficients
-#' @param object an \code{ocm} object
-#' @param ... other arguments
-#' @usage coef(object, ...)
-#' @method coef ocm
-#'  @seealso \code{\link{ocm}}
-#' @return vector of model coefficients in \code{object}
-#' @export
-
-coef.ocm <- function(object, ...){
-    object$coefficients
-  }
-
 
 
 #' @title Extract Log-Likelihood
@@ -442,9 +429,10 @@ model.frame.ocm <- function(object, ...) {
 #' @method model.matrix ocm
 #' @return model matrix
 #' @seealso \code{\link{ocm}}
-#' 
 
-model.matrix.ocm <- function(object, ...) object$x
+model.matrix.ocm <- function(object, ...) {
+  object$x
+}
 
 #' @title Model Terms
 #' @param object An \code{ocm} object.
@@ -454,7 +442,9 @@ model.matrix.ocm <- function(object, ...) object$x
 #'  @return model terms
 #' @seealso \code{\link{ocm}}
 
-terms.ocm <- function(object, ...) terms(object$formula)
+terms.ocm <- function(object, ...) {
+  terms(object$formula)
+}
 
 #' @title Calculate Variance-Covariance Matrix for a Fitted Model Object
 #' @param object An \code{ocm} object.
@@ -467,4 +457,6 @@ terms.ocm <- function(object, ...) terms(object$formula)
 #'  @return Variance-covariance matrix of model parameters
 #' @seealso \code{\link{ocm}}
 
-vcov.ocm <- function(object, ...) object$vcov
+vcov.ocm <- function(object, ...) {
+  object$vcov
+}

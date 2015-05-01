@@ -223,22 +223,70 @@ print.anova.ocmm <-
     return(invisible(x))
   }
 
+#' @title Calculate Variance-Covariance Matrix for a Fitted Model Object
+#' @param object An \code{ocmm} object.
+#' @param ... Further arguments to be passed to methods
+#' @details For the generalized logistic g-function, the variance-covariance matrix of model parameters will be 
+#' of dimension (\code{len_beta} +3)x(\code{len_beta} +3), where \code{len_beta}  is the number of 
+#' beta coefficients in the model.
 #' @export
+#' @method vcov ocmm
+#'  @return Variance-covariance matrix of model parameters
+#' @seealso \code{\link{ocmm}}
 
-vcov.ocmm <- function(object, ...) vcov.ocm(object)
+vcov.ocmm <- function(object, ...) {
+  vcov.ocm(object)
+}
 
+#' @title Extract the Number of Observations from a Fit
+#' @param object an \code{ocmm} object
+#' @param ... Further arguments to be passed to methods.
 #' @export
+#' @return number of observations
+#' @method nobs ocmm
+#' @seealso \code{\link{ocmm}}
 
-nobs.ocmm <- function(object, ...) nobs.ocm(object)
+nobs.ocmm <- function(object, ...) {
+  nobs.ocm(object)
+}
 
 #' @export
 
 coef.ocmm <- function(object, ...) coef.ocm(object)
 
+#' @title Extract Log-Likelihood
+#' @param object an \code{ocmm} object.
+#' @usage logLik(object, ...)
+#' @method logLik ocmm
+#'  @seealso \code{\link{ocmm}}
+#' @return log likelihood of \code{ocmm} object
 #' @export
 
-logLik.ocmm <- function(object, ...) logLik.ocm(object)
 
+logLik.ocmm <- function(object, ...) {
+  logLik.ocm(object)
+}
+
+
+#' @title Extract AIC from a fitted Continuous Ordinal Model
+#' @param fit \code{ocmm} object
+#' @param scale parameter currently not used. For compatibility with general extractAIC method.
+#' @param k  ‘weight’ of the equivalent degrees of freedom (=: edf) 
+#'  in the AIC formula. Defaults to 2.
+#' @param ... further arguments (currently unused)
+#' @details The generalised AIC is computed:
+#' \deqn{-2\ell +k\cdot edf}
+#' where \eqn{\ell} is the log likelihood, k=2 gives the AIC, and 
+#' k=log(n) gives the BIC.
+#' @seealso \code{\link{ocmm}}
+#' @return Generalised AIC of \code{ocmm} object \code{fit}
+#' @references  Akaike, H (1983). 
+#' Information measures and model selection, 
+#' \emph{Bulletin of the International Statistical Institute}, 50:277-290.
 #' @export
+#' @method extractAIC ocmm
 
-extractAIC.ocmm <- function(object, ...) extractAIC.ocm(object)
+
+extractAIC.ocmm <- function(object, ...) {
+  extractAIC.ocm(object)
+}

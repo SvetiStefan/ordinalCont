@@ -2,7 +2,6 @@
 
 S3method(anova,ocm)
 S3method(anova,ocmm)
-S3method(coef,ocm)
 S3method(coef,ocmm)
 S3method(extractAIC,ocm)
 S3method(extractAIC,ocmm)

@@ -39,7 +39,6 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
   if (missing(formula)) 
     stop("Model needs a formula")
   terms <- attributes(terms(formula))$term.labels
-  #print(attributes(terms(formula)))
   i_rnd <- which(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))
   if (length(i_rnd) > 1) stop("Only one random effect supported. Please respecify your model.")
   if (length(i_rnd) == 0) stop("No random effects specified. Please call ocm.")
@@ -79,8 +78,6 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
   x <- as.matrix(x)[,-1] # 1 for the intercept
   z <- as.matrix(z)[,-1] # 1 for the intercept
   v <- model.response(mf)
-  #x <- as.matrix(x.complete)[,-c(1,i_rnd+1)] # 1 for the intercept, +1 is to consider intercept
-  #z <- as.matrix(x.complete)[,(i_rnd+1)] # +1 is to consider intercept
   v <- as.numeric(v)
   if (is.null(start)) {
     beta_start <- set.beta_start(x,v)
@@ -95,18 +92,10 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
   coef <- est$coefficients
   beta <- coef[1:len_beta]
   par_g <- coef[(len_beta+1):(len_beta+len_gfun)]
-  #sigma_rnd <- coef[len_beta+len_gfun+1]
   est$len_beta <- len_beta
   est$len_gfun <- len_gfun
   est$len_rnd <- 1
   est$rnd <- right
-  #fitted.values are the cumulative probabilities gamma(v|x)
-  #est$fitted.values <- as.vector(inv.logit(g_glf(v, par_g) + x%*%beta))
-  #The intercept is the parameter M of the glf. Fitted values v* = g^{-1}(W*) = g^{-1}(-x'B), where W=W*+epsilon
-  #On the ordinal scale [0,1] (v* and v-v*):
-  #est$fitted.values <- as.vector(g_glf_inv(-x%*%beta, par_g))
-  #est$residuals <- v - est$fitted.values
-  #On the latent scale (W* and epsilon=W-W*):
   est$fitted.values <- as.vector(-x%*%beta)
   est$residuals <- g_glf(v, par_g) - est$fitted.values
   est$v <- v
@@ -128,16 +117,9 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
 
 
 negloglik_glf_rnd <- function(par, v, d.matrix, rnd.matrix, wts, len_beta, rnd, n_nodes, quad, iclusters)
-  { #b is the random effect
-  #densities_by_cluster <- NULL
-  #for (ind in iclusters) densities_by_cluster <- c(densities_by_cluster, negloglik_glf_rnd2(ind, par=par, b=b, v=v, d.matrix=d.matrix, rnd.matrix=rnd.matrix, len_beta=len_beta, n_nodes=n_nodes, quad=quad))
+  { 
+  #b is the random effect
   densities_by_cluster <- sapply(iclusters, negloglik_glf_rnd2, par=par, b=b, v=v, d.matrix=d.matrix, rnd.matrix=rnd.matrix, wts=wts, len_beta=len_beta, n_nodes=n_nodes, quad=quad)
-  #if (length(densities_by_cluster) != length(wts)) {
-  #  print(paste(length(densities_by_cluster), length(wts)))
-  #  print( summary(densities_by_cluster))
-  #  print(par)
-  #}
-  #loglik = -sum(wts * log(densities_by_cluster))
   loglik = -sum(log(densities_by_cluster))
   return(loglik)
 }
@@ -165,23 +147,17 @@ negloglik_glf_rnd2 <- function(indices, par, b, v, d.matrix, rnd.matrix, wts, le
 density_glf_Laplace <- function(b, all_pars, sigma_rnd, w){
   lik_cluster <- apply(all_pars, 1, function(x, b, sigma_rnd){x[2]*exp(x[1]+x[3]+sqrt(2)*sigma_rnd*b)/(1+exp(x[1]+x[3]+sqrt(2)*sigma_rnd*b))^2/sqrt(pi)*exp(-b^2)},b=b,sigma_rnd=sigma_rnd)
   lik_cluster <- apply(lik_cluster,1,function(x,w)return(prod(x^w)),w=w)
-  #lik_cluster <- apply(lik_cluster,1,prod)
   return(lik_cluster)
 }
 
 density_glf_GH <- function(b, all_pars, sigma_rnd, w){
   lik_cluster <- apply(all_pars, 1, function(x, b, sigma_rnd){x[2]*exp(x[1]+x[3]+sqrt(2)*sigma_rnd*b)/(1+exp(x[1]+x[3]+sqrt(2)*sigma_rnd*b))^2/sqrt(pi)},b=b,sigma_rnd=sigma_rnd)
   lik_cluster <- apply(lik_cluster,1,function(x,w)return(prod(x^w)),w=w)
-  #lik_cluster <- apply(lik_cluster,1,prod)
   return(lik_cluster)
 }
 
 ocmmEst <- function(start, v, x, z, weights, link, gfun, rnd=NULL, n_nodes, quad, iclusters){
   len_beta <- ncol(x)
-#  if (!is.null(z)){
-#    cat("Random effects over",paste(rnd,collapse=', '),'\n') #ready for multiple rnd effects
-#    stop("Work in progress...")
-#  }
   if (gfun == "glf") {
     if (link == "logit"){
       fit <- optim(par=start,negloglik_glf_rnd, v=v, d.matrix=x, rnd.matrix=z, wts=weights, len_beta=len_beta, rnd=rnd, n_nodes=n_nodes, quad=quad, iclusters=iclusters, method="BFGS", hessian = T)
@@ -191,12 +167,7 @@ ocmmEst <- function(start, v, x, z, weights, link, gfun, rnd=NULL, n_nodes, quad
   } else {
     stop("g function not implemented.")
   }
-  ## compute QR-decomposition of x
-  #qx <- qr(x)
-  #Hessian
   H=fit$hessian
-  #require(numDeriv)
-  #H=hessian(negloglik_glf,fit$par,v=v, d.matrix=x,len_beta=len_beta)
   qrH <- qr(H)
   if(qrH$rank < nrow(H))
     stop("Cannot compute vcov: \nHessian is numerically singular")
@@ -216,7 +187,6 @@ ocmmEst <- function(start, v, x, z, weights, link, gfun, rnd=NULL, n_nodes, quad
   sigma2 <- sum((v - fitted.values)^2)/df
   
   ## compute sigma^2 * (x’x)^-1
-  #vcov <- sigma2 * chol2inv(qx$qr)
   colnames(vcov) <- rownames(vcov) <- c(colnames(x),"M", "B", "T", "sigma_rnd")
   list(coefficients = coef,
        vcov = vcov,
