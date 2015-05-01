@@ -14,9 +14,6 @@
 #' @keywords likelihood, log-likelihood, ordinal regression.
 #' @export
 #' @examples
-#' # Change data set
-#' #fitLaplace <- ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="Laplace")
-#' #fitGH <- ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="GH") 
 #'\dontrun{
 #' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
 #' fit.phys.rnd     <- ocmm(phys 	   ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
@@ -75,6 +72,7 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
   mf.rnd <- model.frame(formula=form.rnd, data=data)
   x <- model.matrix(attr(mf.fix, "terms"), data=mf.fix)
   z <- model.matrix(attr(mf.rnd, "terms"), data=mf.rnd)
+  xnames <- dimnames(x)[[2]][-1]
   x <- as.matrix(x)[,-1] # 1 for the intercept
   z <- as.matrix(z)[,-1] # 1 for the intercept
   v <- model.response(mf)
@@ -82,10 +80,14 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
   if (is.null(start)) {
     beta_start <- set.beta_start(x,v)
     len_beta = length(beta_start)
+    names(beta_start) <- xnames[1:len_beta] 
     if (gfun == 'glf') {
       gfun_start <- set.glf_start(x,v)
+      names(gfun_start) <- c("M", "B", "T")
     }
-    start <- c(beta_start, gfun_start, 1) #1 is the variance of the single rnd effect
+    sigma_rnd_eff = 1
+    names(sigma_rnd_eff) = paste("Std.Dev.", right, "group")
+    start <- c(beta_start, gfun_start, sigma_rnd_eff) #1 is the variance of the single rnd effect
     len_gfun <- length(gfun_start)
   }
   est <- ocmmEst(start, v, x, z, weights, link, gfun, rnd=right, n_nodes=n_nodes, quad=quad, iclusters)

@@ -464,3 +464,5 @@ terms.ocm <- function(object, ...) {
 vcov.ocm <- function(object, ...) {
   object$vcov
 }
+
+

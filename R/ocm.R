@@ -52,8 +52,6 @@
 
 #' @export
 #' @examples
-#' # Change data set
-#' #fit <- ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
 #' fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)

@@ -63,7 +63,7 @@ print.summary.ocmm <- function(x, ...)
   #printCoefmat(x$coefficients_rnd, P.values = FALSE, has.Pvalue = FALSE, signif.legend = FALSE, ...)
   #FIXME make general and good looking
   #cat(names(x$coefficients_rnd),"\n")
-  print(x$coefficients_rnd)
+  print(x$coefficients_rnd, row.names=F)
   cat("\n")
   cat("Coefficients:\n")
   printCoefmat(x$coefficients[1:x$len_beta,], P.values = TRUE, has.Pvalue = TRUE, signif.legend = FALSE, ...)
@@ -250,9 +250,6 @@ nobs.ocmm <- function(object, ...) {
   nobs.ocm(object)
 }
 
-#' @export
-
-coef.ocmm <- function(object, ...) coef.ocm(object)
 
 #' @title Extract Log-Likelihood
 #' @param object an \code{ocmm} object.
