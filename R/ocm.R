@@ -1,23 +1,20 @@
 #' Ordinal regression for continuous scales
 #'
 #' This function performs continuous ordinal regression with logit link using the 
-#' generalized logistic function as g function. Random effects are not supported.
+#' generalized logistic function as g function. Random effects are not supported (see \code{ocmm} for mixed-effects modelling).
 #' @param formula a formula expression as for regression models, of the form 
 #' response ~ predictors. Only fixed effects are supported. 
 #' The model must have an intercept: attempts to remove one will lead to a warning and will be 
-#' ignored (TODO).
+#' ignored.
 #' @param data  an optional data frame in which to interpret the variables occurring in the 
 #' formulas.
-#' @param start initial values for the parameters in the format c(alpha, beta, zeta), where 
-#' alpha are the threshold parameters (adjusted for potential nominal effects), beta are the 
-#' regression parameters and zeta are the scale parameters. (CHANGETHIS)
-#' @param control a list of control parameters passed on to clm.control.
+#' @param start a vector of initial values for the regression coefficients
+#' and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)
 #' @param link link function, i.e. the type of location-scale distribution assumed for the latent 
-#' distribution. The default "logit" link gives the proportional odds model.
+#' distribution. The default "logit" link gives the proportional odds model and is the only link function currently supported.
 #' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the 
 #' ordinal measure. It defaults to the generalized logistic function, which is currently the only 
 #' possibility.
-#' @param ... additional arguments are passed on to clm.control.
 #' @keywords likelihood, log-likelihood, ordinal regression.
 #' @details Ordinal regression analysis is a convenient tool for analyzing ordinal response variables 
 #' in the presence of covariates. We extend this methodology to the case of continuous self-rating 
@@ -37,12 +34,30 @@
 #' the logit link, which corresponds to a standard logistic distribution, is implemented. 
 #' (This implies a proportional odds model.)
 #' A regression framework supporting fixed effects
-#'  is implemented. The likelihood is maximized using XXXXX MAURIZIO which function?.
+#'  is implemented. The likelihood is maximized using \code{optim {stats}} with a quasi-Newton method (``\code{BFGS}").
 #' 
 #' @seealso \code{\link{ocmm}}
-#' @return an object of type \code{ocm}. Parameter estimates are in \code{coefficients}. 
+#' @return an object of type \code{ocm} with the components listed below. Parameter estimates are in \code{coefficients}. 
 #' The last 3 elements of \code{coefficients} are the parameters of the g function: 
 #' \code{M},  \code{B},  and \code{T}.
+#' coefficients the parameter estimates
+#' vcov the variance-covariance matrix
+#' df the estimated degrees of freedom
+#' logLik the value of the log-likelihood at the estimated optimum
+#' len_beta the number of fixed-effects parameters of the model
+#' len_gfun the number of parameters in the g function used in the model
+#' fitted.values the fitted probabilities
+#' residuals the residuals on the latent scale
+#' v the vector of continuous scores
+#' x the model matrix
+#' sample.size the sample size (can differ for the number of observations if the weights are different from 1)
+#' nobs the number of observations
+#' call the call to fit the model
+#' no.pars the total munber of parameters estimated
+#' data the data frame used
+#' link the link function used
+#' gfun the g function used
+#' formula the formula used
 #'  @references Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous 
 #'  Scales, \emph{The International Journal of Biostatistics}: 6(1), Article 14.
 #'@references Richards, F. (1959). A flexible growth function for empirical use, 
@@ -77,15 +92,17 @@
 
 
 ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), 
-                gfun = c("glf"), ...)
+                gfun = c("glf"))
 {
   #FIXME check for the intercept in formula.
   if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) 
     stop("Random effects specified. Please call ocmm.")
   if (missing(formula)) 
     stop("Model needs a formula")
-  #formula = update(formula,.~.-1) ##no_intercept --> problems with contrasts, 
-  #better to drop the intercept later
+  if (attributes(terms(formula))$intercept == 0){
+    formula <- update(formula, .~.+1)
+    warning("The model must have an intercept and it has been added to the formula.")
+  }
   link <- match.arg(link)
   gfun <- match.arg(gfun)
   if(missing(weights)) weights <- rep(1, nrow(data))
@@ -138,12 +155,11 @@ ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("lo
 #'
 #' @details This function computes minus the log-likelihood function for a fixed-effects model using the 
 #' generalized logistic function as g function and the logit link function.
-#' @param par vector of regression coefficients (first \code{len_beta} elements), 
-#' and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function - 
-#' last 3 elements)
+#' @param par vector of regression coefficients, 
+#' and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)
 #' @param v vector of standardized scores from the continuous ordinal scale
 #' @param d.matrix design matrix (fixed effects)
-#' @param wts ????
+#' @param wts optional case weights
 #' @param len_beta length of the regression coefficients vector
 #' @keywords likelihood, log-likelihood.
 #' @return minus the log-likelihood at parameter values \code{par} 
@@ -204,7 +220,7 @@ ocmEst <- function(start, v, x, weights, link, gfun){
   colnames(vcov) <- rownames(vcov) <- c(colnames(x),"M", "B", "T")
   list(coefficients = coef,
        vcov = vcov,
-       sigma = sqrt(sigma2),
+##       sigma = sqrt(sigma2),
        df = df,
        logLik = -fit$value)
 }

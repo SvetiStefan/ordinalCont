@@ -82,7 +82,13 @@ print.summary.ocmm <- function(x, ...)
 #' @param CIs Indicates if confidence bands for the g function should be computed (based on the Wald 95\% CIs).
 #' @param R The number of bootstrap replicates. 
 #' @param ... Further arguments passed to or from other methods.
+#' @details The fitted g function of an \code{ocmm} object is plotted. 
 #' @keywords plot
+#' @examples
+#' \dontrun{
+#' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' plot(fit.overall.rnd, CIs="vcov", R=100)
+#' }
 #' @export
 
 plot.ocmm <- function(x, CIs = c('no','vcov'), R = 1000, main="g function (95% CIs)", xlab="Continuous ordinal scale", ylab="", CIcol='lightblue', ...)
@@ -128,11 +134,20 @@ plot.ocmm <- function(x, CIs = c('no','vcov'), R = 1000, main="g function (95% C
 #' @param object An ocm object.
 #' @param ... one or more additional ocm objects.
 #' @keywords anova
+#' @return The method returns an object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
+#' \itemize{
+#'   \item no.par the number of parameters
+#'   \item AIC the Akaike information criterion
+#'   \item loglik the log-likelihood
+#'   \item LR.stat the likelihood ratio statistic
+#'   \item df the difference in the degrees of freedom in the models being compared
+#'   \item Pr(>Chisq) the p-value from the likelihood ratio test 
+#' }
 #' @export
 #' @examples
 #' \dontrun{
-#' fitLaplace = ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="Laplace")
-#' anova(fitLaplace, update(fitLaplace, . ~ . + localisa))
+#' fit.overall.rnd  <- ocmm(overall  ~ cycleno + bsa + treatment + (1|randno), data=ANZ0001)
+#' anova(fit.overall.rnd, update(fit.overall, .~. + age))
 #' }
 
 
@@ -251,12 +266,12 @@ nobs.ocmm <- function(object, ...) {
 }
 
 
-#' @title Extract Log-Likelihood
+#' @title Extract the Log-Likelihood
 #' @param object an \code{ocmm} object.
 #' @usage logLik(object, ...)
 #' @method logLik ocmm
 #'  @seealso \code{\link{ocmm}}
-#' @return log likelihood of \code{ocmm} object
+#' @return Returns the log-likelihood of an \code{ocmm} object
 #' @export
 
 
@@ -268,7 +283,7 @@ logLik.ocmm <- function(object, ...) {
 #' @title Extract AIC from a fitted Continuous Ordinal Model
 #' @param fit \code{ocmm} object
 #' @param scale parameter currently not used. For compatibility with general extractAIC method.
-#' @param k  ‘weight’ of the equivalent degrees of freedom (=: edf) 
+#' @param k  `weight' of the equivalent degrees of freedom (=: edf) 
 #'  in the AIC formula. Defaults to 2.
 #' @param ... further arguments (currently unused)
 #' @details The generalised AIC is computed:
@@ -287,3 +302,32 @@ logLik.ocmm <- function(object, ...) {
 extractAIC.ocmm <- function(object, ...) {
   extractAIC.ocm(object)
 }
+
+
+#' @title Extract the Model Frame from a Fit
+#' @param object An ocmm object.
+#' @param ... Further arguments to be passed to methods.
+#' @export
+#' @method model.frame ocmm
+#' @return Returns the saved model frame used when fitting the model.
+#' @seealso \code{\link{ocmm}}
+
+model.frame.ocmm <- function(object, ...) {
+  if(is.null(mod <- object$data[,all.vars(object$formula)]))
+    stop("Cannot extract model.frame.")
+  else
+    mod
+}
+
+#' @title Extract the Model Matrix from a Fit
+#' @param object an \code{ocmm} object
+#' @param ... Further arguments to be passed to methods.
+#' @export
+#' @method model.matrix ocmm
+#' @return Returns the design matrix for an \code{ocmm} fit.
+#' @seealso \code{\link{ocmm}}
+
+model.matrix.ocmm <- function(object, ...) {
+  object$x
+}
+

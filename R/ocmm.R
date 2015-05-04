@@ -1,16 +1,40 @@
-#' Ordinal regression for continuous scales - with random effects 
-#' Gillian: Please do not work on this as the code will be merged with ocm when fully working. 
+#' Ordinal regression for continuous scales - with mixed-effects 
 #'
-#' This function performs the continuous ordinal regression with logit link using the generalized logistic function as g function and without random effects.
-#' @param formula a formula expression as for regression models, of the form response ~ predictors. Only fixed effects are supported. The model must have an intercept: attempts to remove one will lead to a warning and will be ignored (TODO).
+#' This function fits a ordinal continuous mixed model with logit link using the generalized logistic function as g function.
+#' @param formula a formula expression as for regression models, of the form 
+#' response ~ predictors. Onlymixed-effects models with a single random effect on the intercept are supported. 
+#' The model must have an intercept: attempts to remove one will lead to a warning and will be 
+#' ignored.
 #' @param data  an optional data frame in which to interpret the variables occurring in the formulas.
-#' @param start initial values for the parameters in the format c(alpha, beta, zeta), where alpha are the threshold parameters (adjusted for potential nominal effects), beta are the regression parameters and zeta are the scale parameters. (CHANGETHIS)
-#' @param control a list of control parameters passed on to clm.control.
-#' @param link link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model.
+#' @param par vector of regression coefficients, 
+#'\code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)
+#' and the standard deviation of the random effect
+#' @param link link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model and is the only link function currently supported.
 #' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function, which is currently the only possibility.
 #' @param quad A string indicating the type of quadrature used to integrate over the random effects. Can take values "Laplace" (Adaptive Gauss-Hermite quadrature using Laplace approximation; the default) or "GH" (Gauss-Hermite quadrature).
 #' @param n_nodes Order of Gauss-Hermite rule used (number of nodes). 
-#' @param ... additional arguments are passed on to clmm.control.
+#' @return an object of type \code{ocmm} with the components listed below. Parameter estimates are in \code{coefficients}. 
+#' The last 3 elements of \code{coefficients} are the parameters of the g function (\code{M},  \code{B},  and \code{T}) and the standard deviation of the random effect.
+#' coefficients the parameter estimates
+#' vcov the variance-covariance matrix
+#' sigma_rnd the standard devition of the random effect
+#' df the estimated degrees of freedom
+#' logLik the value of the log-likelihood at the estimated optimum
+#' len_beta the number of fixed-effects parameters of the model
+#' len_gfun the number of parameters in the g function used in the model
+#' len_rnd the number of random effects (1 in this version of the package)
+#' fitted.values the fitted probabilities
+#' residuals the residuals on the latent scale
+#' v the vector of continuous scores
+#' x the model matrix
+#' sample.size the sample size (can differ for the number of observations if the weights are different from 1)
+#' nobs the number of observations
+#' call the call to fit the model
+#' no.pars the total munber of parameters estimated
+#' data the data frame used
+#' link the link function used
+#' gfun the g function used
+#' formula the formula used
 #' @keywords likelihood, log-likelihood, ordinal regression.
 #' @export
 #' @examples
@@ -31,10 +55,14 @@
 
 
 
-ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), quad=c("Laplace","GH"), n_nodes=10, ...)
+ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), quad=c("Laplace","GH"), n_nodes=10)
 {
   if (missing(formula)) 
     stop("Model needs a formula")
+  if (attributes(terms(formula))$intercept == 0){
+    formula <- update(formula, .~.+1)
+    warning("The model must have an intercept and it has been added to the formula.")
+  }
   terms <- attributes(terms(formula))$term.labels
   i_rnd <- which(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))
   if (length(i_rnd) > 1) stop("Only one random effect supported. Please respecify your model.")
@@ -117,6 +145,20 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
 
 
 
+#' @title Log-likelihood function for the mixed-effects model, using the generalized logistic 
+#' function as g function and the logit link function
+#'
+#' @details This function computes minus the log-likelihood function for a mixed-effects model using the 
+#' generalized logistic function as g function and the logit link function.
+#' @param par vector of regression coefficients, 
+#'\code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)
+#' and the standard deviation of the random effect
+#' @param v vector of standardized scores from the continuous ordinal scale
+#' @param d.matrix design matrix (fixed effects)
+#' @param wts optional case weights
+#' @param len_beta length of the regression coefficients vector
+#' @keywords likelihood, log-likelihood.
+#' @return minus the log-likelihood at parameter values \code{par} 
 
 negloglik_glf_rnd <- function(par, v, d.matrix, rnd.matrix, wts, len_beta, rnd, n_nodes, quad, iclusters)
   { 
@@ -192,7 +234,7 @@ ocmmEst <- function(start, v, x, z, weights, link, gfun, rnd=NULL, n_nodes, quad
   colnames(vcov) <- rownames(vcov) <- c(colnames(x),"M", "B", "T", "sigma_rnd")
   list(coefficients = coef,
        vcov = vcov,
-       sigma = sqrt(sigma2),
+##       sigma = sqrt(sigma2),
        sigma_rnd = sigma_rnd,
        df = df,
        logLik = -fit$value)

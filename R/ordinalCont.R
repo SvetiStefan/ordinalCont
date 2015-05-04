@@ -1,7 +1,24 @@
-#' ordinalCont.
+#' ordinalCont-package
 #'
-#' @name ordinalCont.
+#' @name ordinalCont-package
 #' @docType package
+#' @details Ordinal regression analysis is a convenient tool for analyzing ordinal response variables 
+#' in the presence of covariates. We extend this methodology to the case of continuous self-rating 
+#' scales such as the Visual Analog Scale (VAS) used in pain assessment, or the Linear Analog 
+#' Self-Assessment (LASA) scales in quality of life studies. Subjects are
+#' typically given a linear scale of 100 mm and asked to put a mark where they perceive
+#' themselves. These scales  measure subjects' 
+#' perception of an intangible quantity, and cannot be handled as ratio variables because of their 
+#' inherent nonlinearity.  We express  the likelihood in terms of a function (the "g function")
+#'  connecting the  
+#' scale with an underlying continuous latent  variable. In the current version the g function 
+#' is taken as 
+#' the generalized logistic function (Richards 1959). This has 3 parameters: 
+#'  \code{M}, the offset, \code{B}, the slope, and \code{T}, the symmetry of the curve.
+#' The link function is the inverse of the CDF of the assumed underlying distribution of the 
+#' latent variable. Currently 
+#' the logit link, which corresponds to a standard logistic distribution, is implemented. 
+#' (This implies a proportional odds model.)
 NULL
 
 

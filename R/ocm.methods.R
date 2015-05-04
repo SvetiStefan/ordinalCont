@@ -83,6 +83,8 @@ print.summary.ocm <- function(x, ...)
 #' which to predict. 
 #' Note that all predictor variables should be present, having the same names as the variables 
 #' used to fit the model. If \code{NULL}, predictions are computed for the original dataset.
+#' @param ndens the number of points on the continuous ordinal scale (0, 1) over which the densities are computed. 
+#' The default is 100.
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords predict
 #' @method predict ocm
@@ -97,9 +99,9 @@ print.summary.ocm <- function(x, ...)
 #' \code{formula} \tab the formula used to fit the model\cr\cr
 #' \code{newdata}\tab a new data frame used to make predictions. It takes value NULL if no new data frame has been used.
 #' }
-#' 
-#' 
-#' @details MAURIZIO we need to specify this (I'm not sure what you've done)
+#' @details An object of class \code{ocm} and optionally a new data frame are used to compute the probability densities of V, the continuous ordinal score.
+#' The estimated parameters of the fitted model and \code{ndens} (default: 100) values of V are used to compute the probability densities on the latent scale. 
+#' These values are then transformed in scores on the continuous ordinal scale using the g function and the estimated values of \code{M}, \code{B}, and \code{T}.
 #' @examples 
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
@@ -110,7 +112,7 @@ print.summary.ocm <- function(x, ...)
 #' @export
 #' @author Maurizio Manuguerra
 
-predict.ocm <- function(object, newdata=NULL, ...)
+predict.ocm <- function(object, newdata=NULL, ndens=100, ...)
 {
   formula <- object$formula
   params <- coef(object)
@@ -120,8 +122,7 @@ predict.ocm <- function(object, newdata=NULL, ...)
     x <- model.matrix(object$formula, newdata)
   }
   len_beta <- ncol(x)
-  ndens <- 100
-  v <- seq(0.01, 0.99, length.out = ndens)
+  v <- seq(0, 1, length.out = ndens+2)[2:(ndens+1)]
   modes <- NULL
   densities <- NULL
   #FIXME: rewrite efficiently
@@ -133,8 +134,6 @@ predict.ocm <- function(object, newdata=NULL, ...)
     modes <- c(modes, v[which.max(logdensity_glf(par = params, v = v, d.matrix = d.matrix, 
                                                  len_beta = len_beta))])
   }
-  #y = logdensity_glf(par = params, v = v, d.matrix = x, len_beta = len_beta)
-  #plot(v,y)
   pred <- list(mode = modes, density = densities, x = v, formula = formula, newdata = newdata)
   class(pred) <- "predict.ocm"
   return(pred)
@@ -204,8 +203,10 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' @export
 #' @seealso \code{\link{ocm}}
 #' @examples
-#' fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
-#' plot(fit, CIs="vcov")
+#' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+#' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+#' fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' plot(fit.overal, CIs="vcov")
 #' @author Maurizio Manuguerra
 
 plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, 
@@ -271,9 +272,23 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
 #' @export
 #' @author Maurizio Manuguerra
 #'  @seealso \code{\link{ocm}}, \code{\link{print.anova.ocm}}
-#'  @return object of class \code{anova.ocm}, consisting of anova table giving AIC, 
-#'  log likelihood, likelihood ratio statistic, df and p-value 
-#'  for each model, in hierarchical order
+#' @return The method returns an object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
+#' \itemize{
+#'   \item no.par the number of parameters
+#'   \item AIC the Akaike information criterion
+#'   \item loglik the log-likelihood
+#'   \item LR.stat the likelihood ratio statistic
+#'   \item df the difference in the degrees of freedom in the models being compared
+#'   \item Pr(>Chisq) the p-value from the likelihood ratio test 
+#' }
+#' @examples
+#' \dontrun{
+#' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+#' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+#' fit.overall  <- ocm(overall  ~ cycleno + bsa + treatment, data=ANZ0001.ocm)
+#' anova(fit.overall, update(fit.overall, .~. + age))
+#' }
+
 
 
 
@@ -366,22 +381,22 @@ print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3),
 
 
 
-#' @title Extract Log-Likelihood
+#' @title Extract the Log-Likelihood
 #' @param object an \code{ocm} object.
 #' @usage logLik(object, ...)
 #' @method logLik ocm
 #'  @seealso \code{\link{ocm}}
-#' @return log likelihood of \code{ocm} object
+#' @return Returns the log-likelihood of an \code{ocm} object
 #' @export
 
-logLik.ocm <- function(object)
-  structure(object$logLik, df = object$df, nobs=object$nobs,
-            class = "logLik")
+logLik.ocm <- function(object){
+  structure(object$logLik, df = object$df, nobs=object$nobs, class = "logLik")
+}
 
 #' @title Extract AIC from a fitted Continuous Ordinal Model
 #' @param fit \code{ocm} object
 #' @param scale parameter currently not used. For compatibility with general extractAIC method.
-#' @param k  ‘weight’ of the equivalent degrees of freedom (=: edf) 
+#' @param k  `weight' of the equivalent degrees of freedom (=: edf) 
 #'  in the AIC formula. Defaults to 2.
 #' @param ... further arguments (currently unused)
 #' @details The generalised AIC is computed:
@@ -416,7 +431,7 @@ nobs.ocm <- function(object, ...) object$nobs
 #' @param ... Further arguments to be passed to methods.
 #' @export
 #' @method model.frame ocm
-#' @return model frame
+#' @return Returns the saved model frame used when fitting the model.
 #' @seealso \code{\link{ocm}}
 
 model.frame.ocm <- function(object, ...) {
@@ -431,7 +446,7 @@ model.frame.ocm <- function(object, ...) {
 #' @param ... Further arguments to be passed to methods.
 #' @export
 #' @method model.matrix ocm
-#' @return model matrix
+#' @return Returns the design matrix for an \code{ocm} fit.
 #' @seealso \code{\link{ocm}}
 
 model.matrix.ocm <- function(object, ...) {
