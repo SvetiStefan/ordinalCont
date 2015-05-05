@@ -1,15 +1,18 @@
 #' Print continuous ordinal regression objects
 #'
 #' \code{print.ocm} is the ordinalCont specific method for the generic function \code{print}, 
-#' which prints objects of class \code{'ocm'}.
-#' @param x An object of class \code{'ocm'}, usually, a result of a call to \code{ocm}.
+#' which prints objects of class \code{`ocm'}.
+#' @param x An object of class \code{`ocm'}, usually, a result of a call to \code{ocm}.
 #' @param ... Further arguments passed to or from other methods.
 #' @return Prints an \code{ocm} object
 #' @keywords likelihood, log-likelihood.
 #' @method print ocm
 #' @seealso \code{\link{ocm}}, \code{\link{summary.ocm}}
 #' @examples 
-#' # Example here
+#' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+#' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+#' fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' print(fit.overall)
 #' @export
 #' @author Maurizio Manuguerra, Gillian Heller
 
@@ -22,8 +25,8 @@ print.ocm <- function(x, ...)
 }
 
 #' @title Summarizing Continuous Ordinal Fits
-#' @description Summary method for class \code{'ocm'}
-#' @param object An object of class \code{"ocm"}, usually, a result of a call to \code{ocm}.
+#' @description Summary method for class \code{``ocm"}
+#' @param object An object of class \code{``ocm"}, usually, a result of a call to \code{ocm}.
 #' @param ... Further arguments passed to or from other methods.
 #' @method summary ocm
 #' @keywords summary
@@ -140,8 +143,8 @@ predict.ocm <- function(object, newdata=NULL, ndens=100, ...)
 }
 
 #' @title Print the output of predict method
-#' @description Print method for class \code{"predict.ocm"}
-#' @param x An object of class \code{"predict.ocm"}
+#' @description Print method for class \code{``predict.ocm"}
+#' @param x An object of class \code{``predict.ocm"}
 #' @param ... Further arguments passed to or from other methods
 #' @keywords predict
 #' @details The table of predictions from \code{predict.ocm} is printed.
@@ -358,7 +361,7 @@ anova.ocm <- function(object, ...)
 #' @title Print anova.ocm objects
 #' 
 #' @description Print the results of the comparison of continuous ordinal models in likelihood ratio tests.
-#' @param x An object of class "anova.ocm".
+#' @param x An object of class ``anova.ocm".
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords summary, anova
 #' @seealso \code{\link{ocm}}, \code{\link{anova.ocm}}

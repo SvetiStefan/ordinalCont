@@ -1,8 +1,13 @@
 #' Print continuous ordinal regression objects
 #'
 #' This function prints an ocmm object 
-#' @param x An object of class "ocm", usually, a result of a call to ocm.
+#' @param x An object of class \code{``ocmm"}, usually, a result of a call to ocm.
 #' @param ... Further arguments passed to or from other methods.
+#' @examples
+#'\dontrun{
+#' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' print(fit.overall.rnd)
+#' }
 #' @keywords likelihood, log-likelihood.
 #' @method print ocmm
 #' @export
@@ -16,8 +21,8 @@ print.ocmm <- function(x, ...)
 }
 
 #' @title Summarizing Continuous Ordinal Fits
-#' @description summary method for class "ocm"
-#' @param object An object of class "ocm", usually, a result of a call to ocm.
+#' @description summary method for class ``ocmm"
+#' @param object An object of class ``ocmm", usually, a result of a call to ocm.
 #' @param ... Further arguments passed to or from other methods.
 #' @method summary ocmm
 #' @keywords summary
@@ -48,7 +53,7 @@ summary.ocmm <- function(object, ...)
 }
 
 #' @title Summarizing Continuous Ordinal Fits
-#' @description summary method for class "summary.ocm"
+#' @description summary method for class ``summary.ocmm"
 #' @param x An object of class "summary.ocmm", usually, a result of a call to summary.ocmm.
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords summary
@@ -169,7 +174,7 @@ anova.ocmm <- function(object, ...)
     dots <- dots[-not.keep]
   }
   if(length(dots) == 0)
-    stop('anova is not implemented for a single "ocm" object')
+    stop('anova is not implemented for a single "ocmm" object')
   mlist <- c(list(object), dots)
   if(!all(sapply(mlist, function(model)
     inherits(model, c("ocm", "ocmm")))))
@@ -217,8 +222,9 @@ anova.ocmm <- function(object, ...)
 #' @title Print anova.ocm objects
 #' 
 #' @description Print the results of the comparison of continuous ordinal models in likelihood ratio tests.
-#' @param x An object of class "anova.ocm".
+#' @param x An object of class ``anova.ocmm".
 #' @param ... Further arguments passed to or from other methods.
+#' @return Prints \code{anova.ocmm} object
 #' @keywords summary, anova
 #' @export
 
