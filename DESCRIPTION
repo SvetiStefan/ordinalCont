@@ -1,13 +1,13 @@
 Package: ordinalCont
 Title: Ordinal regression analysis for continuous scales
 Version: 0.2
-Authors@R: c(person("Maurizio", "Manuguerra", role = c("aut", "cre"),
+Authors@R: c(person("Maurizio Manuguerra", role = c("aut", "cre"),
   	     email = "maurizio.manuguerra@mq.edu.au"),
-	      person("Gillian", "Heller", role = "aut", email = "gillian.heller@mq.edu.au"))
+	      person("Gillian Heller", role = "aut", email = "gillian.heller@mq.edu.au"))
 Author: Maurizio Manuguerra [aut, cre],
   Gillian Heller [aut]
 Maintainer: Maurizio Manuguerra <maurizio.manuguerra@mq.edu.au>
-Description: What the package does (one paragraph): Ordinal regression analysis for continuous scales
-Depends: R (>= 3.1.1)
+Description: Ordinal regression analysis is a convenient tool for analyzing ordinal response variables in the presence of covariates. We express  the likelihood in terms of a function (the "g function") connecting the scale with an underlying continuous latent  variable. In the current version the g function is taken as the generalized logistic function (Richards 1959). This has 3 parameters: \code{M}, the offset, \code{B}, the slope, and \code{T}, the symmetry of the curve. The link function is the inverse of the CDF of the assumed underlying distribution of the latent variable. Currently the logit link, which corresponds to a standard logistic distribution, is implemented. (This implies a proportional odds model.)
+Depends: R (>= 3.1.1), fastGHQuad, boot
 License: GPL (>= 2)
 LazyData: true

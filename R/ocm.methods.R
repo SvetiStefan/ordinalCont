@@ -1,8 +1,8 @@
 #' Print continuous ordinal regression objects
 #'
 #' \code{print.ocm} is the ordinalCont specific method for the generic function \code{print}, 
-#' which prints objects of class \code{`ocm'}.
-#' @param x An object of class \code{`ocm'}, usually, a result of a call to \code{ocm}.
+#' which prints objects of class \code{'ocm'}.
+#' @param x An object of class \code{'ocm'}, usually, a result of a call to \code{ocm}.
 #' @param ... Further arguments passed to or from other methods.
 #' @return Prints an \code{ocm} object
 #' @keywords likelihood, log-likelihood.
@@ -25,8 +25,8 @@ print.ocm <- function(x, ...)
 }
 
 #' @title Summarizing Continuous Ordinal Fits
-#' @description Summary method for class \code{``ocm"}
-#' @param object An object of class \code{``ocm"}, usually, a result of a call to \code{ocm}.
+#' @description Summary method for class \code{"ocm"}
+#' @param object An object of class \code{"ocm"}, usually, a result of a call to \code{ocm}.
 #' @param ... Further arguments passed to or from other methods.
 #' @method summary ocm
 #' @keywords summary
@@ -143,8 +143,8 @@ predict.ocm <- function(object, newdata=NULL, ndens=100, ...)
 }
 
 #' @title Print the output of predict method
-#' @description Print method for class \code{``predict.ocm"}
-#' @param x An object of class \code{``predict.ocm"}
+#' @description Print method for class \code{"predict.ocm"}
+#' @param x An object of class \code{"predict.ocm"}
 #' @param ... Further arguments passed to or from other methods
 #' @keywords predict
 #' @details The table of predictions from \code{predict.ocm} is printed.
@@ -193,10 +193,14 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' 
 #' @description Plots the g function as fitted in an \code{ocm} call.
 #' @param x an object of class \code{ocm}
-#' @param CIs method used for confidence bands for the g function. \code{"no"} = no CIS; \code{"vcov"} = Wald; 
+#' @param CIs method used for confidence bands for the g function. \code{"no"} = no CIS [default]; \code{"vcov"} = Wald; 
 #' \code{"rnd.x.bootstrap"} = random-x bootstrap; \code{"fix.x.bootstrap"} = bootstrap with fixed-x 
 #' resampling; \code{"param.bootstrap"} = parametric bootstrap. 
 #' @param R the number of bootstrap replicates [ignored if CIs='no']
+#' @param main the title of the plot. Defauts to ``g function (95% CIs)"
+## #' @param xlab the label of the x axis. Defaults to ``Continuous ordinal scale" 
+#' @param ylab the label of the \code{y} axis. Defaults to an emtpy string
+#' @param CIcol the color of the confidence interval bands. Defaults to ``lightblue"
 #' @param ... further arguments passed to or from other methods
 #' @details The fitted g function of an \code{ocm} object is plotted. 
 #' If \code{CIs} is not \code{"no"}, 95\% confidence bands are also plotted.
@@ -204,12 +208,13 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' obtained with simple percentiles. 
 #' @keywords plot
 #' @export
+#' @import boot
 #' @seealso \code{\link{ocm}}
 #' @examples
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
 #' fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
-#' plot(fit.overal, CIs="vcov")
+#' plot(fit.overall, CIs="vcov")
 #' @author Maurizio Manuguerra
 
 plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, 
@@ -241,7 +246,7 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
     ci_high <- apply(all_gfuns, 2, function(x)quantile(x, 0.975)) 
     ylim <- c(min(ci_low), max(ci_high))
   } else if (CIs=='rnd.x.bootstrap' | CIs=='fix.x.bootstrap'| CIs=='param.bootstrap'){
-    require(boot)
+    #require(boot)
     bs <- boot(x$data, eval(parse(text=CIs)), R, fit = x)
     all_gfuns <- NULL
     for (i in 1:R){
@@ -362,6 +367,8 @@ anova.ocm <- function(object, ...)
 #' 
 #' @description Print the results of the comparison of continuous ordinal models in likelihood ratio tests.
 #' @param x An object of class ``anova.ocm".
+#' @param digits controls the number of digits to print. Defaults to the maximum between the value returned by (getOption("digits") - 2) and 3
+#' @param signif.stars a logical. Should the significance stars be printed? Defaults to the value returned by getOption("show.signif.stars")
 #' @param ... Further arguments passed to or from other methods.
 #' @keywords summary, anova
 #' @seealso \code{\link{ocm}}, \code{\link{anova.ocm}}
@@ -386,14 +393,15 @@ print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3),
 
 #' @title Extract the Log-Likelihood
 #' @param object an \code{ocm} object.
-#' @usage logLik(object, ...)
+#' @param ... Further arguments to be passed to methods.
+#' @usage \\method{logLik}{ocm}(object, ...)
 #' @method logLik ocm
-#'  @seealso \code{\link{ocm}}
+#' @seealso \code{\link{ocm}}
 #' @return Returns the log-likelihood of an \code{ocm} object
 #' @export
 
-logLik.ocm <- function(object){
-  structure(object$logLik, df = object$df, nobs=object$nobs, class = "logLik")
+logLik.ocm <- function(object, ...){
+  structure(object$logLik, df = object$df, nobs=object$nobs, class = "logLik.ocm")
 }
 
 #' @title Extract AIC from a fitted Continuous Ordinal Model
@@ -401,7 +409,7 @@ logLik.ocm <- function(object){
 #' @param scale parameter currently not used. For compatibility with general extractAIC method.
 #' @param k  `weight' of the equivalent degrees of freedom (=: edf) 
 #'  in the AIC formula. Defaults to 2.
-#' @param ... further arguments (currently unused)
+#' @param ... Further arguments to be passed to methods.
 #' @details The generalised AIC is computed:
 #' \deqn{-2\ell +k\cdot edf}
 #' where \eqn{\ell} is the log likelihood, k=2 gives the AIC, and 
@@ -419,23 +427,14 @@ extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
   c(edf, -2*fit$logLik + k * edf)
 }
 
-#' @title Extract the Number of Observations from a Fit
-#' @param object an \code{ocm} object
-#' @param ... Further arguments to be passed to methods.
-#' @export
-#' @return number of observations
-#' @method nobs ocm
-#' @seealso \code{\link{ocm}}
-
-nobs.ocm <- function(object, ...) object$nobs
 
 #' @title Extract the Model Frame from a Fit
 #' @param object An ocm object.
 #' @param ... Further arguments to be passed to methods.
-#' @export
 #' @method model.frame ocm
 #' @return Returns the saved model frame used when fitting the model.
 #' @seealso \code{\link{ocm}}
+#' @export
 
 model.frame.ocm <- function(object, ...) {
   if(is.null(mod <- object$data[,all.vars(object$formula)]))
@@ -457,15 +456,15 @@ model.matrix.ocm <- function(object, ...) {
 }
 
 #' @title Model Terms
-#' @param object An \code{ocm} object.
+#' @param x An \code{ocm} object.
 #' @param ... Further arguments to be passed to methods.
 #' @export
 #' @method terms ocm
 #'  @return model terms
 #' @seealso \code{\link{ocm}}
 
-terms.ocm <- function(object, ...) {
-  terms(object$formula)
+terms.ocm <- function(x, ...) {
+  terms(x$formula)
 }
 
 #' @title Calculate Variance-Covariance Matrix for a Fitted Model Object

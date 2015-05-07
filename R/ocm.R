@@ -8,6 +8,7 @@
 #' ignored.
 #' @param data  an optional data frame in which to interpret the variables occurring in the 
 #' formulas.
+#' @param weights optional case weights in fitting. Defaults to 1.
 #' @param start a vector of initial values for the regression coefficients
 #' and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)
 #' @param link link function, i.e. the type of location-scale distribution assumed for the latent 
@@ -63,8 +64,6 @@
 #'@references Richards, F. (1959). A flexible growth function for empirical use, 
 #' \emph{Journal of Experimental Botany}, 10, 290-301.
 #' @author Maurizio Manuguerra, Gillian Heller
-
-
 #' @export
 #' @examples
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
@@ -91,7 +90,7 @@
 #' par(mfrow=c(1,1))
 
 
-ocm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), 
+ocm <- function(formula, data, weights, start=NULL, link = c("logit"), 
                 gfun = c("glf"))
 {
   #FIXME check for the intercept in formula.

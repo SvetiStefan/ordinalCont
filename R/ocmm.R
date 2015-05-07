@@ -6,9 +6,9 @@
 #' The model must have an intercept: attempts to remove one will lead to a warning and will be 
 #' ignored.
 #' @param data  an optional data frame in which to interpret the variables occurring in the formulas.
-#' @param par vector of regression coefficients, 
-#'\code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)
-#' and the standard deviation of the random effect
+#' @param weights optional case weights in fitting. Defaults to 1.
+#' @param start a vector of initial values for the regression coefficients, 
+#' \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function) and the standard deviation of the random effect
 #' @param link link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model and is the only link function currently supported.
 #' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function, which is currently the only possibility.
 #' @param quad A string indicating the type of quadrature used to integrate over the random effects. Can take values "Laplace" (Adaptive Gauss-Hermite quadrature using Laplace approximation; the default) or "GH" (Gauss-Hermite quadrature).
@@ -43,7 +43,7 @@
 #' fit.phys.rnd     <- ocmm(phys 	   ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
 #' fit.pain.rnd 	  <- ocmm(pain 	   ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
 #' fit.mood.rnd 	  <- ocmm(mood 	   ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
-#' fit.nausvom.rnd  <- ocmm(nausvom	 ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' fit.nausvom.rnd <- ocmm(nausvom ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
 #' fit.appetite.rnd <- ocmm(appetite ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
 #' summary(fit.overall.rnd)
 #' summary(fit.phys.rnd)
@@ -55,7 +55,7 @@
 
 
 
-ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("logit"), gfun = c("glf"), quad=c("Laplace","GH"), n_nodes=10)
+ocmm <- function(formula, data, weights, start=NULL, link = c("logit"), gfun = c("glf"), quad=c("Laplace","GH"), n_nodes=10)
 {
   if (missing(formula)) 
     stop("Model needs a formula")
@@ -149,27 +149,32 @@ ocmm <- function(formula, data, weights, start=NULL, control=list(), link = c("l
 #' function as g function and the logit link function
 #'
 #' @details This function computes minus the log-likelihood function for a mixed-effects model using the 
-#' generalized logistic function as g function and the logit link function.
+#' generalized logistic function as g function and the logit link function. It is used internally to fit the model and should not be of interest of the user.
 #' @param par vector of regression coefficients, 
 #'\code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)
 #' and the standard deviation of the random effect
 #' @param v vector of standardized scores from the continuous ordinal scale
 #' @param d.matrix design matrix (fixed effects)
+#' @param rnd.matrix the random term model matrix
 #' @param wts optional case weights
 #' @param len_beta length of the regression coefficients vector
+#' @param rnd a character vector listing the random terms
+#' @param quad A string indicating the type of quadrature used to integrate over the random effects. Can take values "Laplace" (Adaptive Gauss-Hermite quadrature using Laplace approximation; the default) or "GH" (Gauss-Hermite quadrature).
+#' @param n_nodes Order of Gauss-Hermite rule used (number of nodes). 
+#' @param iclusters a list containing the row numbers of the design matrix relative to each level of the factor over which random effect are computed
 #' @keywords likelihood, log-likelihood.
 #' @return minus the log-likelihood at parameter values \code{par} 
 
 negloglik_glf_rnd <- function(par, v, d.matrix, rnd.matrix, wts, len_beta, rnd, n_nodes, quad, iclusters)
   { 
   #b is the random effect
-  densities_by_cluster <- sapply(iclusters, negloglik_glf_rnd2, par=par, b=b, v=v, d.matrix=d.matrix, rnd.matrix=rnd.matrix, wts=wts, len_beta=len_beta, n_nodes=n_nodes, quad=quad)
+  densities_by_cluster <- sapply(iclusters, negloglik_glf_rnd2, par=par, v=v, d.matrix=d.matrix, rnd.matrix=rnd.matrix, wts=wts, len_beta=len_beta, n_nodes=n_nodes, quad=quad)
   loglik = -sum(log(densities_by_cluster))
   return(loglik)
 }
 
-negloglik_glf_rnd2 <- function(indices, par, b, v, d.matrix, rnd.matrix, wts, len_beta, n_nodes, quad){
-  require(fastGHQuad)
+#' @import fastGHQuad
+negloglik_glf_rnd2 <- function(indices, par, v, d.matrix, rnd.matrix, wts, len_beta, n_nodes, quad){
   rule <- gaussHermiteData(n_nodes)
   x <- d.matrix[indices,]
   y <- v[indices]

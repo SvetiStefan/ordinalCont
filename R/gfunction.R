@@ -11,7 +11,7 @@
 #' @return A vector of length equal to the length of \code{v}, with values \eqn{g(v)}.
 #' 
 #' @references Richards, F. (1959). A flexible growth function for empirical use, 
-#' \emph{Journal of Experimental Botany}, 10, 290–301.
+#' \emph{Journal of Experimental Botany}, 10, 290-301.
 #' @seealso \code{\link{dg_glf}},\code{\link{g_glf_inv}}
 #' @author Maurizio Manuguerra, Gillian Heller
 #
@@ -33,7 +33,7 @@ g_glf <- function(v, par){
 #' @seealso \code{\link{g_glf}},\code{\link{g_glf_inv}}
 #' @author Maurizio Manuguerra, Gillian Heller
 #'  @references Richards, F. (1959). A flexible growth function for empirical use, 
-#' \emph{Journal of Experimental Botany}, 10, 290–301.
+#' \emph{Journal of Experimental Botany}, 10, 290-301.
 #
 
 dg_glf <- function(v, par){
@@ -56,7 +56,7 @@ dg_glf <- function(v, par){
 #' @seealso \code{\link{g_glf}},\code{\link{dg_glf}}
 #' @author Maurizio Manuguerra, Gillian Heller
 #'  @references Richards, F. (1959). A flexible growth function for empirical use, 
-#' \emph{Journal of Experimental Botany}, 10, 290–301.
+#' \emph{Journal of Experimental Botany}, 10, 290-301.
 
 g_glf_inv <- function(W, par){
   exp.part <- exp(par[2]*(W-par[1]))

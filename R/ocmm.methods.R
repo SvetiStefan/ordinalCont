@@ -1,7 +1,7 @@
 #' Print continuous ordinal regression objects
 #'
 #' This function prints an ocmm object 
-#' @param x An object of class \code{``ocmm"}, usually, a result of a call to ocm.
+#' @param x An object of class \code{"ocmm"}, usually, a result of a call to ocm.
 #' @param ... Further arguments passed to or from other methods.
 #' @examples
 #'\dontrun{
@@ -84,8 +84,12 @@ print.summary.ocmm <- function(x, ...)
 #' 
 #' @description This function plots the g function as fitted in an ocm call.
 #' @param x An ocm object.
-#' @param CIs Indicates if confidence bands for the g function should be computed (based on the Wald 95\% CIs).
+#' @param CIs Indicates if confidence bands for the g function should be computed (based on the Wald 95\% CIs). \code{"no"} = no CIS [default]; \code{"vcov"} = Wald
 #' @param R The number of bootstrap replicates. 
+#' @param main the title of the plot. Defauts to ``g function (95% CIs)"
+## #' @param xlab the label of the \code{x} axis. Defaults to ``Continuous ordinal scale" 
+#' @param ylab the label of the \code{y} axis. Defaults to an emtpy string
+#' @param CIcol the color of the confidence interval bands. Defaults to `lightblue'
 #' @param ... Further arguments passed to or from other methods.
 #' @details The fitted g function of an \code{ocmm} object is plotted. 
 #' @keywords plot
@@ -223,6 +227,8 @@ anova.ocmm <- function(object, ...)
 #' 
 #' @description Print the results of the comparison of continuous ordinal models in likelihood ratio tests.
 #' @param x An object of class ``anova.ocmm".
+#' @param digits controls the number of digits to print. Defaults to the maximum between the value returned by (getOption("digits") - 2) and 3
+#' @param signif.stars a logical. Should the significance stars be printed? Defaults to the value returned by getOption("show.signif.stars")
 #' @param ... Further arguments passed to or from other methods.
 #' @return Prints \code{anova.ocmm} object
 #' @keywords summary, anova
@@ -259,30 +265,19 @@ vcov.ocmm <- function(object, ...) {
   vcov.ocm(object)
 }
 
-#' @title Extract the Number of Observations from a Fit
-#' @param object an \code{ocmm} object
-#' @param ... Further arguments to be passed to methods.
-#' @export
-#' @return number of observations
-#' @method nobs ocmm
-#' @seealso \code{\link{ocmm}}
-
-nobs.ocmm <- function(object, ...) {
-  nobs.ocm(object)
-}
-
 
 #' @title Extract the Log-Likelihood
 #' @param object an \code{ocmm} object.
-#' @usage logLik(object, ...)
+#' @param ... Further arguments to be passed to methods.
+#' @usage \\method{logLik}{ocmm}(object, ...)
 #' @method logLik ocmm
-#'  @seealso \code{\link{ocmm}}
+#' @seealso \code{\link{ocmm}}
 #' @return Returns the log-likelihood of an \code{ocmm} object
 #' @export
 
 
 logLik.ocmm <- function(object, ...) {
-  logLik.ocm(object)
+  structure(object$logLik, df = object$df, nobs=object$nobs, class = "logLik.ocmm")
 }
 
 
@@ -304,9 +299,9 @@ logLik.ocmm <- function(object, ...) {
 #' @export
 #' @method extractAIC ocmm
 
-
-extractAIC.ocmm <- function(object, ...) {
-  extractAIC.ocm(object)
+extractAIC.ocmm <- function(fit, scale = 0, k = 2, ...) {
+  edf <- fit$df
+  c(edf, -2*fit$logLik + k * edf)
 }
 
 
