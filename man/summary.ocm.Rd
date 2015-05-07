@@ -12,7 +12,7 @@
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
-Summary method for class \code{'ocm'}
+Summary method for class \code{"ocm"}
 }
 \examples{
 # Add here

@@ -12,11 +12,20 @@
 \arguments{
 \item{x}{an object of class \code{ocm}}
 
-\item{CIs}{method used for confidence bands for the g function. \code{"no"} = no CIS; \code{"vcov"} = Wald;
+\item{CIs}{method used for confidence bands for the g function. \code{"no"} = no CIS [default]; \code{"vcov"} = Wald;
 \code{"rnd.x.bootstrap"} = random-x bootstrap; \code{"fix.x.bootstrap"} = bootstrap with fixed-x
 resampling; \code{"param.bootstrap"} = parametric bootstrap.}
 
 \item{R}{the number of bootstrap replicates [ignored if CIs='no']}
+
+\item{main}{the title of the plot. Defauts to ``g function (95% CIs)"
+##}
+
+\item{xlab}{the label of the x axis. Defaults to ``Continuous ordinal scale"}
+
+\item{ylab}{the label of the \code{y} axis. Defaults to an emtpy string}
+
+\item{CIcol}{the color of the confidence interval bands. Defaults to ``lightblue"}
 
 \item{...}{further arguments passed to or from other methods}
 }
@@ -30,8 +39,10 @@ Confidence bands computed with any of the bootstrapping options are
 obtained with simple percentiles.
 }
 \examples{
-fit <- ocm(vas ~ lasert1 + lasert2 + lasert3, data = pain)
-plot(fit, CIs="vcov")
+ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+plot(fit.overall, CIs="vcov")
 }
 \author{
 Maurizio Manuguerra

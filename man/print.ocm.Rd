@@ -19,7 +19,10 @@ Prints an \code{ocm} object
 which prints objects of class \code{'ocm'}.
 }
 \examples{
-# Example here
+ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+print(fit.overall)
 }
 \author{
 Maurizio Manuguerra, Gillian Heller

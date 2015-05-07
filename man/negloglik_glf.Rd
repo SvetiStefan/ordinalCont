@@ -8,15 +8,14 @@ function as g function and the logit link function}
 negloglik_glf(par, v, d.matrix, wts, len_beta)
 }
 \arguments{
-\item{par}{vector of regression coefficients (first \code{len_beta} elements),
-and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function -
-last 3 elements)}
+\item{par}{vector of regression coefficients,
+and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)}
 
 \item{v}{vector of standardized scores from the continuous ordinal scale}
 
 \item{d.matrix}{design matrix (fixed effects)}
 
-\item{wts}{????}
+\item{wts}{optional case weights}
 
 \item{len_beta}{length of the regression coefficients vector}
 }

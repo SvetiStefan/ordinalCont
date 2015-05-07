@@ -4,7 +4,7 @@
 \alias{predict.ocm}
 \title{Predict method for Continuous Ordinal Fits}
 \usage{
-\method{predict}{ocm}(object, newdata = NULL, ...)
+\method{predict}{ocm}(object, newdata = NULL, ndens = 100, ...)
 }
 \arguments{
 \item{object}{an object of class \code{"ocm"}, usually a result of a call to \code{ocm}}
@@ -13,6 +13,9 @@
 which to predict.
 Note that all predictor variables should be present, having the same names as the variables
 used to fit the model. If \code{NULL}, predictions are computed for the original dataset.}
+
+\item{ndens}{the number of points on the continuous ordinal scale (0, 1) over which the densities are computed.
+The default is 100.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
@@ -33,7 +36,9 @@ The density function is calculated over 100 equally-spaced values of v in (0,1)\
 Predicted values based on \code{ocm} object.
 }
 \details{
-MAURIZIO we need to specify this (I'm not sure what you've done)
+An object of class \code{ocm} and optionally a new data frame are used to compute the probability densities of V, the continuous ordinal score.
+The estimated parameters of the fitted model and \code{ndens} (default: 100) values of V are used to compute the probability densities on the latent scale.
+These values are then transformed in scores on the continuous ordinal scale using the g function and the estimated values of \code{M}, \code{B}, and \code{T}.
 }
 \examples{
 ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]

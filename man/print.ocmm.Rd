@@ -7,12 +7,18 @@
 \method{print}{ocmm}(x, ...)
 }
 \arguments{
-\item{x}{An object of class "ocm", usually, a result of a call to ocm.}
+\item{x}{An object of class \code{"ocmm"}, usually, a result of a call to ocm.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
 This function prints an ocmm object
+}
+\examples{
+\dontrun{
+fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+print(fit.overall.rnd)
+}
 }
 \keyword{likelihood,}
 \keyword{log-likelihood.}

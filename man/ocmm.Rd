@@ -2,45 +2,66 @@
 % Please edit documentation in R/ocmm.R
 \name{ocmm}
 \alias{ocmm}
-\title{Ordinal regression for continuous scales - with random effects
-Gillian: Please do not work on this as the code will be merged with ocm when fully working.}
+\title{Ordinal regression for continuous scales - with mixed-effects}
 \usage{
-ocmm(formula, data, weights, start = NULL, control = list(),
-  link = c("logit"), gfun = c("glf"), quad = c("Laplace", "GH"),
-  n_nodes = 10, ...)
+ocmm(formula, data, weights, start = NULL, link = c("logit"),
+  gfun = c("glf"), quad = c("Laplace", "GH"), n_nodes = 10)
 }
 \arguments{
-\item{formula}{a formula expression as for regression models, of the form response ~ predictors. Only fixed effects are supported. The model must have an intercept: attempts to remove one will lead to a warning and will be ignored (TODO).}
+\item{formula}{a formula expression as for regression models, of the form
+response ~ predictors. Onlymixed-effects models with a single random effect on the intercept are supported.
+The model must have an intercept: attempts to remove one will lead to a warning and will be
+ignored.}
 
 \item{data}{an optional data frame in which to interpret the variables occurring in the formulas.}
 
-\item{start}{initial values for the parameters in the format c(alpha, beta, zeta), where alpha are the threshold parameters (adjusted for potential nominal effects), beta are the regression parameters and zeta are the scale parameters. (CHANGETHIS)}
+\item{weights}{optional case weights in fitting. Defaults to 1.}
 
-\item{control}{a list of control parameters passed on to clm.control.}
+\item{start}{a vector of initial values for the regression coefficients,
+\code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function) and the standard deviation of the random effect}
 
-\item{link}{link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model.}
+\item{link}{link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model and is the only link function currently supported.}
 
 \item{gfun}{A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function, which is currently the only possibility.}
 
 \item{quad}{A string indicating the type of quadrature used to integrate over the random effects. Can take values "Laplace" (Adaptive Gauss-Hermite quadrature using Laplace approximation; the default) or "GH" (Gauss-Hermite quadrature).}
 
 \item{n_nodes}{Order of Gauss-Hermite rule used (number of nodes).}
-
-\item{...}{additional arguments are passed on to clmm.control.}
+}
+\value{
+an object of type \code{ocmm} with the components listed below. Parameter estimates are in \code{coefficients}.
+The last 3 elements of \code{coefficients} are the parameters of the g function (\code{M},  \code{B},  and \code{T}) and the standard deviation of the random effect.
+coefficients the parameter estimates
+vcov the variance-covariance matrix
+sigma_rnd the standard devition of the random effect
+df the estimated degrees of freedom
+logLik the value of the log-likelihood at the estimated optimum
+len_beta the number of fixed-effects parameters of the model
+len_gfun the number of parameters in the g function used in the model
+len_rnd the number of random effects (1 in this version of the package)
+fitted.values the fitted probabilities
+residuals the residuals on the latent scale
+v the vector of continuous scores
+x the model matrix
+sample.size the sample size (can differ for the number of observations if the weights are different from 1)
+nobs the number of observations
+call the call to fit the model
+no.pars the total munber of parameters estimated
+data the data frame used
+link the link function used
+gfun the g function used
+formula the formula used
 }
 \description{
-This function performs the continuous ordinal regression with logit link using the generalized logistic function as g function and without random effects.
+This function fits a ordinal continuous mixed model with logit link using the generalized logistic function as g function.
 }
 \examples{
-# Change data set
-#fitLaplace <- ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="Laplace")
-#fitGH <- ocmm(vas ~ lasert1+lasert2+lasert3+ (1|ID), data=pain, quad="GH")
 \dontrun{
 fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
 fit.phys.rnd     <- ocmm(phys 	   ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
 fit.pain.rnd 	  <- ocmm(pain 	   ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
 fit.mood.rnd 	  <- ocmm(mood 	   ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
-fit.nausvom.rnd  <- ocmm(nausvom	 ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+fit.nausvom.rnd <- ocmm(nausvom ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
 fit.appetite.rnd <- ocmm(appetite ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
 summary(fit.overall.rnd)
 summary(fit.phys.rnd)

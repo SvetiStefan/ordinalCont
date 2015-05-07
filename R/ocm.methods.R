@@ -428,56 +428,6 @@ extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
 }
 
 
-#' @title Extract the Model Frame from a Fit
-#' @param object An ocm object.
-#' @param ... Further arguments to be passed to methods.
-#' @method model.frame ocm
-#' @return Returns the saved model frame used when fitting the model.
-#' @seealso \code{\link{ocm}}
-#' @export
-
-model.frame.ocm <- function(object, ...) {
-  if(is.null(mod <- object$data[,all.vars(object$formula)]))
-    stop("Cannot extract model.frame.")
-  else
-    mod
-}
-
-#' @title Extract the Model Matrix from a Fit
-#' @param object an \code{ocm} object
-#' @param ... Further arguments to be passed to methods.
-#' @export
-#' @method model.matrix ocm
-#' @return Returns the design matrix for an \code{ocm} fit.
-#' @seealso \code{\link{ocm}}
-
-model.matrix.ocm <- function(object, ...) {
-  object$x
-}
-
-#' @title Model Terms
-#' @param x An \code{ocm} object.
-#' @param ... Further arguments to be passed to methods.
-#' @export
-#' @method terms ocm
-#'  @return model terms
-#' @seealso \code{\link{ocm}}
-
-terms.ocm <- function(x, ...) {
-  terms(x$formula)
-}
-
-#' @title Calculate Variance-Covariance Matrix for a Fitted Model Object
-#' @param object An \code{ocm} object.
-#' @param ... Further arguments to be passed to methods
-#' @details For the generalized logistic g-function, the variance-covariance matrix of model parameters will be 
-#' of dimension (\code{len_beta} +3)x(\code{len_beta} +3), where \code{len_beta}  is the number of 
-#' beta coefficients in the model.
-#' @export
-#' @method vcov ocm
-#'  @return Variance-covariance matrix of model parameters
-#' @seealso \code{\link{ocm}}
-
 vcov.ocm <- function(object, ...) {
   object$vcov
 }

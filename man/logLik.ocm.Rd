@@ -2,18 +2,20 @@
 % Please edit documentation in R/ocm.methods.R
 \name{logLik.ocm}
 \alias{logLik.ocm}
-\title{Extract Log-Likelihood}
+\title{Extract the Log-Likelihood}
 \usage{
-logLik(object, ...)
+\\method{logLik}{ocm}(object, ...)
 }
 \arguments{
 \item{object}{an \code{ocm} object.}
+
+\item{...}{Further arguments to be passed to methods.}
 }
 \value{
-log likelihood of \code{ocm} object
+Returns the log-likelihood of an \code{ocm} object
 }
 \description{
-Extract Log-Likelihood
+Extract the Log-Likelihood
 }
 \seealso{
 \code{\link{ocm}}

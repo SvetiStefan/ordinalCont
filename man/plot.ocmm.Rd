@@ -11,14 +11,32 @@
 \arguments{
 \item{x}{An ocm object.}
 
-\item{CIs}{Indicates if confidence bands for the g function should be computed (based on the Wald 95\% CIs).}
+\item{CIs}{Indicates if confidence bands for the g function should be computed (based on the Wald 95\% CIs). \code{"no"} = no CIS [default]; \code{"vcov"} = Wald}
 
 \item{R}{The number of bootstrap replicates.}
+
+\item{main}{the title of the plot. Defauts to ``g function (95% CIs)"
+##}
+
+\item{xlab}{the label of the \code{x} axis. Defaults to ``Continuous ordinal scale"}
+
+\item{ylab}{the label of the \code{y} axis. Defaults to an emtpy string}
+
+\item{CIcol}{the color of the confidence interval bands. Defaults to `lightblue'}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
 This function plots the g function as fitted in an ocm call.
+}
+\details{
+The fitted g function of an \code{ocmm} object is plotted.
+}
+\examples{
+\dontrun{
+fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+plot(fit.overall.rnd, CIs="vcov", R=100)
+}
 }
 \keyword{plot}
 

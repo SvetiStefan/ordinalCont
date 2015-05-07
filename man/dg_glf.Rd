@@ -23,7 +23,7 @@ Maurizio Manuguerra, Gillian Heller
 }
 \references{
 Richards, F. (1959). A flexible growth function for empirical use,
-\emph{Journal of Experimental Botany}, 10, 290–301.
+\emph{Journal of Experimental Botany}, 10, 290-301.
 }
 \seealso{
 \code{\link{g_glf}},\code{\link{g_glf_inv}}

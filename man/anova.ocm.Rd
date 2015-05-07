@@ -12,15 +12,29 @@
 \item{...}{one or more additional \code{ocm} objects.}
 }
 \value{
-object of class \code{anova.ocm}, consisting of anova table giving AIC,
- log likelihood, likelihood ratio statistic, df and p-value
- for each model, in hierarchical order
+The method returns an object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
+\itemize{
+  \item no.par the number of parameters
+  \item AIC the Akaike information criterion
+  \item loglik the log-likelihood
+  \item LR.stat the likelihood ratio statistic
+  \item df the difference in the degrees of freedom in the models being compared
+  \item Pr(>Chisq) the p-value from the likelihood ratio test
+}
 }
 \description{
 Comparison of continuous ordinal models using likelihood ratio tests.
 }
 \details{
 Likelihood ratio testing of nested models is performed.
+}
+\examples{
+\dontrun{
+ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+fit.overall  <- ocm(overall  ~ cycleno + bsa + treatment, data=ANZ0001.ocm)
+anova(fit.overall, update(fit.overall, .~. + age))
+}
 }
 \author{
 Maurizio Manuguerra

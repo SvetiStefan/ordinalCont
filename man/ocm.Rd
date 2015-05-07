@@ -4,41 +4,56 @@
 \alias{ocm}
 \title{Ordinal regression for continuous scales}
 \usage{
-ocm(formula, data, weights, start = NULL, control = list(),
-  link = c("logit"), gfun = c("glf"), ...)
+ocm(formula, data, weights, start = NULL, link = c("logit"),
+  gfun = c("glf"))
 }
 \arguments{
 \item{formula}{a formula expression as for regression models, of the form
 response ~ predictors. Only fixed effects are supported.
 The model must have an intercept: attempts to remove one will lead to a warning and will be
-ignored (TODO).}
+ignored.}
 
 \item{data}{an optional data frame in which to interpret the variables occurring in the
 formulas.}
 
-\item{start}{initial values for the parameters in the format c(alpha, beta, zeta), where
-alpha are the threshold parameters (adjusted for potential nominal effects), beta are the
-regression parameters and zeta are the scale parameters. (CHANGETHIS)}
+\item{weights}{optional case weights in fitting. Defaults to 1.}
 
-\item{control}{a list of control parameters passed on to clm.control.}
+\item{start}{a vector of initial values for the regression coefficients
+and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)}
 
 \item{link}{link function, i.e. the type of location-scale distribution assumed for the latent
-distribution. The default "logit" link gives the proportional odds model.}
+distribution. The default "logit" link gives the proportional odds model and is the only link function currently supported.}
 
 \item{gfun}{A smooth monotonic function capable of capturing the non-linear nature of the
 ordinal measure. It defaults to the generalized logistic function, which is currently the only
 possibility.}
-
-\item{...}{additional arguments are passed on to clm.control.}
 }
 \value{
-an object of type \code{ocm}. Parameter estimates are in \code{coefficients}.
+an object of type \code{ocm} with the components listed below. Parameter estimates are in \code{coefficients}.
 The last 3 elements of \code{coefficients} are the parameters of the g function:
 \code{M},  \code{B},  and \code{T}.
+coefficients the parameter estimates
+vcov the variance-covariance matrix
+df the estimated degrees of freedom
+logLik the value of the log-likelihood at the estimated optimum
+len_beta the number of fixed-effects parameters of the model
+len_gfun the number of parameters in the g function used in the model
+fitted.values the fitted probabilities
+residuals the residuals on the latent scale
+v the vector of continuous scores
+x the model matrix
+sample.size the sample size (can differ for the number of observations if the weights are different from 1)
+nobs the number of observations
+call the call to fit the model
+no.pars the total munber of parameters estimated
+data the data frame used
+link the link function used
+gfun the g function used
+formula the formula used
 }
 \description{
 This function performs continuous ordinal regression with logit link using the
-generalized logistic function as g function. Random effects are not supported.
+generalized logistic function as g function. Random effects are not supported (see \code{ocmm} for mixed-effects modelling).
 }
 \details{
 Ordinal regression analysis is a convenient tool for analyzing ordinal response variables
@@ -59,11 +74,9 @@ latent variable. Currently
 the logit link, which corresponds to a standard logistic distribution, is implemented.
 (This implies a proportional odds model.)
 A regression framework supporting fixed effects
- is implemented. The likelihood is maximized using XXXXX MAURIZIO which function?.
+ is implemented. The likelihood is maximized using \code{optim {stats}} with a quasi-Newton method (``\code{BFGS}").
 }
 \examples{
-# Change data set
-#fit <- ocm(vas ~ lasert1+lasert2+lasert3, data=pain)
 ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
 fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)

@@ -7,12 +7,12 @@
 \method{summary}{ocmm}(object, ...)
 }
 \arguments{
-\item{object}{An object of class "ocm", usually, a result of a call to ocm.}
+\item{object}{An object of class ``ocmm", usually, a result of a call to ocm.}
 
 \item{...}{Further arguments passed to or from other methods.}
 }
 \description{
-summary method for class "ocm"
+summary method for class ``ocmm"
 }
 \keyword{summary}
 

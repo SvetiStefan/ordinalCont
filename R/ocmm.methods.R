@@ -305,30 +305,3 @@ extractAIC.ocmm <- function(fit, scale = 0, k = 2, ...) {
 }
 
 
-#' @title Extract the Model Frame from a Fit
-#' @param object An ocmm object.
-#' @param ... Further arguments to be passed to methods.
-#' @export
-#' @method model.frame ocmm
-#' @return Returns the saved model frame used when fitting the model.
-#' @seealso \code{\link{ocmm}}
-
-model.frame.ocmm <- function(object, ...) {
-  if(is.null(mod <- object$data[,all.vars(object$formula)]))
-    stop("Cannot extract model.frame.")
-  else
-    mod
-}
-
-#' @title Extract the Model Matrix from a Fit
-#' @param object an \code{ocmm} object
-#' @param ... Further arguments to be passed to methods.
-#' @export
-#' @method model.matrix ocmm
-#' @return Returns the design matrix for an \code{ocmm} fit.
-#' @seealso \code{\link{ocmm}}
-
-model.matrix.ocmm <- function(object, ...) {
-  object$x
-}
-
