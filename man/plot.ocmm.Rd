@@ -15,8 +15,7 @@
 
 \item{R}{The number of bootstrap replicates.}
 
-\item{main}{the title of the plot. Defauts to ``g function (95% CIs)"
-##}
+\item{main}{the title of the plot. Defauts to ``g function (95\% CIs)"}
 
 \item{xlab}{the label of the \code{x} axis. Defaults to ``Continuous ordinal scale"}
 

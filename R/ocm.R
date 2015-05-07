@@ -93,7 +93,6 @@
 ocm <- function(formula, data, weights, start=NULL, link = c("logit"), 
                 gfun = c("glf"))
 {
-  #FIXME check for the intercept in formula.
   if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) 
     stop("Random effects specified. Please call ocmm.")
   if (missing(formula)) 
@@ -202,7 +201,7 @@ ocmEst <- function(start, v, x, weights, link, gfun){
     stop("Cannot compute vcov: \nHessian is numerically singular")
   vcov <- solve.qr(qrH)
   
-  ## compute (x’x)^(-1) x’y
+  ## compute (x'x)^(-1) x'y
   coef <- fit$par
   names(coef) <- names(start)
   len_beta = ncol(x)
@@ -214,7 +213,7 @@ ocmEst <- function(start, v, x, weights, link, gfun){
   fitted.values <- inv.logit(g_glf(v, par_g) + x%*%beta)
   sigma2 <- sum((v - fitted.values)^2)/df
   
-  ## compute sigma^2 * (x’x)^-1
+  ## compute sigma^2 * (x'x)^-1
   #vcov <- sigma2 * chol2inv(qx$qr)
   colnames(vcov) <- rownames(vcov) <- c(colnames(x),"M", "B", "T")
   list(coefficients = coef,

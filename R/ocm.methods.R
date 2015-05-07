@@ -197,8 +197,8 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' \code{"rnd.x.bootstrap"} = random-x bootstrap; \code{"fix.x.bootstrap"} = bootstrap with fixed-x 
 #' resampling; \code{"param.bootstrap"} = parametric bootstrap. 
 #' @param R the number of bootstrap replicates [ignored if CIs='no']
-#' @param main the title of the plot. Defauts to ``g function (95% CIs)"
-## #' @param xlab the label of the x axis. Defaults to ``Continuous ordinal scale" 
+#' @param main the title of the plot. Defauts to ``g function (95\% CIs)"
+#' @param xlab the label of the x axis. Defaults to ``Continuous ordinal scale"
 #' @param ylab the label of the \code{y} axis. Defaults to an emtpy string
 #' @param CIcol the color of the confidence interval bands. Defaults to ``lightblue"
 #' @param ... further arguments passed to or from other methods
@@ -215,6 +215,9 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
 #' fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
 #' plot(fit.overall, CIs="vcov")
+#' plot(fit.overall, CIs="rnd.x.bootstrap", R=100)
+#' plot(fit.overall, CIs="fix.x.bootstrap", R=100)
+#' plot(fit.overall, CIs="param.bootstrap", R=100)
 #' @author Maurizio Manuguerra
 
 plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, 
@@ -222,8 +225,8 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
                      CIcol = 'lightblue', ...)
 {
   #FIXME: this works for glf only: make general?
-  #FIXME: with bootstrapping, when a variable is a factor, it can go out of observation for some 
-  #level making optim fail.
+  #FIXME: with bootstrapping, when a variable is a factor, it could go out of observations for some 
+  #level making optim fail? need to use droplevels()
   CIs <- match.arg(CIs)
   R <- as.integer(R)
   len_beta <- x$len_beta

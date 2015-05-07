@@ -86,8 +86,8 @@ print.summary.ocmm <- function(x, ...)
 #' @param x An ocm object.
 #' @param CIs Indicates if confidence bands for the g function should be computed (based on the Wald 95\% CIs). \code{"no"} = no CIS [default]; \code{"vcov"} = Wald
 #' @param R The number of bootstrap replicates. 
-#' @param main the title of the plot. Defauts to ``g function (95% CIs)"
-## #' @param xlab the label of the \code{x} axis. Defaults to ``Continuous ordinal scale" 
+#' @param main the title of the plot. Defauts to ``g function (95\% CIs)"
+#' @param xlab the label of the \code{x} axis. Defaults to ``Continuous ordinal scale" 
 #' @param ylab the label of the \code{y} axis. Defaults to an emtpy string
 #' @param CIcol the color of the confidence interval bands. Defaults to `lightblue'
 #' @param ... Further arguments passed to or from other methods.

@@ -222,7 +222,7 @@ ocmmEst <- function(start, v, x, z, weights, link, gfun, rnd=NULL, n_nodes, quad
     stop("Cannot compute vcov: \nHessian is numerically singular")
   vcov <- solve.qr(qrH)
   
-  ## compute (x’x)^(-1) x’y
+  ## compute (x'x)^(-1) x'y
   coef <- fit$par
   names(coef) <- names(start)
   len_beta = ncol(x)
@@ -235,7 +235,7 @@ ocmmEst <- function(start, v, x, z, weights, link, gfun, rnd=NULL, n_nodes, quad
   fitted.values <- inv.logit(g_glf(v, par_g) + x%*%beta)
   sigma2 <- sum((v - fitted.values)^2)/df
   
-  ## compute sigma^2 * (x’x)^-1
+  ## compute sigma^2 * (x'x)^-1
   colnames(vcov) <- rownames(vcov) <- c(colnames(x),"M", "B", "T", "sigma_rnd")
   list(coefficients = coef,
        vcov = vcov,

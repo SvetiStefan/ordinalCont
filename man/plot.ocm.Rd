@@ -18,8 +18,7 @@ resampling; \code{"param.bootstrap"} = parametric bootstrap.}
 
 \item{R}{the number of bootstrap replicates [ignored if CIs='no']}
 
-\item{main}{the title of the plot. Defauts to ``g function (95% CIs)"
-##}
+\item{main}{the title of the plot. Defauts to ``g function (95\% CIs)"}
 
 \item{xlab}{the label of the x axis. Defaults to ``Continuous ordinal scale"}
 
@@ -43,6 +42,9 @@ ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
 fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
 plot(fit.overall, CIs="vcov")
+plot(fit.overall, CIs="rnd.x.bootstrap", R=100)
+plot(fit.overall, CIs="fix.x.bootstrap", R=100)
+plot(fit.overall, CIs="param.bootstrap", R=100)
 }
 \author{
 Maurizio Manuguerra

@@ -64,7 +64,6 @@ my.aghQuad <- function (g, muHat, sigmaHat, rule, ...)
 {
   z <- muHat + sqrt(2) * sigmaHat * rule$x
   wStar <- exp(rule$x * rule$x + log(rule$w))
-  wStar
   val <- sqrt(2) * sigmaHat * apply(wStar * g(z, ...), 2, sum)
   return(val)
 }
