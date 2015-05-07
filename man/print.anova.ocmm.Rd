@@ -22,6 +22,12 @@ Prints \code{anova.ocmm} object
 \description{
 Print the results of the comparison of continuous ordinal models in likelihood ratio tests.
 }
+\examples{
+\dontrun{
+fit.overall.rnd  <- ocmm(overall  ~ cycleno + bsa + treatment + (1|randno), data=ANZ0001)
+anova(fit.overall.rnd, update(fit.overall.rnd, .~. + age))
+}
+}
 \keyword{anova}
 \keyword{summary,}
 

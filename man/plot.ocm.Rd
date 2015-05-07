@@ -42,9 +42,11 @@ ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
 fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
 plot(fit.overall, CIs="vcov")
+\dontrun{
 plot(fit.overall, CIs="rnd.x.bootstrap", R=100)
 plot(fit.overall, CIs="fix.x.bootstrap", R=100)
 plot(fit.overall, CIs="param.bootstrap", R=100)
+}
 }
 \author{
 Maurizio Manuguerra

@@ -14,5 +14,11 @@
 \description{
 summary method for class ``ocmm"
 }
+\examples{
+\dontrun{
+fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+summary(fit.overall.rnd)
+}
+}
 \keyword{summary}
 

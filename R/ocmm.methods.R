@@ -26,6 +26,11 @@ print.ocmm <- function(x, ...)
 #' @param ... Further arguments passed to or from other methods.
 #' @method summary ocmm
 #' @keywords summary
+#' @examples
+#'\dontrun{
+#' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' summary(fit.overall.rnd)
+#' }
 #' @export
 
 summary.ocmm <- function(object, ...)
@@ -51,13 +56,6 @@ summary.ocmm <- function(object, ...)
   class(res) <- "summary.ocmm"
   print(res, ...)
 }
-
-#' @title Summarizing Continuous Ordinal Fits
-#' @description summary method for class ``summary.ocmm"
-#' @param x An object of class "summary.ocmm", usually, a result of a call to summary.ocmm.
-#' @param ... Further arguments passed to or from other methods.
-#' @keywords summary
-#' @export
 
 print.summary.ocmm <- function(x, ...)
 {
@@ -144,19 +142,17 @@ plot.ocmm <- function(x, CIs = c('no','vcov'), R = 1000, main="g function (95% C
 #' @param ... one or more additional ocm objects.
 #' @keywords anova
 #' @return The method returns an object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
-#' \itemize{
-#'   \item no.par the number of parameters
-#'   \item AIC the Akaike information criterion
-#'   \item loglik the log-likelihood
-#'   \item LR.stat the likelihood ratio statistic
-#'   \item df the difference in the degrees of freedom in the models being compared
-#'   \item Pr(>Chisq) the p-value from the likelihood ratio test 
-#' }
+#'   \item{no.par}{the number of parameters}
+#'   \item{AIC}{the Akaike information criterion}
+#'   \item{loglik}{the log-likelihood}
+#'   \item{LR.stat}{the likelihood ratio statistic}
+#'   \item{df}{the difference in the degrees of freedom in the models being compared}
+#'   \item{Pr(>Chisq)}{the p-value from the likelihood ratio test}
 #' @export
 #' @examples
 #' \dontrun{
 #' fit.overall.rnd  <- ocmm(overall  ~ cycleno + bsa + treatment + (1|randno), data=ANZ0001)
-#' anova(fit.overall.rnd, update(fit.overall, .~. + age))
+#' anova(fit.overall.rnd, update(fit.overall.rnd, .~. + age))
 #' }
 
 
@@ -232,6 +228,11 @@ anova.ocmm <- function(object, ...)
 #' @param ... Further arguments passed to or from other methods.
 #' @return Prints \code{anova.ocmm} object
 #' @keywords summary, anova
+#' @examples
+#' \dontrun{
+#' fit.overall.rnd  <- ocmm(overall  ~ cycleno + bsa + treatment + (1|randno), data=ANZ0001)
+#' anova(fit.overall.rnd, update(fit.overall.rnd, .~. + age))
+#' }
 #' @export
 
 print.anova.ocmm <-
@@ -260,6 +261,11 @@ print.anova.ocmm <-
 #' @method vcov ocmm
 #'  @return Variance-covariance matrix of model parameters
 #' @seealso \code{\link{ocmm}}
+#' @examples
+#' \dontrun{
+#' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' vcov(fit.overall.rnd)
+#' }
 
 vcov.ocmm <- function(object, ...) {
   vcov.ocm(object)
@@ -274,7 +280,11 @@ vcov.ocmm <- function(object, ...) {
 #' @seealso \code{\link{ocmm}}
 #' @return Returns the log-likelihood of an \code{ocmm} object
 #' @export
-
+#' @examples
+#' \dontrun{
+#' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' logLik(fit.overall.rnd)
+#' }
 
 logLik.ocmm <- function(object, ...) {
   structure(object$logLik, df = object$df, nobs=object$nobs, class = "logLik.ocmm")
@@ -298,6 +308,11 @@ logLik.ocmm <- function(object, ...) {
 #' \emph{Bulletin of the International Statistical Institute}, 50:277-290.
 #' @export
 #' @method extractAIC ocmm
+#' @examples
+#' \dontrun{
+#' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
+#' extractAIC(fit.overall.rnd)
+#' }
 
 extractAIC.ocmm <- function(fit, scale = 0, k = 2, ...) {
   edf <- fit$df

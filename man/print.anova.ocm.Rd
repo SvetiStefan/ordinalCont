@@ -22,6 +22,12 @@ Prints \code{anova.ocm} object
 \description{
 Print the results of the comparison of continuous ordinal models in likelihood ratio tests.
 }
+\examples{
+ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+fit.overall  <- ocm(overall  ~ cycleno + bsa + treatment, data=ANZ0001.ocm)
+anova(fit.overall, update(fit.overall, .~. + age))
+}
 \seealso{
 \code{\link{ocm}}, \code{\link{anova.ocm}}
 }

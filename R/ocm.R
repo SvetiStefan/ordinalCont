@@ -41,24 +41,24 @@
 #' @return an object of type \code{ocm} with the components listed below. Parameter estimates are in \code{coefficients}. 
 #' The last 3 elements of \code{coefficients} are the parameters of the g function: 
 #' \code{M},  \code{B},  and \code{T}.
-#' coefficients the parameter estimates
-#' vcov the variance-covariance matrix
-#' df the estimated degrees of freedom
-#' logLik the value of the log-likelihood at the estimated optimum
-#' len_beta the number of fixed-effects parameters of the model
-#' len_gfun the number of parameters in the g function used in the model
-#' fitted.values the fitted probabilities
-#' residuals the residuals on the latent scale
-#' v the vector of continuous scores
-#' x the model matrix
-#' sample.size the sample size (can differ for the number of observations if the weights are different from 1)
-#' nobs the number of observations
-#' call the call to fit the model
-#' no.pars the total munber of parameters estimated
-#' data the data frame used
-#' link the link function used
-#' gfun the g function used
-#' formula the formula used
+#' \item{coefficients}{the parameter estimates}
+#' \item{vcov}{the variance-covariance matrix}
+#' \item{df}{the estimated degrees of freedom}
+#' \item{logLik}{the value of the log-likelihood at the estimated optimum}
+#' \item{len_beta}{the number of fixed-effects parameters of the model}
+#' \item{len_gfun}{the number of parameters in the g function used in the model}
+#' \item{fitted.values}{the fitted probabilities}
+#' \item{residuals}{the residuals on the latent scale}
+#' \item{v}{the vector of continuous scores}
+#' \item{x}{the model matrix}
+#' \item{sample.size}{the sample size (can differ for the number of observations if the weights are different from 1)}
+#' \item{nobs}{the number of observations}
+#' \item{call}{the call to fit the model}
+#' \item{no.pars}{the total munber of parameters estimated}
+#' \item{data}{the data frame used}
+#' \item{link}{the link function used}
+#' \item{gfun}{the g function used}
+#' \item{formula}{the formula used}
 #'  @references Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous 
 #'  Scales, \emph{The International Journal of Biostatistics}: 6(1), Article 14.
 #'@references Richards, F. (1959). A flexible growth function for empirical use, 

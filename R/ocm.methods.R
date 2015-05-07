@@ -32,7 +32,10 @@ print.ocm <- function(x, ...)
 #' @keywords summary
 #' @seealso \code{\link{ocm}}, \code{\link{print.ocm}}
 #' @examples
-#' # Add here
+#' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+#' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+#' fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' summary(fit.overall)
 #' @export
 #' @author Maurizio Manuguerra
 
@@ -52,16 +55,6 @@ summary.ocm <- function(object, ...)
   print(res, ...)
 }
 
-#' @title Summarizing Continuous Ordinal Fits
-#' @description Summary method for class \code{"summary.ocm"}
-#' @param x An object of class \code{"summary.ocm"}, usually a result of a call to \code{summary.ocm}.
-#' @param ... further arguments passed to or from other methods.
-#' @details The table of parameter estimates is printed.
-#' @examples 
-#' #Example here
-#' @keywords summary
-#' @export
-#' @author Maurizio Manuguerra
 
 print.summary.ocm <- function(x, ...)
 {
@@ -92,19 +85,23 @@ print.summary.ocm <- function(x, ...)
 #' @keywords predict
 #' @method predict ocm
 #' @return  A list containing the following components: 
-#' \tabular{ll}{
-#' \code{mode} \tab a vector of length equal to the number of observations. Each element is the mode of v, 
-#' the ordinal continuous random variable, conditional on the covariates in the model\cr\cr
-#' \code{density} \tab a matrix with number of rows equal to the number of observations. Each row 
+#' \item{mode}{a vector of length equal to the number of observations
+#' Each element is the mode of v, 
+#' the ordinal continuous random variable, conditional on the covariates in the model}
+#' \item{density}{a matrix with number of rows equal to the number of observations. Each row 
 #' contains the values of the density function of v conditional on the covariates in the model. 
-#' The density function is calculated over 100 equally-spaced values of v in (0,1)\cr\cr
-#' \code{x} \tab a vector with the 100 equally-spaced values of v in (0,1) used to compute the density of v\cr\cr
-#' \code{formula} \tab the formula used to fit the model\cr\cr
-#' \code{newdata}\tab a new data frame used to make predictions. It takes value NULL if no new data frame has been used.
-#' }
-#' @details An object of class \code{ocm} and optionally a new data frame are used to compute the probability densities of V, the continuous ordinal score.
-#' The estimated parameters of the fitted model and \code{ndens} (default: 100) values of V are used to compute the probability densities on the latent scale. 
-#' These values are then transformed in scores on the continuous ordinal scale using the g function and the estimated values of \code{M}, \code{B}, and \code{T}.
+#' The density function is calculated over 100 equally-spaced values of v in (0,1)}
+#' \item{x}{a vector with the 100 equally-spaced values of v in (0,1) used to compute the density of v}
+#' \item{formula}{the formula used to fit the model}
+#' \item{newdata}{a new data frame used to make predictions. It takes value NULL if no new data frame has been used}
+#' @details An object of class \code{ocm} and optionally a new data 
+#' frame are used to compute the probability 
+#' densities of V, the continuous ordinal score. The estimated parameters 
+#' of the fitted model and \code{ndens} (default: 100) 
+#' values of V are used to compute the probability densities on the latent scale. 
+#' These values are then transformed in scores on the continuous ordinal 
+#' scale using the g function and the estimated values 
+#' of \code{M}, \code{B}, and \code{T}.
 #' @examples 
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
@@ -149,6 +146,12 @@ predict.ocm <- function(object, newdata=NULL, ndens=100, ...)
 #' @keywords predict
 #' @details The table of predictions from \code{predict.ocm} is printed.
 #' @seealso \code{\link{predict.ocm}}, \code{\link{ocm}}
+#' @examples 
+#' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+#' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+#' fit.overall <- ocm(overall ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' pred <- predict(fit.overall)
+#' print(pred)
 #' @export
 
 print.predict.ocm <- function(x, ...)
@@ -170,6 +173,12 @@ print.predict.ocm <- function(x, ...)
 #' @details The probability densities from \code{predict.ocm}  are plotted.
 #' @seealso \code{\link{predict.ocm}},\code{\link{ocm}}
 #' @keywords predict, plot
+#' @examples 
+#' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+#' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+#' fit.overall <- ocm(overall ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' pred <- predict(fit.overall)
+#' plot(pred)
 #' @export
 #' @author Maurizio Manuguerra
 
@@ -215,9 +224,11 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
 #' fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
 #' plot(fit.overall, CIs="vcov")
+#' \dontrun{
 #' plot(fit.overall, CIs="rnd.x.bootstrap", R=100)
 #' plot(fit.overall, CIs="fix.x.bootstrap", R=100)
 #' plot(fit.overall, CIs="param.bootstrap", R=100)
+#' }
 #' @author Maurizio Manuguerra
 
 plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, 
@@ -284,23 +295,17 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
 #' @author Maurizio Manuguerra
 #'  @seealso \code{\link{ocm}}, \code{\link{print.anova.ocm}}
 #' @return The method returns an object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
-#' \itemize{
-#'   \item no.par the number of parameters
-#'   \item AIC the Akaike information criterion
-#'   \item loglik the log-likelihood
-#'   \item LR.stat the likelihood ratio statistic
-#'   \item df the difference in the degrees of freedom in the models being compared
-#'   \item Pr(>Chisq) the p-value from the likelihood ratio test 
-#' }
+#' \item{no.par}{the number of parameters}
+#' \item{AIC}{the Akaike information criterion}
+#' \item{loglik}{the log-likelihood}
+#' \item{LR.stat}{the likelihood ratio statistic}
+#' \item{df}{the difference in the degrees of freedom in the models being compared}
+#' \item{Pr(>Chisq)}{the p-value from the likelihood ratio test}
 #' @examples
-#' \dontrun{
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
 #' fit.overall  <- ocm(overall  ~ cycleno + bsa + treatment, data=ANZ0001.ocm)
 #' anova(fit.overall, update(fit.overall, .~. + age))
-#' }
-
-
 
 
 anova.ocm <- function(object, ...)
@@ -376,6 +381,11 @@ anova.ocm <- function(object, ...)
 #' @keywords summary, anova
 #' @seealso \code{\link{ocm}}, \code{\link{anova.ocm}}
 #' @return Prints \code{anova.ocm} object
+#' @examples
+#' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+#' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+#' fit.overall  <- ocm(overall  ~ cycleno + bsa + treatment, data=ANZ0001.ocm)
+#' anova(fit.overall, update(fit.overall, .~. + age))
 #' @export
 
 print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3), 
@@ -402,6 +412,11 @@ print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3),
 #' @seealso \code{\link{ocm}}
 #' @return Returns the log-likelihood of an \code{ocm} object
 #' @export
+#' @examples
+#' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+#' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+#' fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' logLik(fit.overall)
 
 logLik.ocm <- function(object, ...){
   structure(object$logLik, df = object$df, nobs=object$nobs, class = "logLik.ocm")
@@ -424,12 +439,33 @@ logLik.ocm <- function(object, ...){
 #' \emph{Bulletin of the International Statistical Institute}, 50:277-290.
 #' @export
 #' @method extractAIC ocm
+#' @examples
+#' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+#' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+#' fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' extractAIC(fit.overall)
 
 extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
   edf <- fit$df
   c(edf, -2*fit$logLik + k * edf)
 }
 
+
+#' @title Calculate Variance-Covariance Matrix for a Fitted Model Object
+#' @param object An \code{ocm} object.
+#' @param ... Further arguments to be passed to methods
+#' @details For the generalized logistic g-function, the variance-covariance matrix of model parameters will be 
+#' of dimension (\code{len_beta} +4)x(\code{len_beta} +4), where \code{len_beta}  is the number of 
+#' beta coefficients in the model.
+#' @export
+#' @method vcov ocm
+#'  @return Variance-covariance matrix of model parameters
+#' @seealso \code{\link{ocm}}
+#' @examples
+#' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+#' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+#' fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+#' vcov(fit.overall)
 
 vcov.ocm <- function(object, ...) {
   object$vcov

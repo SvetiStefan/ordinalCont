@@ -13,14 +13,12 @@
 }
 \value{
 The method returns an object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
-\itemize{
-  \item no.par the number of parameters
-  \item AIC the Akaike information criterion
-  \item loglik the log-likelihood
-  \item LR.stat the likelihood ratio statistic
-  \item df the difference in the degrees of freedom in the models being compared
-  \item Pr(>Chisq) the p-value from the likelihood ratio test
-}
+  \item{no.par}{the number of parameters}
+  \item{AIC}{the Akaike information criterion}
+  \item{loglik}{the log-likelihood}
+  \item{LR.stat}{the likelihood ratio statistic}
+  \item{df}{the difference in the degrees of freedom in the models being compared}
+  \item{Pr(>Chisq)}{the p-value from the likelihood ratio test}
 }
 \description{
 Comparison of continuous ordinal models in likelihood ratio tests.
@@ -28,7 +26,7 @@ Comparison of continuous ordinal models in likelihood ratio tests.
 \examples{
 \dontrun{
 fit.overall.rnd  <- ocmm(overall  ~ cycleno + bsa + treatment + (1|randno), data=ANZ0001)
-anova(fit.overall.rnd, update(fit.overall, .~. + age))
+anova(fit.overall.rnd, update(fit.overall.rnd, .~. + age))
 }
 }
 \keyword{anova}

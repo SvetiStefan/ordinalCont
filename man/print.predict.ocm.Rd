@@ -17,6 +17,13 @@ Print method for class \code{"predict.ocm"}
 \details{
 The table of predictions from \code{predict.ocm} is printed.
 }
+\examples{
+ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+fit.overall <- ocm(overall ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+pred <- predict(fit.overall)
+print(pred)
+}
 \seealso{
 \code{\link{predict.ocm}}, \code{\link{ocm}}
 }

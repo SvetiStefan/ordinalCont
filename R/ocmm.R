@@ -15,26 +15,26 @@
 #' @param n_nodes Order of Gauss-Hermite rule used (number of nodes). 
 #' @return an object of type \code{ocmm} with the components listed below. Parameter estimates are in \code{coefficients}. 
 #' The last 3 elements of \code{coefficients} are the parameters of the g function (\code{M},  \code{B},  and \code{T}) and the standard deviation of the random effect.
-#' coefficients the parameter estimates
-#' vcov the variance-covariance matrix
-#' sigma_rnd the standard devition of the random effect
-#' df the estimated degrees of freedom
-#' logLik the value of the log-likelihood at the estimated optimum
-#' len_beta the number of fixed-effects parameters of the model
-#' len_gfun the number of parameters in the g function used in the model
-#' len_rnd the number of random effects (1 in this version of the package)
-#' fitted.values the fitted probabilities
-#' residuals the residuals on the latent scale
-#' v the vector of continuous scores
-#' x the model matrix
-#' sample.size the sample size (can differ for the number of observations if the weights are different from 1)
-#' nobs the number of observations
-#' call the call to fit the model
-#' no.pars the total munber of parameters estimated
-#' data the data frame used
-#' link the link function used
-#' gfun the g function used
-#' formula the formula used
+#' \item{coefficients}{the parameter estimates}
+#' \item{vcov}{the variance-covariance matrix}
+#' \item{sigma_rnd}{the standard devition of the random effect}
+#' \item{df}{the estimated degrees of freedom}
+#' \item{logLik}{the value of the log-likelihood at the estimated optimum}
+#' \item{len_beta}{the number of fixed-effects parameters of the model}
+#' \item{len_gfun}{the number of parameters in the g function used in the model}
+#' \item{len_rnd}{the number of random effects (1 in this version of the package)}
+#' \item{fitted.values}{the fitted probabilities}
+#' \item{residuals}{the residuals on the latent scale}
+#' \item{v}{the vector of continuous scores}
+#' \item{x}{the model matrix}
+#' \item{sample.size}{the sample size (can differ for the number of observations if the weights are different from 1)}
+#' \item{nobs}{the number of observations}
+#' \item{call}{the call to fit the model}
+#' \item{no.pars}{the total munber of parameters estimated}
+#' \item{data}{the data frame used}
+#' \item{link}{the link function used}
+#' \item{gfun}{the g function used}
+#' \item{formula}{the formula used}
 #' @keywords likelihood, log-likelihood, ordinal regression.
 #' @export
 #' @examples

@@ -28,6 +28,12 @@ The generalised AIC is computed:
 where \eqn{\ell} is the log likelihood, k=2 gives the AIC, and
 k=log(n) gives the BIC.
 }
+\examples{
+ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+extractAIC(fit.overall)
+}
 \references{
 Akaike, H (1983).
 Information measures and model selection,

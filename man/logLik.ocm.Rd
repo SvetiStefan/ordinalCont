@@ -17,6 +17,12 @@ Returns the log-likelihood of an \code{ocm} object
 \description{
 Extract the Log-Likelihood
 }
+\examples{
+ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
+ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
+fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
+logLik(fit.overall)
+}
 \seealso{
 \code{\link{ocm}}
 }
