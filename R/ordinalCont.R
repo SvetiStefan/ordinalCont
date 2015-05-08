@@ -9,7 +9,7 @@
 #' typically given a linear scale of 100 mm and asked to put a mark where they perceive
 #' themselves. These scales  measure subjects' 
 #' perception of an intangible quantity, and cannot be handled as ratio variables because of their 
-#' inherent nonlinearity.  We express  the likelihood in terms of a function (the "g function")
+#' inherent nonlinearity.  We express  the likelihood in terms of a function (the ``g function'')
 #'  connecting the  
 #' scale with an underlying continuous latent  variable. In the current version the g function 
 #' is taken as 
