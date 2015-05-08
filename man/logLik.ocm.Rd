@@ -4,7 +4,7 @@
 \alias{logLik.ocm}
 \title{Extract the Log-Likelihood}
 \usage{
-\\method{logLik}{ocm}(object, ...)
+\method{logLik}{ocm}(object, ...)
 }
 \arguments{
 \item{object}{an \code{ocm} object.}

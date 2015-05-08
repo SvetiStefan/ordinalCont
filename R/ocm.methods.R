@@ -407,7 +407,7 @@ print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3),
 #' @title Extract the Log-Likelihood
 #' @param object an \code{ocm} object.
 #' @param ... Further arguments to be passed to methods.
-#' @usage \\method{logLik}{ocm}(object, ...)
+#' @usage \method{logLik}{ocm}(object, ...)
 #' @method logLik ocm
 #' @seealso \code{\link{ocm}}
 #' @return Returns the log-likelihood of an \code{ocm} object

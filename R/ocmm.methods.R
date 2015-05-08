@@ -275,7 +275,7 @@ vcov.ocmm <- function(object, ...) {
 #' @title Extract the Log-Likelihood
 #' @param object an \code{ocmm} object.
 #' @param ... Further arguments to be passed to methods.
-#' @usage \\method{logLik}{ocmm}(object, ...)
+#' @usage \method{logLik}{ocmm}(object, ...)
 #' @method logLik ocmm
 #' @seealso \code{\link{ocmm}}
 #' @return Returns the log-likelihood of an \code{ocmm} object
