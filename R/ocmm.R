@@ -1,40 +1,40 @@
 #' Ordinal regression for continuous scales - with mixed-effects 
 #'
-#' This function fits a ordinal continuous mixed model with logit link using the generalized logistic function as g function.
+#' Fits an ordinal continuous mixed model with logit link, using the generalized logistic function as g function.
 #' @param formula a formula expression as for regression models, of the form 
-#' response ~ predictors. Onlymixed-effects models with a single random effect on the intercept are supported. 
+#' response ~ predictors. Only mixed-effects models with a single random effect on the intercept are supported. 
 #' The model must have an intercept: attempts to remove one will lead to a warning and will be 
 #' ignored.
-#' @param data  an optional data frame in which to interpret the variables occurring in the formulas.
+#' @param data  an optional data frame in which to interpret the variables occurring in the formulas
 #' @param weights optional case weights in fitting. Defaults to 1.
 #' @param start a vector of initial values for the regression coefficients, 
 #' \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function) and the standard deviation of the random effect
-#' @param link link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default "logit" link gives the proportional odds model and is the only link function currently supported.
+#' @param link link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default ``logit'' link gives the proportional odds model and is the only link function currently supported.
 #' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function, which is currently the only possibility.
-#' @param quad A string indicating the type of quadrature used to integrate over the random effects. Can take values "Laplace" (Adaptive Gauss-Hermite quadrature using Laplace approximation; the default) or "GH" (Gauss-Hermite quadrature).
-#' @param n_nodes Order of Gauss-Hermite rule used (number of nodes). 
+#' @param quad A string indicating the type of quadrature used to integrate over the random effects. Can take values \code{"Laplace"} (Adaptive Gauss-Hermite quadrature using Laplace approximation; the default) or \code{"GH"} (Gauss-Hermite quadrature).
+#' @param n_nodes order of Gauss-Hermite rule used (number of nodes) 
 #' @return an object of type \code{ocmm} with the components listed below. Parameter estimates are in \code{coefficients}. 
-#' The last 3 elements of \code{coefficients} are the parameters of the g function (\code{M},  \code{B},  and \code{T}) and the standard deviation of the random effect.
-#' \item{coefficients}{the parameter estimates}
-#' \item{vcov}{the variance-covariance matrix}
-#' \item{sigma_rnd}{the standard devition of the random effect}
-#' \item{df}{the estimated degrees of freedom}
-#' \item{logLik}{the value of the log-likelihood at the estimated optimum}
-#' \item{len_beta}{the number of fixed-effects parameters of the model}
-#' \item{len_gfun}{the number of parameters in the g function used in the model}
-#' \item{len_rnd}{the number of random effects (1 in this version of the package)}
-#' \item{fitted.values}{the fitted probabilities}
-#' \item{residuals}{the residuals on the latent scale}
-#' \item{v}{the vector of continuous scores}
-#' \item{x}{the model matrix}
-#' \item{sample.size}{the sample size (can differ for the number of observations if the weights are different from 1)}
-#' \item{nobs}{the number of observations}
-#' \item{call}{the call to fit the model}
-#' \item{no.pars}{the total munber of parameters estimated}
-#' \item{data}{the data frame used}
-#' \item{link}{the link function used}
-#' \item{gfun}{the g function used}
-#' \item{formula}{the formula used}
+#' The last 3 (***MAURIZIO SHOULD THIS BE 4?***) elements of \code{coefficients} are the parameters of the g function (\code{M},  \code{B},  and \code{T}) and the standard deviation of the random effect.
+#' \item{coefficients}{parameter estimates}
+#' \item{vcov}{variance-covariance matrix}
+#' \item{sigma_rnd}{standard devition of the random effect}
+#' \item{df}{estimated degrees of freedom}
+#' \item{logLik}{value of the log-likelihood at the estimated optimum}
+#' \item{len_beta}{number of fixed-effects parameters of the model}
+#' \item{len_gfun}{number of parameters in the g function used in the model}
+#' \item{len_rnd}{number of random effects (1 in this version of the package)}
+#' \item{fitted.values}{fitted probabilities}
+#' \item{residuals}{residuals on the latent scale}
+#' \item{v}{vector of continuous scores}
+#' \item{x}{model matrix}
+#' \item{sample.size}{sample size (can differ for the number of observations if the weights are different from 1)}
+#' \item{nobs}{number of observations}
+#' \item{call}{call to fit the model}
+#' \item{no.pars}{total munber of parameters estimated}
+#' \item{data}{data frame used}
+#' \item{link}{link function used}
+#' \item{gfun}{g function used}
+#' \item{formula}{formula used}
 #' @keywords likelihood, log-likelihood, ordinal regression.
 #' @export
 #' @examples
@@ -147,7 +147,8 @@ ocmm <- function(formula, data, weights, start=NULL, link = c("logit"), gfun = c
 
 #' @title Log-likelihood function for the mixed-effects model, using the generalized logistic 
 #' function as g function and the logit link function
-#'
+#'@description Computes the log-likelihood function for the mixed-effects continuous ordinal model, using the generalized logistic 
+#' function as g function and the logit link function
 #' @details This function computes minus the log-likelihood function for a mixed-effects model using the 
 #' generalized logistic function as g function and the logit link function. It is used internally to fit the model and should not be of interest of the user.
 #' @param par vector of regression coefficients, 
@@ -163,7 +164,7 @@ ocmm <- function(formula, data, weights, start=NULL, link = c("logit"), gfun = c
 #' @param n_nodes Order of Gauss-Hermite rule used (number of nodes). 
 #' @param iclusters a list containing the row numbers of the design matrix relative to each level of the factor over which random effect are computed
 #' @keywords likelihood, log-likelihood.
-#' @return minus the log-likelihood at parameter values \code{par} 
+#' @return Minus the log-likelihood at parameter values \code{par} 
 
 negloglik_glf_rnd <- function(par, v, d.matrix, rnd.matrix, wts, len_beta, rnd, n_nodes, quad, iclusters)
   { 

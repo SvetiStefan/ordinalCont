@@ -1,6 +1,6 @@
 #' Ordinal regression for continuous scales
 #'
-#' This function performs continuous ordinal regression with logit link using the 
+#' Continuous ordinal regression with logit link using the 
 #' generalized logistic function as g function. Random effects are not supported (see \code{ocmm} for mixed-effects modelling).
 #' @param formula a formula expression as for regression models, of the form 
 #' response ~ predictors. Only fixed effects are supported. 
@@ -12,7 +12,7 @@
 #' @param start a vector of initial values for the regression coefficients
 #' and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)
 #' @param link link function, i.e. the type of location-scale distribution assumed for the latent 
-#' distribution. The default "logit" link gives the proportional odds model and is the only link function currently supported.
+#' distribution. The default ``logit'' link gives the proportional odds model and is the only link function currently supported.
 #' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the 
 #' ordinal measure. It defaults to the generalized logistic function, which is currently the only 
 #' possibility.
@@ -24,7 +24,7 @@
 #' typically given a linear scale of 100 mm and asked to put a mark where they perceive
 #' themselves. These scales  measure subjects' 
 #' perception of an intangible quantity, and cannot be handled as ratio variables because of their 
-#' inherent nonlinearity.  We express  the likelihood in terms of a function (the "g function")
+#' inherent nonlinearity.  We express  the likelihood in terms of a function (the ``g function'')
 #'  connecting the  
 #' scale with an underlying continuous latent  variable. In the current version the g function 
 #' is taken as 
@@ -35,30 +35,30 @@
 #' the logit link, which corresponds to a standard logistic distribution, is implemented. 
 #' (This implies a proportional odds model.)
 #' A regression framework supporting fixed effects
-#'  is implemented. The likelihood is maximized using \code{optim {stats}} with a quasi-Newton method (``\code{BFGS}").
+#'  is implemented. The likelihood is maximized using \code{optim {stats}} with a quasi-Newton method (\code{"BFGS"}).
 #' 
 #' @seealso \code{\link{ocmm}}
 #' @return an object of type \code{ocm} with the components listed below. Parameter estimates are in \code{coefficients}. 
 #' The last 3 elements of \code{coefficients} are the parameters of the g function: 
 #' \code{M},  \code{B},  and \code{T}.
-#' \item{coefficients}{the parameter estimates}
-#' \item{vcov}{the variance-covariance matrix}
-#' \item{df}{the estimated degrees of freedom}
-#' \item{logLik}{the value of the log-likelihood at the estimated optimum}
-#' \item{len_beta}{the number of fixed-effects parameters of the model}
-#' \item{len_gfun}{the number of parameters in the g function used in the model}
-#' \item{fitted.values}{the fitted probabilities}
-#' \item{residuals}{the residuals on the latent scale}
-#' \item{v}{the vector of continuous scores}
-#' \item{x}{the model matrix}
-#' \item{sample.size}{the sample size (can differ for the number of observations if the weights are different from 1)}
-#' \item{nobs}{the number of observations}
-#' \item{call}{the call to fit the model}
-#' \item{no.pars}{the total munber of parameters estimated}
-#' \item{data}{the data frame used}
-#' \item{link}{the link function used}
-#' \item{gfun}{the g function used}
-#' \item{formula}{the formula used}
+#' \item{coefficients}{parameter estimates}
+#' \item{vcov}{variance-covariance matrix}
+#' \item{df}{estimated degrees of freedom}
+#' \item{logLik}{value of the log-likelihood at the estimated optimum}
+#' \item{len_beta}{number of fixed-effects parameters of the model}
+#' \item{len_gfun}{number of parameters in the g function used in the model}
+#' \item{fitted.values}{fitted probabilities}
+#' \item{residuals}{residuals on the latent scale}
+#' \item{v}{vector of continuous scores}
+#' \item{x}{model matrix}
+#' \item{sample.size}{sample size (can differ for the number of observations if the weights are different from 1)}
+#' \item{nobs}{number of observations}
+#' \item{call}{call to fit the model}
+#' \item{no.pars}{total munber of parameters estimated}
+#' \item{data}{data frame used}
+#' \item{link}{link function used}
+#' \item{gfun}{g function used}
+#' \item{formula}{formula used}
 #'  @references Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous 
 #'  Scales, \emph{The International Journal of Biostatistics}: 6(1), Article 14.
 #'@references Richards, F. (1959). A flexible growth function for empirical use, 

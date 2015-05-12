@@ -1,6 +1,6 @@
 #' Generalized logistic g function
 #'
-#' This function computes a parametric version of the g function following Richards (1959): 
+#' A parametric version of the g function following Richards (1959): 
 #' \deqn{g(v) = M + \frac{1}{B} \log\left(\frac{Tv^T}{1-v^T}\right)}
 #'  M is omitted as an intercept is always fitted.
 #' @param v vector of standardized scores from the continuous ordinal scale, 0<v<1.
@@ -24,7 +24,7 @@ g_glf <- function(v, par){
 
 #' Derivative of generalized logistic g function
 #'
-#' This function computes the derivative of the generalized logistic function as in Richards (1959): 
+#' Derivative of the generalized logistic function as in Richards (1959): 
 #' \deqn{g'(v) = \frac{T}{B}  \frac{1}{v(1-v^{T})}}
 #' @param v vector of standardized scores from the continuous ordinal scale, 0<\code{v}<1.
 #' @param par vector of 2 elements: B, the slope of the curve, and T, the symmetry of the curve.
@@ -47,10 +47,9 @@ dg_glf <- function(v, par){
 #' This function computes the inverse of a parametric version of the g function 
 #' following Richards (1959): 
 #' \deqn{g^{-1}(W) = \left( \frac{e^{B(W-M)}}{T+e^{B(W-M)}}  \right)^{\frac{1}{T}}} 
-#' @param W vector of scores on the latent scale \eqn{(-\infty,\infty)}. 
-#' \deqn{W=-x'\beta}
+#' @param W vector of scores on the latent scale \eqn{(-\infty,\infty)}
 #' @param par vector of 3 elements: M, the offset of the curve, B, the slope of the curve, and T, the symmetry 
-#' of the curve. 
+#' of the curve 
 #' @return A vector of length equal to the length of \code{W}, with values \eqn{g^{-1}(W)}
 #' @keywords Richards, generalized logistic function.
 #' @seealso \code{\link{g_glf}},\code{\link{dg_glf}}

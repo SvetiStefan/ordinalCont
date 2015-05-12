@@ -1,8 +1,8 @@
 #' Print continuous ordinal regression objects
 #'
-#' This function prints an ocmm object 
-#' @param x An object of class \code{"ocmm"}, usually, a result of a call to ocm.
-#' @param ... Further arguments passed to or from other methods.
+#' This function prints an \code{ocmm} object 
+#' @param x An object of class \code{ocmm}, usually, a result of a call to ocm
+#' @param ... further arguments passed to or from other methods
 #' @examples
 #'\dontrun{
 #' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
@@ -21,9 +21,9 @@ print.ocmm <- function(x, ...)
 }
 
 #' @title Summarizing Continuous Ordinal Fits
-#' @description summary method for class ``ocmm"
-#' @param object An object of class ``ocmm", usually, a result of a call to ocm.
-#' @param ... Further arguments passed to or from other methods.
+#' @description Summary method for class \code{ocmm}
+#' @param object An object of class \code{ocmm}, usually, a result of a call to \code{ocmm}
+#' @param ... further arguments passed to or from other methods
 #' @method summary ocmm
 #' @keywords summary
 #' @examples
@@ -80,15 +80,15 @@ print.summary.ocmm <- function(x, ...)
 
 #' @title Plot method for Continuous Ordinal Fits
 #' 
-#' @description This function plots the g function as fitted in an ocm call.
-#' @param x An ocm object.
-#' @param CIs Indicates if confidence bands for the g function should be computed (based on the Wald 95\% CIs). \code{"no"} = no CIS [default]; \code{"vcov"} = Wald
-#' @param R The number of bootstrap replicates. 
-#' @param main the title of the plot. Defauts to ``g function (95\% CIs)"
-#' @param xlab the label of the \code{x} axis. Defaults to ``Continuous ordinal scale" 
-#' @param ylab the label of the \code{y} axis. Defaults to an emtpy string
-#' @param CIcol the color of the confidence interval bands. Defaults to `lightblue'
-#' @param ... Further arguments passed to or from other methods.
+#' @description Plots the g function as fitted in an \code{ocm} call.
+#' @param x an \code{ocm} object
+#' @param CIs indicates if confidence bands for the g function should be computed (based on the Wald 95\% CIs). \code{"no"} = no CIS [default]; \code{"vcov"} = Wald
+#' @param R  number of bootstrap replicates 
+#' @param main  title of the plot. Defauts to ``g function (95\% CIs)"
+#' @param xlab  label of the \code{x} axis. Defaults to ``Continuous ordinal scale'' 
+#' @param ylab  label of the \code{y} axis. Defaults to an emtpy string
+#' @param CIcol  color of the confidence interval bands. Defaults to ``lightblue''
+#' @param ... further arguments passed to or from other methods
 #' @details The fitted g function of an \code{ocmm} object is plotted. 
 #' @keywords plot
 #' @examples
@@ -138,16 +138,16 @@ plot.ocmm <- function(x, CIs = c('no','vcov'), R = 1000, main="g function (95% C
 #' @title Anova method for Continuous Ordinal Fits
 #' 
 #' @description Comparison of continuous ordinal models in likelihood ratio tests.
-#' @param object An ocm object.
-#' @param ... one or more additional ocm objects.
+#' @param object an \code{ocm} object
+#' @param ... one or more additional \code{ocm} objects
 #' @keywords anova
-#' @return The method returns an object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
+#' @return An object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
 #'   \item{no.par}{the number of parameters}
-#'   \item{AIC}{the Akaike information criterion}
-#'   \item{loglik}{the log-likelihood}
-#'   \item{LR.stat}{the likelihood ratio statistic}
-#'   \item{df}{the difference in the degrees of freedom in the models being compared}
-#'   \item{Pr(>Chisq)}{the p-value from the likelihood ratio test}
+#'   \item{AIC}{Akaike information criterion}
+#'   \item{loglik}{log-likelihood}
+#'   \item{LR.stat}{likelihood ratio statistic}
+#'   \item{df}{difference in the degrees of freedom in the models being compared}
+#'   \item{Pr(>Chisq)}{p-value from the likelihood ratio test}
 #' @export
 #' @examples
 #' \dontrun{
@@ -222,10 +222,10 @@ anova.ocmm <- function(object, ...)
 #' @title Print anova.ocm objects
 #' 
 #' @description Print the results of the comparison of continuous ordinal models in likelihood ratio tests.
-#' @param x An object of class ``anova.ocmm".
-#' @param digits controls the number of digits to print. Defaults to the maximum between the value returned by (getOption("digits") - 2) and 3
+#' @param x an object of class \code{anova.ocmm}
+#' @param digits controls the number of digits to print. Defaults to the maximum of the value returned by (getOption("digits") - 2) and 3
 #' @param signif.stars a logical. Should the significance stars be printed? Defaults to the value returned by getOption("show.signif.stars")
-#' @param ... Further arguments passed to or from other methods.
+#' @param ... further arguments passed to or from other methods
 #' @return Prints \code{anova.ocmm} object
 #' @keywords summary, anova
 #' @examples
@@ -251,7 +251,8 @@ print.anova.ocmm <-
     return(invisible(x))
   }
 
-#' @title Calculate Variance-Covariance Matrix for a Fitted Model Object
+#' @title  Variance-Covariance Matrix for a Fitted Model Object
+#' @description Calculates variance-covariance matrix for a fitted \code{ocmm} object
 #' @param object An \code{ocmm} object.
 #' @param ... Further arguments to be passed to methods
 #' @details For the generalized logistic g-function, the variance-covariance matrix of model parameters will be 

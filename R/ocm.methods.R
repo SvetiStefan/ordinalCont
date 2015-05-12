@@ -1,8 +1,8 @@
 #' Print continuous ordinal regression objects
 #'
 #' \code{print.ocm} is the ordinalCont specific method for the generic function \code{print}, 
-#' which prints objects of class \code{'ocm'}.
-#' @param x An object of class \code{'ocm'}, usually, a result of a call to \code{ocm}.
+#' which prints objects of class \code{ocm}.
+#' @param x An object of class \code{ocm}, usually, a result of a call to \code{ocm}.
 #' @param ... Further arguments passed to or from other methods.
 #' @return Prints an \code{ocm} object
 #' @keywords likelihood, log-likelihood.
@@ -25,8 +25,8 @@ print.ocm <- function(x, ...)
 }
 
 #' @title Summarizing Continuous Ordinal Fits
-#' @description Summary method for class \code{"ocm"}
-#' @param object An object of class \code{"ocm"}, usually, a result of a call to \code{ocm}.
+#' @description Summary method for class \code{ocm}
+#' @param object An object of class \code{ocm}, usually, a result of a call to \code{ocm}.
 #' @param ... Further arguments passed to or from other methods.
 #' @method summary ocm
 #' @keywords summary
@@ -74,7 +74,7 @@ print.summary.ocm <- function(x, ...)
 #' @title Predict method for Continuous Ordinal Fits
 #' 
 #' @description Predicted values based on \code{ocm} object.
-#' @param object an object of class \code{"ocm"}, usually a result of a call to \code{ocm}
+#' @param object an object of class \code{ocm}, usually a result of a call to \code{ocm}
 #' @param newdata optionally, a data frame in which to look for variables with 
 #' which to predict. 
 #' Note that all predictor variables should be present, having the same names as the variables 
@@ -108,7 +108,7 @@ print.summary.ocm <- function(x, ...)
 #' fit.overall <- ocm(overall ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
 #' pred <- predict(fit.overall)
 #' plot(pred)
-#' @seealso \code{\link{ocm}}
+#' @seealso \code{\link{ocm}}, \code{\link{plot.predict.ocm}}
 #' @export
 #' @author Maurizio Manuguerra
 
@@ -140,8 +140,8 @@ predict.ocm <- function(object, newdata=NULL, ndens=100, ...)
 }
 
 #' @title Print the output of predict method
-#' @description Print method for class \code{"predict.ocm"}
-#' @param x An object of class \code{"predict.ocm"}
+#' @description Print method for class \code{predict.ocm}
+#' @param x An object of class \code{predict.ocm}
 #' @param ... Further arguments passed to or from other methods
 #' @keywords predict
 #' @details The table of predictions from \code{predict.ocm} is printed.
@@ -164,12 +164,12 @@ print.predict.ocm <- function(x, ...)
 }
 
 #' @title Plot  probability densities  from  output of  predict method
-#' @description Plot method for class \code{"predict.ocm"}
-#' @param x An object of class \code{"predict.ocm"}
+#' @description Plot method for class \code{predict.ocm}
+#' @param x An object of class \code{predict.ocm}
 #' @param records An integer or a vector of integers. The number of the record/s 
 #' in the data set for which the density has to be plotted. If not specified, the 
 #' function will  plot all of them.
-#' @param ... Further arguments passed to or from other methods.
+#' @param ... further arguments passed to or from other methods
 #' @details The probability densities from \code{predict.ocm}  are plotted.
 #' @seealso \code{\link{predict.ocm}},\code{\link{ocm}}
 #' @keywords predict, plot
@@ -204,12 +204,12 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' @param x an object of class \code{ocm}
 #' @param CIs method used for confidence bands for the g function. \code{"no"} = no CIS [default]; \code{"vcov"} = Wald; 
 #' \code{"rnd.x.bootstrap"} = random-x bootstrap; \code{"fix.x.bootstrap"} = bootstrap with fixed-x 
-#' resampling; \code{"param.bootstrap"} = parametric bootstrap. 
-#' @param R the number of bootstrap replicates [ignored if CIs='no']
-#' @param main the title of the plot. Defauts to ``g function (95\% CIs)"
-#' @param xlab the label of the x axis. Defaults to ``Continuous ordinal scale"
-#' @param ylab the label of the \code{y} axis. Defaults to an emtpy string
-#' @param CIcol the color of the confidence interval bands. Defaults to ``lightblue"
+#' resampling; \code{"param.bootstrap"} = parametric bootstrap 
+#' @param R the number of bootstrap replicates. Ignored if CIs=\code{"no"}
+#' @param main  title of the plot. Defauts to ``g function (95\% CIs)''
+#' @param xlab  label of the x axis. Defaults to ``Continuous ordinal scale''
+#' @param ylab  label of the \code{y} axis. Defaults to an emtpy string
+#' @param CIcol  color of the confidence interval bands. Defaults to ``lightblue''
 #' @param ... further arguments passed to or from other methods
 #' @details The fitted g function of an \code{ocm} object is plotted. 
 #' If \code{CIs} is not \code{"no"}, 95\% confidence bands are also plotted.
@@ -374,10 +374,10 @@ anova.ocm <- function(object, ...)
 #' @title Print anova.ocm objects
 #' 
 #' @description Print the results of the comparison of continuous ordinal models in likelihood ratio tests.
-#' @param x An object of class ``anova.ocm".
+#' @param x An object of class \code{anova.ocm}
 #' @param digits controls the number of digits to print. Defaults to the maximum between the value returned by (getOption("digits") - 2) and 3
 #' @param signif.stars a logical. Should the significance stars be printed? Defaults to the value returned by getOption("show.signif.stars")
-#' @param ... Further arguments passed to or from other methods.
+#' @param ... further arguments passed to or from other methods
 #' @keywords summary, anova
 #' @seealso \code{\link{ocm}}, \code{\link{anova.ocm}}
 #' @return Prints \code{anova.ocm} object
@@ -406,7 +406,7 @@ print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3),
 
 #' @title Extract the Log-Likelihood
 #' @param object an \code{ocm} object.
-#' @param ... Further arguments to be passed to methods.
+#' @param ... further arguments to be passed to methods
 #' @usage \method{logLik}{ocm}(object, ...)
 #' @method logLik ocm
 #' @seealso \code{\link{ocm}}
@@ -425,15 +425,15 @@ logLik.ocm <- function(object, ...){
 #' @title Extract AIC from a fitted Continuous Ordinal Model
 #' @param fit \code{ocm} object
 #' @param scale parameter currently not used. For compatibility with general extractAIC method.
-#' @param k  `weight' of the equivalent degrees of freedom (=: edf) 
-#'  in the AIC formula. Defaults to 2.
-#' @param ... Further arguments to be passed to methods.
-#' @details The generalised AIC is computed:
+#' @param k  ``weight'' of the equivalent degrees of freedom (=: edf) 
+#'  in the AIC formula. Defaults to 2
+#' @param ... further arguments to be passed to methods
+#' @details The generalized AIC is computed:
 #' \deqn{-2\ell +k\cdot edf}
 #' where \eqn{\ell} is the log likelihood, k=2 gives the AIC, and 
 #' k=log(n) gives the BIC.
 #' @seealso \code{\link{ocm}}
-#' @return Generalised AIC of \code{ocm} object \code{fit}
+#' @return Generalized AIC of \code{ocm} object \code{fit}
 #' @references  Akaike, H (1983). 
 #' Information measures and model selection, 
 #' \emph{Bulletin of the International Statistical Institute}, 50:277-290.
@@ -451,10 +451,11 @@ extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
 }
 
 
-#' @title Calculate Variance-Covariance Matrix for a Fitted Model Object
-#' @param object An \code{ocm} object.
-#' @param ... Further arguments to be passed to methods
-#' @details For the generalized logistic g-function, the variance-covariance matrix of model parameters will be 
+#' @title Variance-Covariance Matrix for a Fitted Model Object
+#' @description Calculates variance-covariance matrix for a fitted \code{ocm} object
+#' @param object an \code{ocm} object
+#' @param ... further arguments to be passed to methods
+#' @details For the generalized logistic g-function, the variance-covariance matrix of model parameters is 
 #' of dimension (\code{len_beta} +4)x(\code{len_beta} +4), where \code{len_beta}  is the number of 
 #' beta coefficients in the model.
 #' @export
