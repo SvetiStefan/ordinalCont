@@ -24,7 +24,7 @@ NULL
 
 #' @title ANZ0001 trial
 #' 
-#' @details  The ANZ0001 trial, conducted by the ANZ Breast Cancer Trials Group, is an unblinded, multi-centre, randomised trial with three chemotherapy treatment arms concluded in 2005 (Stockler, Sour- jina, Grimison, Gebski, Byrne, Harvey, Francis, Nowak, Hazel, Forbes, and Group, 2007). 
+#' @details  The ANZ0001 trial, conducted by the ANZ Breast Cancer Trials Group, is an unblinded, multi-centre, randomized trial with three chemotherapy treatment arms, concluded in 2005 (Stockler et al 2007). 
 #' Health-related quality of life measures (Overall quality of life, Physical Well-Being, Mood, Pain, Nausea and Vomiting, Appetite) are assessed at each chemotherapy treatment cycle, from randomization until disease progression, when treatment is interrupted. 
 #' The treatments Intermittent Capecitabine (IC) and Continuous Capecitabine (CC) are compared with the standard combination treatment CMF, each with its own protocol. 
 #' There is no maximum duration of treatment, but it is interrupted on disease progression, or when patient intolerance or unacceptable toxicity are recorded.
@@ -32,24 +32,25 @@ NULL
 #'
 #' The variables are as follows:
 #'
-#' \itemize{
-#'   \item randno. The ID number of the patient.
-#'   \item cycleno The chemo cycle number.
-#'   \item age Age of patient at entry in the study.
-#'   \item bsa Patient Body Surface Area (m2).
-#'   \item treatment The treatment received by the patient.
-#'   \item overall Overall quality of life as recorded by the patient on a LASA scale, here normalised in the interval (0, 1).
-#'   \item phys Physical Well-Being as recorded by the patient on a LASA scale, here normalised in the interval (0, 1).
-#'   \item mood Mood as recorded by the patient on a LASA scale, here normalised in the interval (0, 1).
-#'   \item pain Pain as recorded by the patient on a LASA scale, here normalised in the interval (0, 1).
-#'   \item nausvom Nausea and Vomiting as recorded by the patient on a LASA scale, here normalised in the interval (0, 1).
-#'   \item appetite Appetite as recorded by the patient on a LASA scale, here normalised in the interval (0, 1).
+#' \tabular{ll}{
+#'   \code{randno}\tab{patient ID number}\cr
+#'   \code{cycleno}\tab{chemotherapy cycle number}\cr
+#'   \code{age}\tab{age of patient at entry to study}\cr
+#'   \code{bsa}\tab{Body Surface Area (m\eqn{^2})}\cr
+#'    \code{treatment}\tab  treatment received by  patient (1,2,3)\cr
+#'    \code{overall}\tab Overall quality of life as recorded by the patient on a LASA scale,  normalized to the interval (0, 1)\cr
+#'    \code{phys}\tab Physical Well-Being as recorded by the patient on a LASA scale,  normalized to the interval (0, 1)\cr
+#'    \code{mood}\tab Mood as recorded by the patient on a LASA scale,  normalized to the interval (0, 1)\cr
+#'   \code{pain}\tab Pain as recorded by the patient on a LASA scale,  normalized to the interval (0, 1)\cr
+#'    \code{nausvom}\tab Nausea and Vomiting as recorded by the patient on a LASA scale,  normalized to the interval (0, 1)\cr
+#'   \code{appetite}\tab Appetite as recorded by the patient on a LASA scale,  normalized to the interval (0, 1)
 #' }
 #'
 #' @docType data
 #' @keywords datasets
 #' @name ANZ0001
 #' @usage data(ANZ0001)
+#' @references Stockler, M., T. Sourjina, P. Grimison, V. Gebski, M. Byrne, V. Harvey, P. Francis et al. ``A randomized trial of capecitabine (C) given intermittently (IC) rather than continuously (CC) compared to classical CMF as first-line chemotherapy for advanced breast cancer (ABC).'' In \emph{ASCO Annual Meeting Proceedings}, vol. 25, no. 18_suppl, p. 1031. 2007.
 #' @format A data frame with 3473 rows and 11 variables
 NULL
 

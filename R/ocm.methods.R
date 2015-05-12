@@ -404,13 +404,14 @@ print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3),
 
 
 
-#' @title Extract the Log-Likelihood
-#' @param object an \code{ocm} object.
+#' @title Extract Log-likelihood for a Continuous Ordinal  Model
+#' @description Extracts the log-likelihood for a fitted \code{ocm} object
+#' @param object an \code{ocm} object
 #' @param ... further arguments to be passed to methods
 #' @usage \method{logLik}{ocm}(object, ...)
 #' @method logLik ocm
 #' @seealso \code{\link{ocm}}
-#' @return Returns the log-likelihood of an \code{ocm} object
+#' @return The log-likelihood of an \code{ocm} object
 #' @export
 #' @examples
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]

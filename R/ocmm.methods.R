@@ -1,6 +1,6 @@
-#' Print continuous ordinal regression objects
+#' @title Print  a Continuous Ordinal Mixed Model Object
 #'
-#' This function prints an \code{ocmm} object 
+#' @description This function prints an \code{ocmm} object 
 #' @param x An object of class \code{ocmm}, usually, a result of a call to ocm
 #' @param ... further arguments passed to or from other methods
 #' @examples
@@ -20,7 +20,7 @@ print.ocmm <- function(x, ...)
   print(x$coefficients, ...)
 }
 
-#' @title Summarizing Continuous Ordinal Fits
+#' @title Summarizing Continuous Ordinal Mixed Model Fits
 #' @description Summary method for class \code{ocmm}
 #' @param object An object of class \code{ocmm}, usually, a result of a call to \code{ocmm}
 #' @param ... further arguments passed to or from other methods
@@ -78,10 +78,10 @@ print.summary.ocmm <- function(x, ...)
 
 
 
-#' @title Plot method for Continuous Ordinal Fits
+#' @title Plot method for Continuous Ordinal Mixed Model Fits
 #' 
-#' @description Plots the g function as fitted in an \code{ocm} call.
-#' @param x an \code{ocm} object
+#' @description Plots the g function as fitted in an \code{ocmm} call.
+#' @param x an \code{ocmm} object
 #' @param CIs indicates if confidence bands for the g function should be computed (based on the Wald 95\% CIs). \code{"no"} = no CIS [default]; \code{"vcov"} = Wald
 #' @param R  number of bootstrap replicates 
 #' @param main  title of the plot. Defauts to ``g function (95\% CIs)"
@@ -135,11 +135,11 @@ plot.ocmm <- function(x, CIs = c('no','vcov'), R = 1000, main="g function (95% C
   lines(xlim, c(0, 0), col='grey')
 }
 
-#' @title Anova method for Continuous Ordinal Fits
+#' @title Anova method for Continuous Ordinal Mixed Model Fits
 #' 
-#' @description Comparison of continuous ordinal models in likelihood ratio tests.
-#' @param object an \code{ocm} object
-#' @param ... one or more additional \code{ocm} objects
+#' @description Comparison of continuous ordinal mixed models in likelihood ratio tests.
+#' @param object an \code{ocmm} object
+#' @param ... one or more additional \code{ocmm} objects
 #' @keywords anova
 #' @return An object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
 #'   \item{no.par}{the number of parameters}
@@ -219,9 +219,9 @@ anova.ocmm <- function(object, ...)
 }
 
 
-#' @title Print anova.ocm objects
+#' @title Print anova.ocmm objects
 #' 
-#' @description Print the results of the comparison of continuous ordinal models in likelihood ratio tests.
+#' @description Print the results of the comparison of continuous ordinal mixed models in likelihood ratio tests.
 #' @param x an object of class \code{anova.ocmm}
 #' @param digits controls the number of digits to print. Defaults to the maximum of the value returned by (getOption("digits") - 2) and 3
 #' @param signif.stars a logical. Should the significance stars be printed? Defaults to the value returned by getOption("show.signif.stars")
@@ -251,7 +251,7 @@ print.anova.ocmm <-
     return(invisible(x))
   }
 
-#' @title  Variance-Covariance Matrix for a Fitted Model Object
+#' @title  Variance-Covariance Matrix for a Fitted Continuous Ordinal Mixed Model Object
 #' @description Calculates variance-covariance matrix for a fitted \code{ocmm} object
 #' @param object An \code{ocmm} object.
 #' @param ... Further arguments to be passed to methods
@@ -273,7 +273,8 @@ vcov.ocmm <- function(object, ...) {
 }
 
 
-#' @title Extract the Log-Likelihood
+#' @title Extract Log-likelihood for a Continuous Ordinal Mixed Model
+#' @description Extracts the log-likelihood for a fitted \code{ocmm} object
 #' @param object an \code{ocmm} object.
 #' @param ... Further arguments to be passed to methods.
 #' @usage \method{logLik}{ocmm}(object, ...)
@@ -292,7 +293,8 @@ logLik.ocmm <- function(object, ...) {
 }
 
 
-#' @title Extract AIC from a fitted Continuous Ordinal Model
+#' @title Extract AIC from a fitted Continuous Ordinal Mixed Model
+#' @description Extracts the AIC for a fitted \code{ocmm} object
 #' @param fit \code{ocmm} object
 #' @param scale parameter currently not used. For compatibility with general extractAIC method.
 #' @param k  `weight' of the equivalent degrees of freedom (=: edf) 
