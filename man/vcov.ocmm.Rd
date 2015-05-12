@@ -7,9 +7,9 @@
 \method{vcov}{ocmm}(object, ...)
 }
 \arguments{
-\item{object}{An \code{ocmm} object.}
+\item{object}{an \code{ocmm} object}
 
-\item{...}{Further arguments to be passed to methods}
+\item{...}{further arguments to be passed to methods}
 }
 \value{
 Variance-covariance matrix of model parameters
@@ -18,7 +18,7 @@ Variance-covariance matrix of model parameters
 Calculates variance-covariance matrix for a fitted \code{ocmm} object
 }
 \details{
-For the generalized logistic g-function, the variance-covariance matrix of model parameters will be
+For the generalized logistic g-function, the variance-covariance matrix of model parameters is
 of dimension (\code{len_beta} +3)x(\code{len_beta} +3), where \code{len_beta}  is the number of
 beta coefficients in the model.
 }

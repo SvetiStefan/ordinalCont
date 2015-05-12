@@ -7,7 +7,7 @@
 \method{print}{ocmm}(x, ...)
 }
 \arguments{
-\item{x}{An object of class \code{ocmm}, usually, a result of a call to ocm}
+\item{x}{An object of class \code{ocmm}, usually, a result of a call to \code{ocmm}}
 
 \item{...}{further arguments passed to or from other methods}
 }

@@ -7,9 +7,9 @@
 \method{logLik}{ocmm}(object, ...)
 }
 \arguments{
-\item{object}{an \code{ocmm} object.}
+\item{object}{an \code{ocmm} object}
 
-\item{...}{Further arguments to be passed to methods.}
+\item{...}{further arguments to be passed to methods}
 }
 \value{
 Returns the log-likelihood of an \code{ocmm} object

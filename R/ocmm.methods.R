@@ -1,7 +1,7 @@
 #' @title Print  a Continuous Ordinal Mixed Model Object
 #'
 #' @description This function prints an \code{ocmm} object 
-#' @param x An object of class \code{ocmm}, usually, a result of a call to ocm
+#' @param x An object of class \code{ocmm}, usually, a result of a call to \code{ocmm}
 #' @param ... further arguments passed to or from other methods
 #' @examples
 #'\dontrun{
@@ -137,7 +137,7 @@ plot.ocmm <- function(x, CIs = c('no','vcov'), R = 1000, main="g function (95% C
 
 #' @title Anova method for Continuous Ordinal Mixed Model Fits
 #' 
-#' @description Comparison of continuous ordinal mixed models in likelihood ratio tests.
+#' @description Comparison of continuous ordinal mixed models in likelihood ratio tests
 #' @param object an \code{ocmm} object
 #' @param ... one or more additional \code{ocmm} objects
 #' @keywords anova
@@ -253,9 +253,9 @@ print.anova.ocmm <-
 
 #' @title  Variance-Covariance Matrix for a Fitted Continuous Ordinal Mixed Model Object
 #' @description Calculates variance-covariance matrix for a fitted \code{ocmm} object
-#' @param object An \code{ocmm} object.
-#' @param ... Further arguments to be passed to methods
-#' @details For the generalized logistic g-function, the variance-covariance matrix of model parameters will be 
+#' @param object an \code{ocmm} object
+#' @param ... further arguments to be passed to methods
+#' @details For the generalized logistic g-function, the variance-covariance matrix of model parameters is 
 #' of dimension (\code{len_beta} +3)x(\code{len_beta} +3), where \code{len_beta}  is the number of 
 #' beta coefficients in the model.
 #' @export
@@ -275,8 +275,8 @@ vcov.ocmm <- function(object, ...) {
 
 #' @title Extract Log-likelihood for a Continuous Ordinal Mixed Model
 #' @description Extracts the log-likelihood for a fitted \code{ocmm} object
-#' @param object an \code{ocmm} object.
-#' @param ... Further arguments to be passed to methods.
+#' @param object an \code{ocmm} object
+#' @param ... further arguments to be passed to methods
 #' @usage \method{logLik}{ocmm}(object, ...)
 #' @method logLik ocmm
 #' @seealso \code{\link{ocmm}}
