@@ -287,20 +287,20 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
 #' @title Anova method for Continuous Ordinal Fits 
 #' @description Comparison of continuous ordinal models using likelihood ratio tests. 
 #' @param object an object of class \code{ocm}
-#' @param ... one or more additional \code{ocm} objects.
+#' @param ... one or more additional \code{ocm} objects
 #' @details Likelihood ratio testing of nested models is performed. 
 #' @method anova ocm
 #' @keywords anova
 #' @export
-#' @author Maurizio Manuguerra
+#' @author Maurizio Manuguerra, Gillian Heller
 #'  @seealso \code{\link{ocm}}, \code{\link{print.anova.ocm}}
 #' @return The method returns an object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
-#' \item{no.par}{the number of parameters}
-#' \item{AIC}{the Akaike information criterion}
-#' \item{loglik}{the log-likelihood}
-#' \item{LR.stat}{the likelihood ratio statistic}
-#' \item{df}{the difference in the degrees of freedom in the models being compared}
-#' \item{Pr(>Chisq)}{the p-value from the likelihood ratio test}
+#' \item{no.par}{number of parameters}
+#' \item{AIC}{Akaike information criterion}
+#' \item{loglik}{log-likelihood}
+#' \item{LR.stat}{likelihood ratio statistic}
+#' \item{df}{difference in the degrees of freedom in the models being compared}
+#' \item{Pr(>Chisq)}{p-value from the likelihood ratio test}
 #' @examples
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1

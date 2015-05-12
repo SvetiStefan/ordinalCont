@@ -9,16 +9,16 @@
 \arguments{
 \item{object}{an object of class \code{ocm}}
 
-\item{...}{one or more additional \code{ocm} objects.}
+\item{...}{one or more additional \code{ocm} objects}
 }
 \value{
 The method returns an object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
-\item{no.par}{the number of parameters}
-\item{AIC}{the Akaike information criterion}
-\item{loglik}{the log-likelihood}
-\item{LR.stat}{the likelihood ratio statistic}
-\item{df}{the difference in the degrees of freedom in the models being compared}
-\item{Pr(>Chisq)}{the p-value from the likelihood ratio test}
+\item{no.par}{number of parameters}
+\item{AIC}{Akaike information criterion}
+\item{loglik}{log-likelihood}
+\item{LR.stat}{likelihood ratio statistic}
+\item{df}{difference in the degrees of freedom in the models being compared}
+\item{Pr(>Chisq)}{p-value from the likelihood ratio test}
 }
 \description{
 Comparison of continuous ordinal models using likelihood ratio tests.
@@ -33,7 +33,7 @@ fit.overall  <- ocm(overall  ~ cycleno + bsa + treatment, data=ANZ0001.ocm)
 anova(fit.overall, update(fit.overall, .~. + age))
 }
 \author{
-Maurizio Manuguerra
+Maurizio Manuguerra, Gillian Heller
 }
 \seealso{
 \code{\link{ocm}}, \code{\link{print.anova.ocm}}

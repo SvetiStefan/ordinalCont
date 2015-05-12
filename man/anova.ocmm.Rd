@@ -13,7 +13,7 @@
 }
 \value{
 An object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
-  \item{no.par}{the number of parameters}
+  \item{no.par}{number of parameters}
   \item{AIC}{Akaike information criterion}
   \item{loglik}{log-likelihood}
   \item{LR.stat}{likelihood ratio statistic}
