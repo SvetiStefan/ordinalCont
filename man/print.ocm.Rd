@@ -7,9 +7,9 @@
 \method{print}{ocm}(x, ...)
 }
 \arguments{
-\item{x}{An object of class \code{ocm}, usually, a result of a call to \code{ocm}.}
+\item{x}{an object of class \code{ocm}, usually, a result of a call to \code{ocm}}
 
-\item{...}{Further arguments passed to or from other methods.}
+\item{...}{further arguments passed to or from other methods}
 }
 \value{
 Prints an \code{ocm} object

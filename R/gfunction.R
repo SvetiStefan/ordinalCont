@@ -2,8 +2,8 @@
 #'
 #' A parametric version of the g function following Richards (1959): 
 #' \deqn{g(v) = M + \frac{1}{B} \log\left(\frac{Tv^T}{1-v^T}\right)}
-#' @param v vector of standardized scores from the continuous ordinal scale, 0<v<1.
-#' @param par vector of 3 elements: \code{M}, the offset, \code{B}, the slope of the curve, and \code{T}, the symmetry of the curve. 
+#' @param v vector of standardized scores from the continuous ordinal scale, 0<v<1
+#' @param par vector of 3 elements: \code{M}, the offset, \code{B}, the slope of the curve, and \code{T}, the symmetry of the curve 
 #' @keywords Richards, generalized logistic function.
 #' @details The generalized logistic functions maps from (0,1) to \eqn{(-\infty,\infty)}. 
 #' \code{B} is the slope of the curve,  \code{T} is the symmetry and \code{M} is the offset. 

@@ -29,10 +29,14 @@ ignored.}
 \item{n_nodes}{order of Gauss-Hermite rule used (number of nodes)}
 }
 \value{
-An object of type \code{ocmm} with the components listed below. Parameter estimates are in \code{coefficients}.
-The last 4  elements of \code{coefficients} are the parameters of the g function (\code{M},  \code{B},  and \code{T}) and the standard deviation of the random effect.
-\item{coefficients}{parameter estimates}
-\item{vcov}{variance-covariance matrix}
+An object of type \code{ocmm} with the components listed below.
+
+\item{coefficients}{parameter estimates. The first \code{len_beta} elements
+are the estimates of the fixed-effects parameters; the last 4  elements  are the estimates of
+the parameters of the g function (\code{M},  \code{B},  and \code{T}) and the standard
+deviation of the random effect.}
+\item{vcov}{variance-covariance matrix, of dimension (\code{len_beta} +4)x(\code{len_beta} +4
+)}
 \item{sigma_rnd}{standard deviation of the random effect}
 \item{df}{estimated degrees of freedom}
 \item{logLik}{value of the log-likelihood at the estimated optimum}

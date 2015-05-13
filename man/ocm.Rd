@@ -42,10 +42,10 @@ The last 3 elements of \code{coefficients} are the parameters of the g function:
 \item{residuals}{residuals on the latent scale}
 \item{v}{vector of continuous scores}
 \item{x}{model matrix}
-\item{sample.size}{sample size (can differ for the number of observations if the weights are different from 1)}
+\item{sample.size}{sample size (can differ from the number of observations if the weights are different from 1)}
 \item{nobs}{number of observations}
 \item{call}{call to fit the model}
-\item{no.pars}{total munber of parameters estimated}
+\item{no.pars}{total number of parameters estimated}
 \item{data}{data frame used}
 \item{link}{link function used}
 \item{gfun}{g function used}

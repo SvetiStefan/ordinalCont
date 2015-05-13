@@ -27,8 +27,8 @@ the  continuous ordinal random variable, conditional on the covariates in the mo
 \item{density}{a matrix with number of rows equal to the number of observations. Each row
 contains the values of the density function of \code{v} conditional on the covariates in the
 model.
-The density function is calculated over 100 equally-spaced values of v in (0,1).}
-\item{x}{a vector with the 100 equally-spaced values of \code{v} in (0,1) used to compute the
+The density function is calculated over \code{ndens} equally-spaced values of v in (0,1).}
+\item{x}{a vector with the \code{ndens} equally-spaced values of \code{v} in (0,1) used to compute the
 density of v}
 \item{formula}{the formula used to fit the model}
 \item{newdata}{a new data frame used to make predictions. It takes value NULL if no new data frame has been used.}

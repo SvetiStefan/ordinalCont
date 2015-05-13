@@ -2,8 +2,8 @@
 #'
 #' \code{print.ocm} is the ordinalCont specific method for the generic function \code{print}, 
 #' which prints objects of class \code{ocm}.
-#' @param x An object of class \code{ocm}, usually, a result of a call to \code{ocm}.
-#' @param ... Further arguments passed to or from other methods.
+#' @param x an object of class \code{ocm}, usually, a result of a call to \code{ocm}
+#' @param ... further arguments passed to or from other methods
 #' @return Prints an \code{ocm} object
 #' @keywords likelihood, log-likelihood.
 #' @method print ocm
@@ -26,7 +26,7 @@ print.ocm <- function(x, ...)
 
 #' @title Summarizing Continuous Ordinal Fits
 #' @description Summary method for class \code{ocm}
-#' @param object an object of class \code{ocm}, usually, a result of a call to \code{ocm}
+#' @param object an object of class \code{ocm}, usually a result of a call to \code{ocm}
 #' @param ... further arguments passed to or from other methods
 #' @method summary ocm
 #' @keywords summary
@@ -91,8 +91,8 @@ print.summary.ocm <- function(x, ...)
 #' \item{density}{a matrix with number of rows equal to the number of observations. Each row 
 #' contains the values of the density function of \code{v} conditional on the covariates in the 
 #' model. 
-#' The density function is calculated over 100 equally-spaced values of v in (0,1).}
-#' \item{x}{a vector with the 100 equally-spaced values of \code{v} in (0,1) used to compute the 
+#' The density function is calculated over \code{ndens} equally-spaced values of v in (0,1).}
+#' \item{x}{a vector with the \code{ndens} equally-spaced values of \code{v} in (0,1) used to compute the 
 #' density of v}
 #' \item{formula}{the formula used to fit the model}
 #' \item{newdata}{a new data frame used to make predictions. It takes value NULL if no new data frame has been used.}
@@ -296,7 +296,7 @@ plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap'
 #' @export
 #' @author Maurizio Manuguerra, Gillian Heller
 #'  @seealso \code{\link{ocm}}, \code{\link{print.anova.ocm}}
-#' @return The method returns an object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
+#' @return The method returns an object of class \code{anova.ocm} and \code{data.frame}, reporting for each model, in hierarchical order:
 #' \item{no.par}{number of parameters}
 #' \item{AIC}{Akaike information criterion}
 #' \item{loglik}{log-likelihood}
@@ -428,6 +428,7 @@ logLik.ocm <- function(object, ...){
 }
 
 #' @title Extract AIC from a fitted Continuous Ordinal Model
+#' @description Extracts the AIC for a fitted \code{ocm} object
 #' @param fit \code{ocm} object
 #' @param scale parameter currently not used. For compatibility with general extractAIC method.
 #' @param k  ``weight'' of the equivalent degrees of freedom (=: edf) 

@@ -22,7 +22,7 @@ print.ocmm <- function(x, ...)
 
 #' @title Summarizing Continuous Ordinal Mixed Model Fits
 #' @description Summary method for class \code{ocmm}
-#' @param object an object of class \code{ocmm}, usually, a result of a call to \code{ocmm}
+#' @param object an object of class \code{ocmm}, usually a result of a call to \code{ocmm}
 #' @param ... further arguments passed to or from other methods
 #' @method summary ocmm
 #' @keywords summary
@@ -90,6 +90,7 @@ print.summary.ocmm <- function(x, ...)
 #' @param CIcol  color of the confidence interval bands. Defaults to ``lightblue''
 #' @param ... further arguments passed to or from other methods
 #' @details The fitted g function of an \code{ocmm} object is plotted. 
+#' @seealso \code{\link{plot.ocm}}, \code{\link{ocmm}}
 #' @keywords plot
 #' @examples
 #' \dontrun{

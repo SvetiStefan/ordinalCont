@@ -12,7 +12,7 @@
 \item{...}{one or more additional \code{ocm} objects}
 }
 \value{
-The method returns an object of class \code{anova.ocmm} and \code{data.frame}, reporting for each model, in hierarchical order:
+The method returns an object of class \code{anova.ocm} and \code{data.frame}, reporting for each model, in hierarchical order:
 \item{no.par}{number of parameters}
 \item{AIC}{Akaike information criterion}
 \item{loglik}{log-likelihood}

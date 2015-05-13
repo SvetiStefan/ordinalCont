@@ -7,9 +7,9 @@
 g_glf(v, par)
 }
 \arguments{
-\item{v}{vector of standardized scores from the continuous ordinal scale, 0<v<1.}
+\item{v}{vector of standardized scores from the continuous ordinal scale, 0<v<1}
 
-\item{par}{vector of 3 elements: \code{M}, the offset, \code{B}, the slope of the curve, and \code{T}, the symmetry of the curve.}
+\item{par}{vector of 3 elements: \code{M}, the offset, \code{B}, the slope of the curve, and \code{T}, the symmetry of the curve}
 }
 \value{
 A vector of length equal to the length of \code{v}, with values \eqn{g(v)}.

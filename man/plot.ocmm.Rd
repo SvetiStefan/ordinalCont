@@ -37,5 +37,8 @@ fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno)
 plot(fit.overall.rnd, CIs="vcov", R=100)
 }
 }
+\seealso{
+\code{\link{plot.ocm}}, \code{\link{ocmm}}
+}
 \keyword{plot}
 

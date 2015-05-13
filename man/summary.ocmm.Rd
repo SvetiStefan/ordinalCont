@@ -7,7 +7,7 @@
 \method{summary}{ocmm}(object, ...)
 }
 \arguments{
-\item{object}{an object of class \code{ocmm}, usually, a result of a call to \code{ocmm}}
+\item{object}{an object of class \code{ocmm}, usually a result of a call to \code{ocmm}}
 
 \item{...}{further arguments passed to or from other methods}
 }

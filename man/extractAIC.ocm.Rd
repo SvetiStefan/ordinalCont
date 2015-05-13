@@ -20,7 +20,7 @@ in the AIC formula. Defaults to 2}
 Generalized AIC of \code{ocm} object \code{fit}
 }
 \description{
-Extract AIC from a fitted Continuous Ordinal Model
+Extracts the AIC for a fitted \code{ocm} object
 }
 \details{
 The generalized AIC is computed:
