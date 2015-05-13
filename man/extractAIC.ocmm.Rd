@@ -17,13 +17,13 @@ in the AIC formula. Defaults to 2.}
 \item{...}{further arguments (currently unused)}
 }
 \value{
-Generalised AIC of \code{ocmm} object \code{fit}
+Generalized AIC of \code{ocmm} object \code{fit}
 }
 \description{
 Extracts the AIC for a fitted \code{ocmm} object
 }
 \details{
-The generalised AIC is computed:
+The generalized AIC is computed:
 \deqn{-2\ell +k\cdot edf}
 where \eqn{\ell} is the log likelihood, k=2 gives the AIC, and
 k=log(n) gives the BIC.
@@ -40,6 +40,6 @@ Information measures and model selection,
 \emph{Bulletin of the International Statistical Institute}, 50:277-290.
 }
 \seealso{
-\code{\link{ocmm}}
+\code{\link{ocmm}}, \code{\link{extractAIC.ocm}}
 }
 

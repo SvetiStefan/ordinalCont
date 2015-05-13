@@ -18,9 +18,10 @@ Variance-covariance matrix of model parameters
 Calculates variance-covariance matrix for a fitted \code{ocm} object
 }
 \details{
-For the generalized logistic g-function, the variance-covariance matrix of model parameters is
-of dimension (\code{len_beta} +4)x(\code{len_beta} +4), where \code{len_beta}  is the number of
-beta coefficients in the model.
+For the generalized logistic g-function, the variance-covariance matrix of model
+parameters is
+of dimension (\code{len_beta} +3)x(\code{len_beta} +3), where \code{len_beta}  is the number
+of beta coefficients in the model.
 }
 \examples{
 ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]

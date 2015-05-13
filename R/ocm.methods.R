@@ -26,8 +26,8 @@ print.ocm <- function(x, ...)
 
 #' @title Summarizing Continuous Ordinal Fits
 #' @description Summary method for class \code{ocm}
-#' @param object An object of class \code{ocm}, usually, a result of a call to \code{ocm}.
-#' @param ... Further arguments passed to or from other methods.
+#' @param object an object of class \code{ocm}, usually, a result of a call to \code{ocm}
+#' @param ... further arguments passed to or from other methods
 #' @method summary ocm
 #' @keywords summary
 #' @seealso \code{\link{ocm}}, \code{\link{print.ocm}}
@@ -73,7 +73,7 @@ print.summary.ocm <- function(x, ...)
 
 #' @title Predict method for Continuous Ordinal Fits
 #' 
-#' @description Predicted values based on \code{ocm} object.
+#' @description Predicted values based on \code{ocm} object
 #' @param object an object of class \code{ocm}, usually a result of a call to \code{ocm}
 #' @param newdata optionally, a data frame in which to look for variables with 
 #' which to predict. 
@@ -81,25 +81,27 @@ print.summary.ocm <- function(x, ...)
 #' used to fit the model. If \code{NULL}, predictions are computed for the original dataset.
 #' @param ndens the number of points on the continuous ordinal scale (0, 1) over which the densities are computed. 
 #' The default is 100.
-#' @param ... Further arguments passed to or from other methods.
+#' @param ... further arguments passed to or from other methods
 #' @keywords predict
 #' @method predict ocm
 #' @return  A list containing the following components: 
-#' \item{mode}{a vector of length equal to the number of observations
-#' Each element is the mode of v, 
-#' the ordinal continuous random variable, conditional on the covariates in the model}
+#' \item{mode}{a vector of length equal to the number of observations.
+#' Each element is the mode of \code{v}, 
+#' the  continuous ordinal random variable, conditional on the covariates in the model.}
 #' \item{density}{a matrix with number of rows equal to the number of observations. Each row 
-#' contains the values of the density function of v conditional on the covariates in the model. 
-#' The density function is calculated over 100 equally-spaced values of v in (0,1)}
-#' \item{x}{a vector with the 100 equally-spaced values of v in (0,1) used to compute the density of v}
+#' contains the values of the density function of \code{v} conditional on the covariates in the 
+#' model. 
+#' The density function is calculated over 100 equally-spaced values of v in (0,1).}
+#' \item{x}{a vector with the 100 equally-spaced values of \code{v} in (0,1) used to compute the 
+#' density of v}
 #' \item{formula}{the formula used to fit the model}
-#' \item{newdata}{a new data frame used to make predictions. It takes value NULL if no new data frame has been used}
+#' \item{newdata}{a new data frame used to make predictions. It takes value NULL if no new data frame has been used.}
 #' @details An object of class \code{ocm} and optionally a new data 
 #' frame are used to compute the probability 
-#' densities of V, the continuous ordinal score. The estimated parameters 
+#' densities of \code{v}, the continuous ordinal score. The estimated parameters 
 #' of the fitted model and \code{ndens} (default: 100) 
-#' values of V are used to compute the probability densities on the latent scale. 
-#' These values are then transformed in scores on the continuous ordinal 
+#' values of \code{v} are used to compute the probability densities on the latent scale. 
+#' These values are then transformed to scores on the continuous ordinal 
 #' scale using the g function and the estimated values 
 #' of \code{M}, \code{B}, and \code{T}.
 #' @examples 
@@ -141,8 +143,8 @@ predict.ocm <- function(object, newdata=NULL, ndens=100, ...)
 
 #' @title Print the output of predict method
 #' @description Print method for class \code{predict.ocm}
-#' @param x An object of class \code{predict.ocm}
-#' @param ... Further arguments passed to or from other methods
+#' @param x an object of class \code{predict.ocm}
+#' @param ... further arguments passed to or from other methods
 #' @keywords predict
 #' @details The table of predictions from \code{predict.ocm} is printed.
 #' @seealso \code{\link{predict.ocm}}, \code{\link{ocm}}
@@ -168,10 +170,10 @@ print.predict.ocm <- function(x, ...)
 #' @param x An object of class \code{predict.ocm}
 #' @param records An integer or a vector of integers. The number of the record/s 
 #' in the data set for which the density has to be plotted. If not specified, the 
-#' function will  plot all of them.
+#' function will  plot all records.
 #' @param ... further arguments passed to or from other methods
 #' @details The probability densities from \code{predict.ocm}  are plotted.
-#' @seealso \code{\link{predict.ocm}},\code{\link{ocm}}
+#' @seealso \code{\link{predict.ocm}}, \code{\link{ocm}}
 #' @keywords predict, plot
 #' @examples 
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
@@ -374,9 +376,11 @@ anova.ocm <- function(object, ...)
 #' @title Print anova.ocm objects
 #' 
 #' @description Print the results of the comparison of continuous ordinal models in likelihood ratio tests.
-#' @param x An object of class \code{anova.ocm}
-#' @param digits controls the number of digits to print. Defaults to the maximum between the value returned by (getOption("digits") - 2) and 3
-#' @param signif.stars a logical. Should the significance stars be printed? Defaults to the value returned by getOption("show.signif.stars")
+#' @param x an object of class \code{anova.ocm}
+#' @param digits controls the number of digits to print. Defaults to the maximum of the value 
+#' returned by (getOption("digits") - 2) and 3
+#' @param signif.stars a logical. Should the significance stars be printed? Defaults to the value 
+#' returned by getOption("show.signif.stars")
 #' @param ... further arguments passed to or from other methods
 #' @keywords summary, anova
 #' @seealso \code{\link{ocm}}, \code{\link{anova.ocm}}
@@ -433,7 +437,7 @@ logLik.ocm <- function(object, ...){
 #' \deqn{-2\ell +k\cdot edf}
 #' where \eqn{\ell} is the log likelihood, k=2 gives the AIC, and 
 #' k=log(n) gives the BIC.
-#' @seealso \code{\link{ocm}}
+#' @seealso \code{\link{ocm}}, \code{\link{extractAIC.ocmm}}
 #' @return Generalized AIC of \code{ocm} object \code{fit}
 #' @references  Akaike, H (1983). 
 #' Information measures and model selection, 
@@ -456,9 +460,10 @@ extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
 #' @description Calculates variance-covariance matrix for a fitted \code{ocm} object
 #' @param object an \code{ocm} object
 #' @param ... further arguments to be passed to methods
-#' @details For the generalized logistic g-function, the variance-covariance matrix of model parameters is 
-#' of dimension (\code{len_beta} +4)x(\code{len_beta} +4), where \code{len_beta}  is the number of 
-#' beta coefficients in the model.
+#' @details For the generalized logistic g-function, the variance-covariance matrix of model 
+#' parameters is 
+#' of dimension (\code{len_beta} +3)x(\code{len_beta} +3), where \code{len_beta}  is the number 
+#' of beta coefficients in the model.
 #' @export
 #' @method vcov ocm
 #'  @return Variance-covariance matrix of model parameters

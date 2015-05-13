@@ -11,7 +11,7 @@
 
 \item{records}{An integer or a vector of integers. The number of the record/s
 in the data set for which the density has to be plotted. If not specified, the
-function will  plot all of them.}
+function will  plot all records.}
 
 \item{...}{further arguments passed to or from other methods}
 }
@@ -32,7 +32,7 @@ plot(pred)
 Maurizio Manuguerra
 }
 \seealso{
-\code{\link{predict.ocm}},\code{\link{ocm}}
+\code{\link{predict.ocm}}, \code{\link{ocm}}
 }
 \keyword{plot}
 \keyword{predict,}

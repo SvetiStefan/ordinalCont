@@ -26,7 +26,7 @@ The link function is the inverse of the CDF of the assumed underlying distributi
 latent variable. Currently
 the logit link, which corresponds to a standard logistic distribution, is implemented.
 (This implies a proportional odds model.)  The likelihood is
-maximized using \code{optim {stats}} with a quasi-Newton method (\code{"BFGS"}). Fixed-effects models are implemented in the function \code{ocm}, and mixed models in  \code{ocmm}.
+maximized using \code{optim {stats}} with a quasi-Newton method (\code{"BFGS"}). Fixed-effects models are implemented in the function \code{\link{ocm}}, and mixed models in  \code{\link{ocmm}}.
 }
 \author{
 Maurizio Manuguerra, Gillian Heller

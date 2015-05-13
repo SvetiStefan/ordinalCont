@@ -7,9 +7,9 @@
 \method{print}{predict.ocm}(x, ...)
 }
 \arguments{
-\item{x}{An object of class \code{predict.ocm}}
+\item{x}{an object of class \code{predict.ocm}}
 
-\item{...}{Further arguments passed to or from other methods}
+\item{...}{further arguments passed to or from other methods}
 }
 \description{
 Print method for class \code{predict.ocm}

@@ -18,7 +18,7 @@
 #' Either adaptive Gauss-Hermite quadrature with the Laplace approximation, or Gauss-Hermite quadrature, is used.  
 #' For continuous ordinal  modelling with fixed effects only, see \code{\link{ocm}}.
 #' @return An object of type \code{ocmm} with the components listed below. Parameter estimates are in \code{coefficients}. 
-#' The last 3 (***MAURIZIO SHOULD THIS BE 4?***) elements of \code{coefficients} are the parameters of the g function (\code{M},  \code{B},  and \code{T}) and the standard deviation of the random effect.
+#' The last 4  elements of \code{coefficients} are the parameters of the g function (\code{M},  \code{B},  and \code{T}) and the standard deviation of the random effect.
 #' \item{coefficients}{parameter estimates}
 #' \item{vcov}{variance-covariance matrix}
 #' \item{sigma_rnd}{standard deviation of the random effect}
@@ -31,7 +31,7 @@
 #' \item{residuals}{residuals on the latent scale}
 #' \item{v}{vector of continuous scores}
 #' \item{x}{model matrix}
-#' \item{sample.size}{sample size (can differ for the number of observations if the weights are different from 1)}
+#' \item{sample.size}{sample size (can differ from the number of observations if the weights are different from 1)}
 #' \item{nobs}{number of observations}
 #' \item{call}{call to fit the model}
 #' \item{no.pars}{total number of parameters estimated}
@@ -149,9 +149,8 @@ ocmm <- function(formula, data, weights, start=NULL, link = c("logit"), gfun = c
 
 
 
-#' @title Log-likelihood function for the mixed-effects model, using the generalized logistic 
-#' function as g function and the logit link function
-#'@description Computes the log-likelihood function for the mixed-effects continuous ordinal model, using the generalized logistic 
+#' @title Log-likelihood function for the mixed-effects model
+#'@description Log-likelihood function for the mixed-effects continuous ordinal model, using the generalized logistic 
 #' function as g function and the logit link function
 #' @details This function computes minus the log-likelihood function for a mixed-effects model using the 
 #' generalized logistic function as g function and the logit link function. It is used internally to fit the model and should not be of interest of the user.
@@ -160,13 +159,16 @@ ocmm <- function(formula, data, weights, start=NULL, link = c("logit"), gfun = c
 #' and the standard deviation of the random effect
 #' @param v vector of standardized scores from the continuous ordinal scale
 #' @param d.matrix design matrix (fixed effects)
-#' @param rnd.matrix the random term model matrix
+#' @param rnd.matrix random term model matrix
 #' @param wts optional case weights
 #' @param len_beta length of the regression coefficients vector
-#' @param rnd a character vector listing the random terms
-#' @param quad A string indicating the type of quadrature used to integrate over the random effects. Can take values "Laplace" (Adaptive Gauss-Hermite quadrature using Laplace approximation; the default) or "GH" (Gauss-Hermite quadrature).
-#' @param n_nodes Order of Gauss-Hermite rule used (number of nodes). 
-#' @param iclusters a list containing the row numbers of the design matrix relative to each level of the factor over which random effect are computed
+#' @param rnd character vector listing the random terms
+#' @param quad  string indicating the type of quadrature used to integrate over the random 
+#' effects. Can take values \code{"Laplace"} (Adaptive Gauss-Hermite quadrature using Laplace 
+#' approximation; the default) or \code{"GH"} (Gauss-Hermite quadrature).
+#' @param n_nodes order of Gauss-Hermite rule used (number of nodes)
+#' @param iclusters  list containing the row numbers of the design matrix relative to each level 
+#' of the factor over which random effects are computed
 #' @keywords likelihood, log-likelihood.
 #' @return Minus the log-likelihood at parameter values \code{par} 
 

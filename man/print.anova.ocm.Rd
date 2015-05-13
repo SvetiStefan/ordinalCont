@@ -8,11 +8,13 @@
   signif.stars = getOption("show.signif.stars"), ...)
 }
 \arguments{
-\item{x}{An object of class \code{anova.ocm}}
+\item{x}{an object of class \code{anova.ocm}}
 
-\item{digits}{controls the number of digits to print. Defaults to the maximum between the value returned by (getOption("digits") - 2) and 3}
+\item{digits}{controls the number of digits to print. Defaults to the maximum of the value
+returned by (getOption("digits") - 2) and 3}
 
-\item{signif.stars}{a logical. Should the significance stars be printed? Defaults to the value returned by getOption("show.signif.stars")}
+\item{signif.stars}{a logical. Should the significance stars be printed? Defaults to the value
+returned by getOption("show.signif.stars")}
 
 \item{...}{further arguments passed to or from other methods}
 }

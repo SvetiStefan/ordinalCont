@@ -30,7 +30,7 @@ ignored.}
 }
 \value{
 An object of type \code{ocmm} with the components listed below. Parameter estimates are in \code{coefficients}.
-The last 3 (***MAURIZIO SHOULD THIS BE 4?***) elements of \code{coefficients} are the parameters of the g function (\code{M},  \code{B},  and \code{T}) and the standard deviation of the random effect.
+The last 4  elements of \code{coefficients} are the parameters of the g function (\code{M},  \code{B},  and \code{T}) and the standard deviation of the random effect.
 \item{coefficients}{parameter estimates}
 \item{vcov}{variance-covariance matrix}
 \item{sigma_rnd}{standard deviation of the random effect}
@@ -43,7 +43,7 @@ The last 3 (***MAURIZIO SHOULD THIS BE 4?***) elements of \code{coefficients} ar
 \item{residuals}{residuals on the latent scale}
 \item{v}{vector of continuous scores}
 \item{x}{model matrix}
-\item{sample.size}{sample size (can differ for the number of observations if the weights are different from 1)}
+\item{sample.size}{sample size (can differ from the number of observations if the weights are different from 1)}
 \item{nobs}{number of observations}
 \item{call}{call to fit the model}
 \item{no.pars}{total number of parameters estimated}

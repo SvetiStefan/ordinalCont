@@ -16,7 +16,7 @@ of the curve}
 A vector of length equal to the length of \code{W}, with values \eqn{g^{-1}(W)}
 }
 \description{
-This function computes the inverse of a parametric version of the g function
+Inverse of a parametric version of the g function
 following Richards (1959):
 \deqn{g^{-1}(W) = \left( \frac{e^{B(W-M)}}{T+e^{B(W-M)}}  \right)^{\frac{1}{T}}}
 }

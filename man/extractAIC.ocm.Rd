@@ -40,6 +40,6 @@ Information measures and model selection,
 \emph{Bulletin of the International Statistical Institute}, 50:277-290.
 }
 \seealso{
-\code{\link{ocm}}
+\code{\link{ocm}}, \code{\link{extractAIC.ocmm}}
 }
 

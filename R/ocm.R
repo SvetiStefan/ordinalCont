@@ -130,10 +130,9 @@ ocm <- function(formula, data, weights, start=NULL, link = c("logit"),
   est
 }  
 
-#' @title Log-likelihood function for the fixed-effects model, using the generalized logistic 
-#' function as g function and the logit link function
+#' @title Log-likelihood function for the fixed-effects model
 #'
-#' @details This function computes minus the log-likelihood function for a fixed-effects model using the 
+#' @details Minus the log-likelihood  for a fixed-effects model using the 
 #' generalized logistic function as g function and the logit link function.
 #' @param par vector of regression coefficients, 
 #' and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)
@@ -142,7 +141,7 @@ ocm <- function(formula, data, weights, start=NULL, link = c("logit"),
 #' @param wts optional case weights
 #' @param len_beta length of the regression coefficients vector
 #' @keywords likelihood, log-likelihood.
-#' @return minus the log-likelihood at parameter values \code{par} 
+#' @return Minus the log-likelihood at parameter values \code{par} 
 
 negloglik_glf <- function(par, v, d.matrix, wts, len_beta){
   return(-sum(wts * logdensity_glf(par, v, d.matrix, len_beta)))

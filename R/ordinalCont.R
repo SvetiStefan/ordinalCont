@@ -20,7 +20,7 @@
 #' latent variable. Currently 
 #' the logit link, which corresponds to a standard logistic distribution, is implemented. 
 #' (This implies a proportional odds model.)  The likelihood is 
-#' maximized using \code{optim {stats}} with a quasi-Newton method (\code{"BFGS"}). Fixed-effects models are implemented in the function \code{ocm}, and mixed models in  \code{ocmm}. 
+#' maximized using \code{optim {stats}} with a quasi-Newton method (\code{"BFGS"}). Fixed-effects models are implemented in the function \code{\link{ocm}}, and mixed models in  \code{\link{ocmm}}. 
 #' @references   Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous 
 #'  Scales, \emph{The International Journal of Biostatistics}: 6(1), Article 14.
 #'@references Richards, F. (1959). A flexible growth function for empirical use, 
@@ -58,6 +58,6 @@ NULL
 #' @name ANZ0001
 #' @usage data(ANZ0001)
 #' @references Stockler, M., T. Sourjina, P. Grimison, V. Gebski, M. Byrne, V. Harvey, P. Francis et al. ``A randomized trial of capecitabine (C) given intermittently (IC) rather than continuously (CC) compared to classical CMF as first-line chemotherapy for advanced breast cancer (ABC).'' In \emph{ASCO Annual Meeting Proceedings}, vol. 25, no. 18_suppl, p. 1031. 2007.
-#' @format A data frame with 3473 rows and 11 variables
+#' @format A data frame with 2473 rows and 11 variables
 NULL
 

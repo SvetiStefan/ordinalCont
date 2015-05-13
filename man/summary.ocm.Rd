@@ -7,9 +7,9 @@
 \method{summary}{ocm}(object, ...)
 }
 \arguments{
-\item{object}{An object of class \code{ocm}, usually, a result of a call to \code{ocm}.}
+\item{object}{an object of class \code{ocm}, usually, a result of a call to \code{ocm}}
 
-\item{...}{Further arguments passed to or from other methods.}
+\item{...}{further arguments passed to or from other methods}
 }
 \description{
 Summary method for class \code{ocm}

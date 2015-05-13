@@ -17,30 +17,32 @@ used to fit the model. If \code{NULL}, predictions are computed for the original
 \item{ndens}{the number of points on the continuous ordinal scale (0, 1) over which the densities are computed.
 The default is 100.}
 
-\item{...}{Further arguments passed to or from other methods.}
+\item{...}{further arguments passed to or from other methods}
 }
 \value{
 A list containing the following components:
-\item{mode}{a vector of length equal to the number of observations
-Each element is the mode of v,
-the ordinal continuous random variable, conditional on the covariates in the model}
+\item{mode}{a vector of length equal to the number of observations.
+Each element is the mode of \code{v},
+the  continuous ordinal random variable, conditional on the covariates in the model.}
 \item{density}{a matrix with number of rows equal to the number of observations. Each row
-contains the values of the density function of v conditional on the covariates in the model.
-The density function is calculated over 100 equally-spaced values of v in (0,1)}
-\item{x}{a vector with the 100 equally-spaced values of v in (0,1) used to compute the density of v}
+contains the values of the density function of \code{v} conditional on the covariates in the
+model.
+The density function is calculated over 100 equally-spaced values of v in (0,1).}
+\item{x}{a vector with the 100 equally-spaced values of \code{v} in (0,1) used to compute the
+density of v}
 \item{formula}{the formula used to fit the model}
-\item{newdata}{a new data frame used to make predictions. It takes value NULL if no new data frame has been used}
+\item{newdata}{a new data frame used to make predictions. It takes value NULL if no new data frame has been used.}
 }
 \description{
-Predicted values based on \code{ocm} object.
+Predicted values based on \code{ocm} object
 }
 \details{
 An object of class \code{ocm} and optionally a new data
 frame are used to compute the probability
-densities of V, the continuous ordinal score. The estimated parameters
+densities of \code{v}, the continuous ordinal score. The estimated parameters
 of the fitted model and \code{ndens} (default: 100)
-values of V are used to compute the probability densities on the latent scale.
-These values are then transformed in scores on the continuous ordinal
+values of \code{v} are used to compute the probability densities on the latent scale.
+These values are then transformed to scores on the continuous ordinal
 scale using the g function and the estimated values
 of \code{M}, \code{B}, and \code{T}.
 }

@@ -43,7 +43,7 @@ dg_glf <- function(v, par){
 
 #' Inverse of generalized logistic g function
 #'
-#' This function computes the inverse of a parametric version of the g function 
+#' Inverse of a parametric version of the g function 
 #' following Richards (1959): 
 #' \deqn{g^{-1}(W) = \left( \frac{e^{B(W-M)}}{T+e^{B(W-M)}}  \right)^{\frac{1}{T}}} 
 #' @param W vector of scores on the latent scale \eqn{(-\infty,\infty)}

@@ -2,8 +2,7 @@
 % Please edit documentation in R/ocmm.R
 \name{negloglik_glf_rnd}
 \alias{negloglik_glf_rnd}
-\title{Log-likelihood function for the mixed-effects model, using the generalized logistic
-function as g function and the logit link function}
+\title{Log-likelihood function for the mixed-effects model}
 \usage{
 negloglik_glf_rnd(par, v, d.matrix, rnd.matrix, wts, len_beta, rnd, n_nodes,
   quad, iclusters)
@@ -17,25 +16,28 @@ and the standard deviation of the random effect}
 
 \item{d.matrix}{design matrix (fixed effects)}
 
-\item{rnd.matrix}{the random term model matrix}
+\item{rnd.matrix}{random term model matrix}
 
 \item{wts}{optional case weights}
 
 \item{len_beta}{length of the regression coefficients vector}
 
-\item{rnd}{a character vector listing the random terms}
+\item{rnd}{character vector listing the random terms}
 
-\item{n_nodes}{Order of Gauss-Hermite rule used (number of nodes).}
+\item{n_nodes}{order of Gauss-Hermite rule used (number of nodes)}
 
-\item{quad}{A string indicating the type of quadrature used to integrate over the random effects. Can take values "Laplace" (Adaptive Gauss-Hermite quadrature using Laplace approximation; the default) or "GH" (Gauss-Hermite quadrature).}
+\item{quad}{string indicating the type of quadrature used to integrate over the random
+effects. Can take values \code{"Laplace"} (Adaptive Gauss-Hermite quadrature using Laplace
+approximation; the default) or \code{"GH"} (Gauss-Hermite quadrature).}
 
-\item{iclusters}{a list containing the row numbers of the design matrix relative to each level of the factor over which random effect are computed}
+\item{iclusters}{list containing the row numbers of the design matrix relative to each level
+of the factor over which random effects are computed}
 }
 \value{
 Minus the log-likelihood at parameter values \code{par}
 }
 \description{
-Computes the log-likelihood function for the mixed-effects continuous ordinal model, using the generalized logistic
+Log-likelihood function for the mixed-effects continuous ordinal model, using the generalized logistic
 function as g function and the logit link function
 }
 \details{

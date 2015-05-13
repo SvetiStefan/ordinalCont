@@ -1,7 +1,7 @@
 #' @title Print  a Continuous Ordinal Mixed Model Object
 #'
 #' @description This function prints an \code{ocmm} object 
-#' @param x An object of class \code{ocmm}, usually, a result of a call to \code{ocmm}
+#' @param x an object of class \code{ocmm}, usually, a result of a call to \code{ocmm}
 #' @param ... further arguments passed to or from other methods
 #' @examples
 #'\dontrun{
@@ -22,7 +22,7 @@ print.ocmm <- function(x, ...)
 
 #' @title Summarizing Continuous Ordinal Mixed Model Fits
 #' @description Summary method for class \code{ocmm}
-#' @param object An object of class \code{ocmm}, usually, a result of a call to \code{ocmm}
+#' @param object an object of class \code{ocmm}, usually, a result of a call to \code{ocmm}
 #' @param ... further arguments passed to or from other methods
 #' @method summary ocmm
 #' @keywords summary
@@ -256,7 +256,7 @@ print.anova.ocmm <-
 #' @param object an \code{ocmm} object
 #' @param ... further arguments to be passed to methods
 #' @details For the generalized logistic g-function, the variance-covariance matrix of model parameters is 
-#' of dimension (\code{len_beta} +3)x(\code{len_beta} +3), where \code{len_beta}  is the number of 
+#' of dimension (\code{len_beta} +4)x(\code{len_beta} +4), where \code{len_beta}  is the number of 
 #' beta coefficients in the model.
 #' @export
 #' @method vcov ocmm
@@ -300,12 +300,12 @@ logLik.ocmm <- function(object, ...) {
 #' @param k  `weight' of the equivalent degrees of freedom (=: edf) 
 #'  in the AIC formula. Defaults to 2.
 #' @param ... further arguments (currently unused)
-#' @details The generalised AIC is computed:
+#' @details The generalized AIC is computed:
 #' \deqn{-2\ell +k\cdot edf}
 #' where \eqn{\ell} is the log likelihood, k=2 gives the AIC, and 
 #' k=log(n) gives the BIC.
-#' @seealso \code{\link{ocmm}}
-#' @return Generalised AIC of \code{ocmm} object \code{fit}
+#' @seealso \code{\link{ocmm}}, \code{\link{extractAIC.ocm}}
+#' @return Generalized AIC of \code{ocmm} object \code{fit}
 #' @references  Akaike, H (1983). 
 #' Information measures and model selection, 
 #' \emph{Bulletin of the International Statistical Institute}, 50:277-290.

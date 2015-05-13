@@ -19,7 +19,7 @@ Calculates variance-covariance matrix for a fitted \code{ocmm} object
 }
 \details{
 For the generalized logistic g-function, the variance-covariance matrix of model parameters is
-of dimension (\code{len_beta} +3)x(\code{len_beta} +3), where \code{len_beta}  is the number of
+of dimension (\code{len_beta} +4)x(\code{len_beta} +4), where \code{len_beta}  is the number of
 beta coefficients in the model.
 }
 \examples{

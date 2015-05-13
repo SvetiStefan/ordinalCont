@@ -4,7 +4,7 @@
 \name{ANZ0001}
 \alias{ANZ0001}
 \title{ANZ0001 trial}
-\format{A data frame with 3473 rows and 11 variables}
+\format{A data frame with 2473 rows and 11 variables}
 \usage{
 data(ANZ0001)
 }
