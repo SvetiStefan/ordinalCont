@@ -9,7 +9,8 @@
 #' typically given a linear scale of 100 mm and asked to put a mark where they perceive
 #' themselves. These scales  measure subjects' 
 #' perception of an intangible quantity, and cannot be handled as ratio variables because of their 
-#' inherent nonlinearity.  We express  the likelihood in terms of a function (the ``g function'')
+#' inherent nonlinearity.  Instead we treat them as ordinal variables, measured on a continuous scale. We 
+#' express  the likelihood in terms of a function (the ``g function'')
 #'  connecting the  
 #' scale with an underlying continuous latent  variable. In the current version the g function 
 #' is taken as 
@@ -18,7 +19,13 @@
 #' The link function is the inverse of the CDF of the assumed underlying distribution of the 
 #' latent variable. Currently 
 #' the logit link, which corresponds to a standard logistic distribution, is implemented. 
-#' (This implies a proportional odds model.)
+#' (This implies a proportional odds model.)  The likelihood is 
+#' maximized using \code{optim {stats}} with a quasi-Newton method (\code{"BFGS"}). Fixed-effects models are implemented in the function \code{ocm}, and mixed models in  \code{ocmm}. 
+#' @references   Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous 
+#'  Scales, \emph{The International Journal of Biostatistics}: 6(1), Article 14.
+#'@references Richards, F. (1959). A flexible growth function for empirical use, 
+#' \emph{Journal of Experimental Botany}, 10, 290-301.
+#' @author Maurizio Manuguerra, Gillian Heller
 NULL
 
 

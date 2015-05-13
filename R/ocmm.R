@@ -1,4 +1,4 @@
-#' Ordinal regression for continuous scales - with mixed-effects 
+#' Ordinal regression for continuous scales with mixed effects 
 #'
 #' Fits an ordinal continuous mixed model with logit link, using the generalized logistic function as g function.
 #' @param formula a formula expression as for regression models, of the form 
@@ -9,15 +9,19 @@
 #' @param weights optional case weights in fitting. Defaults to 1.
 #' @param start a vector of initial values for the regression coefficients, 
 #' \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function) and the standard deviation of the random effect
-#' @param link link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default ``logit'' link gives the proportional odds model and is the only link function currently supported.
-#' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function, which is currently the only possibility.
+#' @param link link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default logit link gives the proportional odds model and is the only link function currently supported.
+#' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function (\code{\link{g_glf}}), which is currently the only possibility.
 #' @param quad A string indicating the type of quadrature used to integrate over the random effects. Can take values \code{"Laplace"} (Adaptive Gauss-Hermite quadrature using Laplace approximation; the default) or \code{"GH"} (Gauss-Hermite quadrature).
 #' @param n_nodes order of Gauss-Hermite rule used (number of nodes) 
-#' @return an object of type \code{ocmm} with the components listed below. Parameter estimates are in \code{coefficients}. 
+#'  @details Fits a continuous ordinal regression model, with fixed and random effects. The g function is the generalized logistic function (see \code{\link{g_glf}}), and the link function is the logit, 
+#' implying the standard logistic distribution for the latent variable. Maximum likelihood estimation is performed, using \code{optim {stats}} with a quasi-Newton method (\code{"BFGS"}). 
+#' Either adaptive Gauss-Hermite quadrature with the Laplace approximation, or Gauss-Hermite quadrature, is used.  
+#' For continuous ordinal  modelling with fixed effects only, see \code{\link{ocm}}.
+#' @return An object of type \code{ocmm} with the components listed below. Parameter estimates are in \code{coefficients}. 
 #' The last 3 (***MAURIZIO SHOULD THIS BE 4?***) elements of \code{coefficients} are the parameters of the g function (\code{M},  \code{B},  and \code{T}) and the standard deviation of the random effect.
 #' \item{coefficients}{parameter estimates}
 #' \item{vcov}{variance-covariance matrix}
-#' \item{sigma_rnd}{standard devition of the random effect}
+#' \item{sigma_rnd}{standard deviation of the random effect}
 #' \item{df}{estimated degrees of freedom}
 #' \item{logLik}{value of the log-likelihood at the estimated optimum}
 #' \item{len_beta}{number of fixed-effects parameters of the model}
@@ -30,7 +34,7 @@
 #' \item{sample.size}{sample size (can differ for the number of observations if the weights are different from 1)}
 #' \item{nobs}{number of observations}
 #' \item{call}{call to fit the model}
-#' \item{no.pars}{total munber of parameters estimated}
+#' \item{no.pars}{total number of parameters estimated}
 #' \item{data}{data frame used}
 #' \item{link}{link function used}
 #' \item{gfun}{g function used}

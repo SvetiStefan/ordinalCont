@@ -2,7 +2,6 @@
 #'
 #' A parametric version of the g function following Richards (1959): 
 #' \deqn{g(v) = M + \frac{1}{B} \log\left(\frac{Tv^T}{1-v^T}\right)}
-#'  M is omitted as an intercept is always fitted.
 #' @param v vector of standardized scores from the continuous ordinal scale, 0<v<1.
 #' @param par vector of 3 elements: \code{M}, the offset, \code{B}, the slope of the curve, and \code{T}, the symmetry of the curve. 
 #' @keywords Richards, generalized logistic function.
@@ -12,7 +11,7 @@
 #' 
 #' @references Richards, F. (1959). A flexible growth function for empirical use, 
 #' \emph{Journal of Experimental Botany}, 10, 290-301.
-#' @seealso \code{\link{dg_glf}},\code{\link{g_glf_inv}}
+#' @seealso \code{\link{dg_glf}}, \code{\link{g_glf_inv}}
 #' @author Maurizio Manuguerra, Gillian Heller
 #
 

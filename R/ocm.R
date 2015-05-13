@@ -1,13 +1,13 @@
 #' Ordinal regression for continuous scales
 #'
 #' Continuous ordinal regression with logit link using the 
-#' generalized logistic function as g function. Random effects are not supported (see \code{ocmm} for mixed-effects modelling).
+#' generalized logistic function as g function. 
 #' @param formula a formula expression as for regression models, of the form 
 #' response ~ predictors. Only fixed effects are supported. 
 #' The model must have an intercept: attempts to remove one will lead to a warning and will be 
 #' ignored.
 #' @param data  an optional data frame in which to interpret the variables occurring in the 
-#' formulas.
+#' formulas
 #' @param weights optional case weights in fitting. Defaults to 1.
 #' @param start a vector of initial values for the regression coefficients
 #' and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)
@@ -17,27 +17,11 @@
 #' ordinal measure. It defaults to the generalized logistic function, which is currently the only 
 #' possibility.
 #' @keywords likelihood, log-likelihood, ordinal regression.
-#' @details Ordinal regression analysis is a convenient tool for analyzing ordinal response variables 
-#' in the presence of covariates. We extend this methodology to the case of continuous self-rating 
-#' scales such as the Visual Analog Scale (VAS) used in pain assessment, or the Linear Analog 
-#' Self-Assessment (LASA) scales in quality of life studies. Subjects are
-#' typically given a linear scale of 100 mm and asked to put a mark where they perceive
-#' themselves. These scales  measure subjects' 
-#' perception of an intangible quantity, and cannot be handled as ratio variables because of their 
-#' inherent nonlinearity.  We express  the likelihood in terms of a function (the ``g function'')
-#'  connecting the  
-#' scale with an underlying continuous latent  variable. In the current version the g function 
-#' is taken as 
-#' the generalized logistic function (Richards 1959). This has 3 parameters: 
-#'  \code{M}, the offset, \code{B}, the slope, and \code{T}, the symmetry of the curve.
-#' The link function is the inverse of the CDF of the assumed underlying distribution of the 
-#' latent variable. Currently 
-#' the logit link, which corresponds to a standard logistic distribution, is implemented. 
-#' (This implies a proportional odds model.)
-#' A regression framework supporting fixed effects
-#'  is implemented. The likelihood is maximized using \code{optim {stats}} with a quasi-Newton method (\code{"BFGS"}).
+#' @details Fits a continuous ordinal regression model, with fixed effects. The g function is the generalized logistic function (see \code{\link{g_glf}}), and the link function is the logit, 
+#' implying the standard logistic distribution for the latent variable. Maximum likelihood estimation is performed, using \code{optim {stats}} with a quasi-Newton method (\code{"BFGS"}). 
+#' For continuous ordinal mixed modelling, see \code{\link{ocmm}}.
 #' 
-#' @seealso \code{\link{ocmm}}
+#' @seealso For continuous ordinal mixed models, see \code{\link{ocmm}}
 #' @return an object of type \code{ocm} with the components listed below. Parameter estimates are in \code{coefficients}. 
 #' The last 3 elements of \code{coefficients} are the parameters of the g function: 
 #' \code{M},  \code{B},  and \code{T}.
@@ -61,8 +45,6 @@
 #' \item{formula}{formula used}
 #'  @references Manuguerra M, Heller GZ (2010). Ordinal Regression Models for Continuous 
 #'  Scales, \emph{The International Journal of Biostatistics}: 6(1), Article 14.
-#'@references Richards, F. (1959). A flexible growth function for empirical use, 
-#' \emph{Journal of Experimental Botany}, 10, 290-301.
 #' @author Maurizio Manuguerra, Gillian Heller
 #' @export
 #' @examples
