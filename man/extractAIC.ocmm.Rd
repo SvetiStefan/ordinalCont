@@ -34,6 +34,9 @@ fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno)
 extractAIC(fit.overall.rnd)
 }
 }
+\author{
+Maurizio Manuguerra, Gillian Heller
+}
 \references{
 Akaike, H (1983).
 Information measures and model selection,

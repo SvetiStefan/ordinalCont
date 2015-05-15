@@ -20,5 +20,8 @@ fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno)
 summary(fit.overall.rnd)
 }
 }
+\author{
+Maurizio Manuguerra, Gillian Heller
+}
 \keyword{summary}
 

@@ -30,6 +30,9 @@ ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
 fit.overall  <- ocm(overall  ~ cycleno + bsa + treatment, data=ANZ0001.ocm)
 anova(fit.overall, update(fit.overall, .~. + age))
 }
+\author{
+Maurizio Manuguerra, Gillian Heller
+}
 \seealso{
 \code{\link{ocm}}, \code{\link{anova.ocm}}
 }

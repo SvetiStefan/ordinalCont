@@ -49,7 +49,7 @@ plot(fit.overall, CIs="param.bootstrap", R=100)
 }
 }
 \author{
-Maurizio Manuguerra
+Maurizio Manuguerra, Gillian Heller
 }
 \seealso{
 \code{\link{ocm}}

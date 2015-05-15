@@ -34,6 +34,9 @@ ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
 fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
 extractAIC(fit.overall)
 }
+\author{
+Maurizio Manuguerra, Gillian Heller
+}
 \references{
 Akaike, H (1983).
 Information measures and model selection,

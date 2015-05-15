@@ -29,5 +29,8 @@ fit.overall.rnd  <- ocmm(overall  ~ cycleno + bsa + treatment + (1|randno), data
 anova(fit.overall.rnd, update(fit.overall.rnd, .~. + age))
 }
 }
+\author{
+Maurizio Manuguerra, Gillian Heller
+}
 \keyword{anova}
 

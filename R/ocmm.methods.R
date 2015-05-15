@@ -10,6 +10,7 @@
 #' }
 #' @keywords likelihood, log-likelihood.
 #' @method print ocmm
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @export
 
 print.ocmm <- function(x, ...)
@@ -26,6 +27,7 @@ print.ocmm <- function(x, ...)
 #' @param ... further arguments passed to or from other methods
 #' @method summary ocmm
 #' @keywords summary
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @examples
 #'\dontrun{
 #' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
@@ -92,6 +94,7 @@ print.summary.ocmm <- function(x, ...)
 #' @details The fitted g function of an \code{ocmm} object is plotted. 
 #' @seealso \code{\link{plot.ocm}}, \code{\link{ocmm}}
 #' @keywords plot
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @examples
 #' \dontrun{
 #' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
@@ -150,6 +153,7 @@ plot.ocmm <- function(x, CIs = c('no','vcov'), R = 1000, main="g function (95% C
 #'   \item{df}{difference in the degrees of freedom in the models being compared}
 #'   \item{Pr(>Chisq)}{p-value from the likelihood ratio test}
 #' @export
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @examples
 #' \dontrun{
 #' fit.overall.rnd  <- ocmm(overall  ~ cycleno + bsa + treatment + (1|randno), data=ANZ0001)
@@ -229,6 +233,7 @@ anova.ocmm <- function(object, ...)
 #' @param ... further arguments passed to or from other methods
 #' @return Prints \code{anova.ocmm} object
 #' @keywords summary, anova
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @examples
 #' \dontrun{
 #' fit.overall.rnd  <- ocmm(overall  ~ cycleno + bsa + treatment + (1|randno), data=ANZ0001)
@@ -263,6 +268,7 @@ print.anova.ocmm <-
 #' @method vcov ocmm
 #'  @return Variance-covariance matrix of model parameters
 #' @seealso \code{\link{ocmm}}
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @examples
 #' \dontrun{
 #' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
@@ -283,6 +289,7 @@ vcov.ocmm <- function(object, ...) {
 #' @seealso \code{\link{ocmm}}
 #' @return Returns the log-likelihood of an \code{ocmm} object
 #' @export
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @examples
 #' \dontrun{
 #' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
@@ -307,6 +314,7 @@ logLik.ocmm <- function(object, ...) {
 #' k=log(n) gives the BIC.
 #' @seealso \code{\link{ocmm}}, \code{\link{extractAIC.ocm}}
 #' @return Generalized AIC of \code{ocmm} object \code{fit}
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @references  Akaike, H (1983). 
 #' Information measures and model selection, 
 #' \emph{Bulletin of the International Statistical Institute}, 50:277-290.

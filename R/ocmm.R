@@ -45,6 +45,7 @@
 #' \item{formula}{formula used}
 #' @keywords likelihood, log-likelihood, ordinal regression.
 #' @export
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @examples
 #'\dontrun{
 #' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
@@ -174,6 +175,7 @@ ocmm <- function(formula, data, weights, start=NULL, link = c("logit"), gfun = c
 #' @param iclusters  list containing the row numbers of the design matrix relative to each level 
 #' of the factor over which random effects are computed
 #' @keywords likelihood, log-likelihood.
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @return Minus the log-likelihood at parameter values \code{par} 
 
 negloglik_glf_rnd <- function(par, v, d.matrix, rnd.matrix, wts, len_beta, rnd, n_nodes, quad, iclusters)
