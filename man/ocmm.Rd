@@ -81,6 +81,9 @@ summary(fit.nausvom.rnd)
 summary(fit.appetite.rnd)
 }
 }
+\author{
+Maurizio Manuguerra, Gillian Heller
+}
 \keyword{likelihood,}
 \keyword{log-likelihood,}
 \keyword{ordinal}

@@ -29,7 +29,7 @@ pred <- predict(fit.overall)
 plot(pred)
 }
 \author{
-Maurizio Manuguerra
+Maurizio Manuguerra, Gillian Heller
 }
 \seealso{
 \code{\link{predict.ocm}}, \code{\link{ocm}}

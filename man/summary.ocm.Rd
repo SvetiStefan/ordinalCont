@@ -21,6 +21,8 @@ fit.overall  <- ocm(overall  ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm
 summary(fit.overall)
 }
 \author{
+Maurizio Manuguerra, Gillian Heller
+
 Maurizio Manuguerra
 }
 \seealso{

@@ -28,6 +28,9 @@ Log-likelihood function for the fixed-effects model
 Minus the log-likelihood  for a fixed-effects model using the
 generalized logistic function as g function and the logit link function.
 }
+\author{
+Maurizio Manuguerra, Gillian Heller
+}
 \keyword{likelihood,}
 \keyword{log-likelihood.}
 

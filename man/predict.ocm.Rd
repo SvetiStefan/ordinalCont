@@ -54,6 +54,8 @@ pred <- predict(fit.overall)
 plot(pred)
 }
 \author{
+Maurizio Manuguerra, Gillian Heller
+
 Maurizio Manuguerra
 }
 \seealso{

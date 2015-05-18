@@ -142,6 +142,7 @@ ocm <- function(formula, data, weights, start=NULL, link = c("logit"),
 #' @param len_beta length of the regression coefficients vector
 #' @keywords likelihood, log-likelihood.
 #' @return Minus the log-likelihood at parameter values \code{par} 
+#' @author Maurizio Manuguerra, Gillian Heller
 
 negloglik_glf <- function(par, v, d.matrix, wts, len_beta){
   return(-sum(wts * logdensity_glf(par, v, d.matrix, len_beta)))

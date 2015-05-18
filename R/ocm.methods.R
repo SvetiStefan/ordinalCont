@@ -31,6 +31,7 @@ print.ocm <- function(x, ...)
 #' @method summary ocm
 #' @keywords summary
 #' @seealso \code{\link{ocm}}, \code{\link{print.ocm}}
+#'  @author Maurizio Manuguerra, Gillian Heller
 #' @examples
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
@@ -84,6 +85,7 @@ print.summary.ocm <- function(x, ...)
 #' @param ... further arguments passed to or from other methods
 #' @keywords predict
 #' @method predict ocm
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @return  A list containing the following components: 
 #' \item{mode}{a vector of length equal to the number of observations.
 #' Each element is the mode of \code{v}, 
@@ -148,6 +150,7 @@ predict.ocm <- function(object, newdata=NULL, ndens=100, ...)
 #' @keywords predict
 #' @details The table of predictions from \code{predict.ocm} is printed.
 #' @seealso \code{\link{predict.ocm}}, \code{\link{ocm}}
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @examples 
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
@@ -182,7 +185,7 @@ print.predict.ocm <- function(x, ...)
 #' pred <- predict(fit.overall)
 #' plot(pred)
 #' @export
-#' @author Maurizio Manuguerra
+#' @author Maurizio Manuguerra, Gillian Heller
 
 plot.predict.ocm <- function(x, records=NULL, ...)
 {
@@ -231,7 +234,7 @@ plot.predict.ocm <- function(x, records=NULL, ...)
 #' plot(fit.overall, CIs="fix.x.bootstrap", R=100)
 #' plot(fit.overall, CIs="param.bootstrap", R=100)
 #' }
-#' @author Maurizio Manuguerra
+#' @author Maurizio Manuguerra, Gillian Heller
 
 plot.ocm <- function(x, CIs = c('no', 'vcov','rnd.x.bootstrap','fix.x.bootstrap','param.bootstrap'), R = 1000, 
                      main="g function (95% CIs)", xlab="Continuous ordinal scale", ylab="", 
@@ -390,6 +393,7 @@ anova.ocm <- function(object, ...)
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
 #' fit.overall  <- ocm(overall  ~ cycleno + bsa + treatment, data=ANZ0001.ocm)
 #' anova(fit.overall, update(fit.overall, .~. + age))
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @export
 
 print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3), 
@@ -417,6 +421,7 @@ print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3),
 #' @seealso \code{\link{ocm}}
 #' @return The log-likelihood of an \code{ocm} object
 #' @export
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @examples
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1
@@ -444,6 +449,7 @@ logLik.ocm <- function(object, ...){
 #' Information measures and model selection, 
 #' \emph{Bulletin of the International Statistical Institute}, 50:277-290.
 #' @export
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @method extractAIC ocm
 #' @examples
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
@@ -469,6 +475,7 @@ extractAIC.ocm <- function(fit, scale = 0, k = 2, ...) {
 #' @method vcov ocm
 #'  @return Variance-covariance matrix of model parameters
 #' @seealso \code{\link{ocm}}
+#' @author Maurizio Manuguerra, Gillian Heller
 #' @examples
 #' ANZ0001.ocm <- ANZ0001[ANZ0001$cycleno==0 | ANZ0001$cycleno==5,]
 #' ANZ0001.ocm$cycleno[ANZ0001.ocm$cycleno==5] <- 1

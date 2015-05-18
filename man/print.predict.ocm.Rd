@@ -24,6 +24,9 @@ fit.overall <- ocm(overall ~ cycleno + age + bsa + treatment, data=ANZ0001.ocm)
 pred <- predict(fit.overall)
 print(pred)
 }
+\author{
+Maurizio Manuguerra, Gillian Heller
+}
 \seealso{
 \code{\link{predict.ocm}}, \code{\link{ocm}}
 }

@@ -44,6 +44,9 @@ function as g function and the logit link function
 This function computes minus the log-likelihood function for a mixed-effects model using the
 generalized logistic function as g function and the logit link function. It is used internally to fit the model and should not be of interest of the user.
 }
+\author{
+Maurizio Manuguerra, Gillian Heller
+}
 \keyword{likelihood,}
 \keyword{log-likelihood.}
 

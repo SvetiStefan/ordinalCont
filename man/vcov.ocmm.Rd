@@ -28,6 +28,9 @@ fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno)
 vcov(fit.overall.rnd)
 }
 }
+\author{
+Maurizio Manuguerra, Gillian Heller
+}
 \seealso{
 \code{\link{ocmm}}
 }
