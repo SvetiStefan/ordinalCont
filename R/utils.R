@@ -1,7 +1,11 @@
 set.beta_start <- function(x,v){
   vv=ifelse(v<median(v),0,1)
   #as.numeric(-coef(glm(vv~0+x,family=gaussian(link="logit"))))
-  as.numeric(-coef(glm(vv~0+x,family=binomial(link="logit"))))
+  as.numeric(-coef(suppressWarnings(glm(vv~0+x,family=binomial(link="logit")))))
+  #print(str(x))
+  #fit=glm(vv~x,family=binomial(link="logit"))
+  #as.numeric(-tail(coef(fit),-1))
+  #rep(0, ncol(x))
 }
 
 

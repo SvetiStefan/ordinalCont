@@ -17,7 +17,9 @@ in the AIC formula. Defaults to 2}
 \item{...}{further arguments to be passed to methods}
 }
 \value{
-Generalized AIC of \code{ocm} object \code{fit}
+A numeric vector of length 2, with first and second elements giving
+\item{edf}{the `equivalent degrees of freedom' for the fitted model \code{fit}.}
+\item{AIC}{the generalized AIC of \code{ocm} object \code{fit}.}
 }
 \description{
 Extracts the AIC for a fitted \code{ocm} object

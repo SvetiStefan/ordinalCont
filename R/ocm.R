@@ -16,6 +16,7 @@
 #' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the 
 #' ordinal measure. It defaults to the generalized logistic function, which is currently the only 
 #' possibility.
+#' @param method The optimizer used to maximize the likelihood function.
 #' @keywords likelihood, log-likelihood, ordinal regression.
 #' @details Fits a continuous ordinal regression model, with fixed effects. The g function is the generalized logistic function (see \code{\link{g_glf}}), and the link function is the logit, 
 #' implying the standard logistic distribution for the latent variable. Maximum likelihood estimation is performed, using \code{optim {stats}} with a quasi-Newton method (\code{"BFGS"}). 
@@ -72,8 +73,8 @@
 #' par(mfrow=c(1,1))
 
 
-ocm <- function(formula, data, weights, start=NULL, link = c("logit"), 
-                gfun = c("glf"))
+ocm <- function(formula, data=NULL, weights, start=NULL, link = c("logit"), 
+                gfun = c("glf"), method = c("optim", "ucminf"))
 {
   if (any(sapply(attributes(terms(formula))$term.labels,function(x)grepl("|", x, fixed=T)))) 
     stop("Random effects specified. Please call ocmm.")
@@ -84,7 +85,9 @@ ocm <- function(formula, data, weights, start=NULL, link = c("logit"),
     warning("The model must have an intercept and it has been added to the formula.")
   }
   link <- match.arg(link)
-  gfun <- match.arg(gfun)
+  gfun <- match.arg(gfun) 
+  method <- match.arg(method)
+  if(is.null(data)) data <- model.frame(formula=formula, data=parent.frame(n=1))
   if(missing(weights)) weights <- rep(1, nrow(data))
   keep <- weights > 0
   data <- data[keep,]
@@ -95,7 +98,8 @@ ocm <- function(formula, data, weights, start=NULL, link = c("logit"),
   lenx <- ncol(x)
   v <- model.response(mf)
   xnames <- dimnames(x)[[2]][2:lenx]
-  x <- as.matrix(x)[,2:lenx]
+  x <- as.matrix(x[,2:lenx])
+  colnames(x) <- xnames
   v <- as.numeric(v)
   if (is.null(start)) {
     beta_start <- set.beta_start(x,v)
@@ -108,7 +112,7 @@ ocm <- function(formula, data, weights, start=NULL, link = c("logit"),
     start <- c(beta_start, gfun_start)
     len_gfun <- length(gfun_start)
   }
-  est <- ocmEst(start, v, x, weights, link, gfun)
+  est <- ocmEst(start, v, x, weights, link, gfun, method)
   coef <- est$coefficients
   beta <- coef[1:len_beta]
   par_g <- coef[(len_beta+1):(len_beta+len_gfun)]
@@ -125,6 +129,7 @@ ocm <- function(formula, data, weights, start=NULL, link = c("logit"),
   est$data <- data
   est$link <- link
   est$gfun <- gfun
+  est$method <- method
   est$formula <- formula
   class(est) <- "ocm"
   est
@@ -160,12 +165,18 @@ logdensity_glf <- function(par, v, d.matrix, len_beta){
   return(log(dg) + g + xb -2*log(1+exp(g+xb)))
 }
 
-ocmEst <- function(start, v, x, weights, link, gfun){
+#' @import ucminf
+ocmEst <- function(start, v, x, weights, link, gfun, method){
   len_beta <- ncol(x)
   if (gfun == "glf") {
     if (link == "logit"){
-      fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, wts=weights, len_beta=len_beta, 
-                   method="BFGS", hessian = T)
+      if (method == "optim"){
+        fit <- optim(par=start,negloglik_glf, v=v, d.matrix=x, wts=weights, len_beta=len_beta, method="BFGS", hessian = T)
+      } else if (method == "ucminf") {
+        fit <- ucminf(par=start,negloglik_glf, v=v, d.matrix=x, wts=weights, len_beta=len_beta, hessian = 3)
+      } else {
+        stop("Optimization method not implemented.")
+      }
     } else {
       stop("link function not implemented.")
     }

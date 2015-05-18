@@ -4,8 +4,9 @@
 \alias{ocmm}
 \title{Ordinal regression for continuous scales with mixed effects}
 \usage{
-ocmm(formula, data, weights, start = NULL, link = c("logit"),
-  gfun = c("glf"), quad = c("Laplace", "GH"), n_nodes = 10)
+ocmm(formula, data = NULL, weights, start = NULL, link = c("logit"),
+  gfun = c("glf"), method = c("optim", "ucminf"), quad = c("Laplace",
+  "GH"), n_nodes = 10)
 }
 \arguments{
 \item{formula}{a formula expression as for regression models, of the form
@@ -23,6 +24,8 @@ ignored.}
 \item{link}{link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default logit link gives the proportional odds model and is the only link function currently supported.}
 
 \item{gfun}{A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function (\code{\link{g_glf}}), which is currently the only possibility.}
+
+\item{method}{The optimizer used to maximize the likelihood function.}
 
 \item{quad}{A string indicating the type of quadrature used to integrate over the random effects. Can take values \code{"Laplace"} (Adaptive Gauss-Hermite quadrature using Laplace approximation; the default) or \code{"GH"} (Gauss-Hermite quadrature).}
 

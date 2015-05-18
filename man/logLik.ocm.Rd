@@ -12,7 +12,10 @@
 \item{...}{further arguments to be passed to methods}
 }
 \value{
-The log-likelihood of an \code{ocm} object
+The log-likelihood of an \code{ocm} object. This is a number with attributes
+\item{df}{the estimated degrees of freedom for the fitted model \code{object}.}
+\item{nobs}{the number of observations used in the fitted model \code{object}.}
+\item{class}{the class of the returned object: \code{logLik.ocm}}
 }
 \description{
 Extracts the log-likelihood for a fitted \code{ocm} object
