@@ -11,6 +11,7 @@
 #' \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function) and the standard deviation of the random effect
 #' @param link link function, i.e., the type of location-scale distribution assumed for the latent distribution. The default logit link gives the proportional odds model and is the only link function currently supported.
 #' @param gfun A smooth monotonic function capable of capturing the non-linear nature of the ordinal measure. It defaults to the generalized logistic function (\code{\link{g_glf}}), which is currently the only possibility.
+#' @param method The optimizer used to maximize the likelihood function.
 #' @param quad A string indicating the type of quadrature used to integrate over the random effects. Can take values \code{"Laplace"} (Adaptive Gauss-Hermite quadrature using Laplace approximation; the default) or \code{"GH"} (Gauss-Hermite quadrature).
 #' @param n_nodes order of Gauss-Hermite rule used (number of nodes) 
 #'  @details Fits a continuous ordinal regression model, with fixed and random effects. The g function is the generalized logistic function (see \code{\link{g_glf}}), and the link function is the logit, 
@@ -64,7 +65,7 @@
 
 
 
-ocmm <- function(formula, data, weights, start=NULL, link = c("logit"), gfun = c("glf"), quad=c("Laplace","GH"), n_nodes=10)
+ocmm <- function(formula, data=NULL, weights, start=NULL, link = c("logit"), gfun = c("glf"), method = c("optim", "ucminf"), quad=c("Laplace","GH"), n_nodes=10)
 {
   if (missing(formula)) 
     stop("Model needs a formula")
@@ -86,9 +87,16 @@ ocmm <- function(formula, data, weights, start=NULL, link = c("logit"), gfun = c
   if (as.numeric(left)!=1) stop("Only random effects on the intercept are supported in this version of ordinalCont.")
   if (any(sapply(c(":","*","|"), function(x)grepl(x, right,fixed=T)))) stop("Syntax incorrect or feature not implemented.")
   #cat("\nGoing to stratify by",right,"..\n")
+  nf.fix <- paste(fixterms, collapse="+")
+  nf.rnd <- paste(right, collapse="+")
+  form.complete <- update(formula, as.formula(paste("~",nf.fix,"+",nf.rnd)))
+  form.fix <- update(formula, as.formula(paste("~",nf.fix)))
+  form.rnd <- update(formula, as.formula(paste("~",nf.rnd)))
   
   link <- match.arg(link)
   gfun <- match.arg(gfun)
+  method <- match.arg(method)
+  if(is.null(data)) data <- model.frame(formula=form.complete, data=parent.frame(n=1))
   quad = match.arg(quad)
   if(missing(weights)) weights <- rep(1, nrow(data))
   keep <- weights > 0
@@ -101,16 +109,13 @@ ocmm <- function(formula, data, weights, start=NULL, link = c("logit"), gfun = c
   mf <- model.frame(formula=formula, data=data)
   x.complete <- model.matrix(attr(mf, "terms"), data=mf)
   
-  nf.fix <- paste(fixterms, collapse="+")
-  nf.rnd <- paste(right, collapse="+")
-  form.fix <- update(formula, as.formula(paste("~",nf.fix)))
-  form.rnd <- update(formula, as.formula(paste("~",nf.rnd)))
   mf.fix <- model.frame(formula=form.fix, data=data)
   mf.rnd <- model.frame(formula=form.rnd, data=data)
   x <- model.matrix(attr(mf.fix, "terms"), data=mf.fix)
   z <- model.matrix(attr(mf.rnd, "terms"), data=mf.rnd)
   xnames <- dimnames(x)[[2]][-1]
-  x <- as.matrix(x)[,-1] # 1 for the intercept
+  x <- as.matrix(x[,-1]) # 1 for the intercept
+  colnames(x) <- xnames
   z <- as.matrix(z)[,-1] # 1 for the intercept
   v <- model.response(mf)
   v <- as.numeric(v)
@@ -127,7 +132,7 @@ ocmm <- function(formula, data, weights, start=NULL, link = c("logit"), gfun = c
     start <- c(beta_start, gfun_start, sigma_rnd_eff) #1 is the variance of the single rnd effect
     len_gfun <- length(gfun_start)
   }
-  est <- ocmmEst(start, v, x, z, weights, link, gfun, rnd=right, n_nodes=n_nodes, quad=quad, iclusters)
+  est <- ocmmEst(start, v, x, z, weights, link, gfun, method, rnd=right, n_nodes=n_nodes, quad=quad, iclusters)
   coef <- est$coefficients
   beta <- coef[1:len_beta]
   par_g <- coef[(len_beta+1):(len_beta+len_gfun)]
@@ -146,6 +151,7 @@ ocmm <- function(formula, data, weights, start=NULL, link = c("logit"), gfun = c
   est$data <- data
   est$link <- link
   est$gfun <- gfun
+  est$method <- method
   est$formula <- formula
   class(est) <- "ocmm"
   est
@@ -189,7 +195,7 @@ negloglik_glf_rnd <- function(par, v, d.matrix, rnd.matrix, wts, len_beta, rnd, 
 #' @import fastGHQuad
 negloglik_glf_rnd2 <- function(indices, par, v, d.matrix, rnd.matrix, wts, len_beta, n_nodes, quad){
   rule <- gaussHermiteData(n_nodes)
-  x <- d.matrix[indices,]
+  x <- array(d.matrix[indices,],dim=c(length(indices), len_beta))
   y <- v[indices]
   w <- wts[indices]
   beta <- par[1:len_beta]
@@ -218,11 +224,18 @@ density_glf_GH <- function(b, all_pars, sigma_rnd, w){
   return(lik_cluster)
 }
 
-ocmmEst <- function(start, v, x, z, weights, link, gfun, rnd=NULL, n_nodes, quad, iclusters){
+#' @import ucminf
+ocmmEst <- function(start, v, x, z, weights, link, gfun, method, rnd=NULL, n_nodes, quad, iclusters){
   len_beta <- ncol(x)
   if (gfun == "glf") {
     if (link == "logit"){
-      fit <- optim(par=start,negloglik_glf_rnd, v=v, d.matrix=x, rnd.matrix=z, wts=weights, len_beta=len_beta, rnd=rnd, n_nodes=n_nodes, quad=quad, iclusters=iclusters, method="BFGS", hessian = T)
+      if (method == "optim"){
+        fit <- optim(par=start,negloglik_glf_rnd, v=v, d.matrix=x, rnd.matrix=z, wts=weights, len_beta=len_beta, rnd=rnd, n_nodes=n_nodes, quad=quad, iclusters=iclusters, method="BFGS", hessian = T)
+      } else if (method == "ucminf") {
+        fit <- ucminf(par=start,negloglik_glf_rnd, v=v, d.matrix=x, rnd.matrix=z, wts=weights, len_beta=len_beta, rnd=rnd, n_nodes=n_nodes, quad=quad, iclusters=iclusters, hessian = 3)
+      } else {
+        stop("Optimization method not implemented.")
+      }
     } else {
       stop("link function not implemented.")
     }

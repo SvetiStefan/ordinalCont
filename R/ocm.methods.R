@@ -44,7 +44,7 @@ summary.ocm <- function(object, ...)
 {
   se <- sqrt(diag(object$vcov))
   tval <- coef(object)[1:length(se)] / se
-  TAB <- cbind(Estimate = coef(object),
+  TAB <- data.frame(Estimate = coef(object),
                StdErr = se,
                t.value = tval,
                p.value = 2*pt(-abs(tval), df=object$df))
@@ -419,7 +419,10 @@ print.anova.ocm <- function(x, digits=max(getOption("digits") - 2, 3),
 #' @usage \method{logLik}{ocm}(object, ...)
 #' @method logLik ocm
 #' @seealso \code{\link{ocm}}
-#' @return The log-likelihood of an \code{ocm} object
+#' @return The log-likelihood of an \code{ocm} object. This is a number with attributes
+#' \item{df}{the estimated degrees of freedom for the fitted model \code{object}.}
+#' \item{nobs}{the number of observations used in the fitted model \code{object}.}
+#' \item{class}{the class of the returned object: \code{logLik.ocm}}
 #' @export
 #' @author Maurizio Manuguerra, Gillian Heller
 #' @examples
@@ -444,7 +447,9 @@ logLik.ocm <- function(object, ...){
 #' where \eqn{\ell} is the log likelihood, k=2 gives the AIC, and 
 #' k=log(n) gives the BIC.
 #' @seealso \code{\link{ocm}}, \code{\link{extractAIC.ocmm}}
-#' @return Generalized AIC of \code{ocm} object \code{fit}
+#' @return A numeric vector of length 2, with first and second elements giving
+#' \item{edf}{the `equivalent degrees of freedom' for the fitted model \code{fit}.}
+#' \item{AIC}{the generalized AIC of \code{ocm} object \code{fit}.}
 #' @references  Akaike, H (1983). 
 #' Information measures and model selection, 
 #' \emph{Bulletin of the International Statistical Institute}, 50:277-290.
