@@ -22,8 +22,6 @@ summary(fit.overall)
 }
 \author{
 Maurizio Manuguerra, Gillian Heller
-
-Maurizio Manuguerra
 }
 \seealso{
 \code{\link{ocm}}, \code{\link{print.ocm}}

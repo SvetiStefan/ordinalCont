@@ -3,6 +3,8 @@
 #' @description This function prints an \code{ocmm} object 
 #' @param x an object of class \code{ocmm}, usually, a result of a call to \code{ocmm}
 #' @param ... further arguments passed to or from other methods
+#' @return Prints an \code{ocmm} object
+#' @seealso \code{\link{ocmm}}, \code{\link{summary.ocmm}}
 #' @examples
 #'\dontrun{
 #' fit.overall.rnd  <- ocmm(overall  ~ cycleno + age + bsa + treatment + (1|randno), data=ANZ0001)
@@ -141,7 +143,7 @@ plot.ocmm <- function(x, CIs = c('no','vcov'), R = 1000, main="g function (95% C
 
 #' @title Anova method for Continuous Ordinal Mixed Model Fits
 #' 
-#' @description Comparison of continuous ordinal mixed models in likelihood ratio tests
+#' @description Comparison of continuous ordinal mixed models using likelihood ratio tests
 #' @param object an \code{ocmm} object
 #' @param ... one or more additional \code{ocmm} objects
 #' @keywords anova
@@ -288,9 +290,9 @@ vcov.ocmm <- function(object, ...) {
 #' @method logLik ocmm
 #' @seealso \code{\link{ocmm}}
 #' @return The log-likelihood of an \code{ocmm} object. This is a number with attributes
-#' \item{df}{the estimated degrees of freedom for the fitted model \code{object}.}
-#' \item{nobs}{the number of observations used in the fitted model \code{object}.}
-#' \item{class}{the class of the returned object: \code{logLik.ocmm}}
+#' \item{df}{estimated degrees of freedom for the fitted model \code{object}}
+#' \item{nobs}{number of observations used in the fitted model \code{object}}
+#' \item{class}{class of the returned object: \code{logLik.ocmm}}
 #' @export
 #' @author Maurizio Manuguerra, Gillian Heller
 #' @examples
@@ -317,8 +319,8 @@ logLik.ocmm <- function(object, ...) {
 #' k=log(n) gives the BIC.
 #' @seealso \code{\link{ocmm}}, \code{\link{extractAIC.ocm}}
 #' @return A numeric vector of length 2, with first and second elements giving
-#' \item{edf}{the `equivalent degrees of freedom' for the fitted model \code{fit}.}
-#' \item{AIC}{the generalized AIC of \code{ocmm} object \code{fit}.}
+#' \item{edf}{the ``equivalent degrees of freedom'' for the fitted model \code{fit}}
+#' \item{AIC}{the generalized AIC of \code{ocmm} object \code{fit}}
 #' @author Maurizio Manuguerra, Gillian Heller
 #' @references  Akaike, H (1983). 
 #' Information measures and model selection, 

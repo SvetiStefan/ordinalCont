@@ -55,8 +55,6 @@ plot(pred)
 }
 \author{
 Maurizio Manuguerra, Gillian Heller
-
-Maurizio Manuguerra
 }
 \seealso{
 \code{\link{ocm}}, \code{\link{plot.predict.ocm}}

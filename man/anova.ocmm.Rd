@@ -21,7 +21,7 @@ An object of class \code{anova.ocmm} and \code{data.frame}, reporting for each m
   \item{Pr(>Chisq)}{p-value from the likelihood ratio test}
 }
 \description{
-Comparison of continuous ordinal mixed models in likelihood ratio tests
+Comparison of continuous ordinal mixed models using likelihood ratio tests
 }
 \examples{
 \dontrun{

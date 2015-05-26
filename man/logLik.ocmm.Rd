@@ -13,9 +13,9 @@
 }
 \value{
 The log-likelihood of an \code{ocmm} object. This is a number with attributes
-\item{df}{the estimated degrees of freedom for the fitted model \code{object}.}
-\item{nobs}{the number of observations used in the fitted model \code{object}.}
-\item{class}{the class of the returned object: \code{logLik.ocmm}}
+\item{df}{estimated degrees of freedom for the fitted model \code{object}}
+\item{nobs}{number of observations used in the fitted model \code{object}}
+\item{class}{class of the returned object: \code{logLik.ocmm}}
 }
 \description{
 Extracts the log-likelihood for a fitted \code{ocmm} object

@@ -137,8 +137,9 @@ ocm <- function(formula, data=NULL, weights, start=NULL, link = c("logit"),
 
 #' @title Log-likelihood function for the fixed-effects model
 #'
-#' @details Minus the log-likelihood  for a fixed-effects model using the 
-#' generalized logistic function as g function and the logit link function.
+#' @details  This function computes minus the log-likelihood function for a fixed-effects model using 
+#' the generalized logistic function as g function and the logit link function. It is used internally 
+#' to fit the model and should not be of interest of the user.
 #' @param par vector of regression coefficients, 
 #' and \code{M},  \code{B}, \code{T}, (offset, slope and symmetry of the g function)
 #' @param v vector of standardized scores from the continuous ordinal scale

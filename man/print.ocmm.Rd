@@ -11,6 +11,9 @@
 
 \item{...}{further arguments passed to or from other methods}
 }
+\value{
+Prints an \code{ocmm} object
+}
 \description{
 This function prints an \code{ocmm} object
 }
@@ -22,6 +25,9 @@ print(fit.overall.rnd)
 }
 \author{
 Maurizio Manuguerra, Gillian Heller
+}
+\seealso{
+\code{\link{ocmm}}, \code{\link{summary.ocmm}}
 }
 \keyword{likelihood,}
 \keyword{log-likelihood.}

@@ -20,8 +20,7 @@ The data set is extracted from the ANZ0001 trial and contains information from 2
 
 The variables are as follows:
 
-\tabular{ll}{
-\code{randno}\tab{patient ID number}\cr
+\tabular{ll}{\code{randno}\tab{patient ID number}\cr
 \code{cycleno}\tab{chemotherapy cycle number}\cr
 \code{age}\tab{age of patient at entry to study}\cr
 \code{bsa}\tab{Body Surface Area (m\eqn{^2})}\cr

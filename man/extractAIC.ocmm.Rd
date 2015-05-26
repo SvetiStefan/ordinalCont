@@ -18,8 +18,8 @@ in the AIC formula. Defaults to 2.}
 }
 \value{
 A numeric vector of length 2, with first and second elements giving
-\item{edf}{the `equivalent degrees of freedom' for the fitted model \code{fit}.}
-\item{AIC}{the generalized AIC of \code{ocmm} object \code{fit}.}
+\item{edf}{the ``equivalent degrees of freedom'' for the fitted model \code{fit}}
+\item{AIC}{the generalized AIC of \code{ocmm} object \code{fit}}
 }
 \description{
 Extracts the AIC for a fitted \code{ocmm} object

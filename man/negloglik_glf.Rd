@@ -25,8 +25,9 @@ Minus the log-likelihood at parameter values \code{par}
 Log-likelihood function for the fixed-effects model
 }
 \details{
-Minus the log-likelihood  for a fixed-effects model using the
-generalized logistic function as g function and the logit link function.
+This function computes minus the log-likelihood function for a fixed-effects model using
+the generalized logistic function as g function and the logit link function. It is used internally
+to fit the model and should not be of interest of the user.
 }
 \author{
 Maurizio Manuguerra, Gillian Heller
