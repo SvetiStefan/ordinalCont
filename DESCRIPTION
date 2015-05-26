@@ -1,6 +1,6 @@
 Package: ordinalCont
 Title: Ordinal Regression Analysis for Continuous Scales
-Version: 0.3
+Version: 0.4
 Authors@R: c(person("Maurizio Manuguerra", role = c("aut", "cre"),
   	     email = "maurizio.manuguerra@mq.edu.au"),
 	      person("Gillian Heller", role = "aut", email = "gillian.heller@mq.edu.au"))
