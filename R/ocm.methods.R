@@ -114,7 +114,7 @@ print.summary.ocm <- function(x, ...)
 #' plot(pred)
 #' @seealso \code{\link{ocm}}, \code{\link{plot.predict.ocm}}
 #' @export
-#' @author Maurizio Manuguerra
+
 
 predict.ocm <- function(object, newdata=NULL, ndens=100, ...)
 {
